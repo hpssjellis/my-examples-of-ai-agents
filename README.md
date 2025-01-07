@@ -9,7 +9,7 @@ Demos here in the public folder, but as a web page at this link [https://hpssjel
 
 Generated bt  https://storm.genie.stanford.edu/
 
-Load the pdf of this info [ai-agent02.pdf](ai-agent02.pdf)  (This has all the links)
+Load the pdf of this info [ai-agent02.pdf](ai-agent02.pdf)  (Strangely the links only work when this pdf is downloaded. A bit irritating)
 
 
 
