@@ -6,6 +6,8 @@ My examples of static web page AI agents (may have some backend stuff also)
 
 Generated bt  https://storm.genie.stanford.edu/
 
+Load the pdf of this info (ai-agents01.pdf)[ai-agents01.pdf]  (This has all the links)
+
 
 
 
