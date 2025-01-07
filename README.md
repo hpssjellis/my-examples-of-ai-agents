@@ -2,6 +2,9 @@
 My examples of static web page AI agents (may have some backend stuff also)
 
 
+Demos here in the public folder, but as a web page at this link [https://hpssjellis.github.io/my-examples-of-ai-agents/public/index.html](https://hpssjellis.github.io/my-examples-of-ai-agents/public/index.html)
+
+
 
 
 Generated bt  https://storm.genie.stanford.edu/
