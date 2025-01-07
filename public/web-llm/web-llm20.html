@@ -14,34 +14,34 @@
 
     const myEngine = new webllm.MLCEngine();
     myEngine.setInitProgressCallback(report => {
-      document.getElementById("myChatStats").textContent = report.text;
+      document.getElementById("chatStats").textContent = report.text;
     });
 
-    async function myInitializeEngine() {
-      document.getElementById("myChatStats").classList.remove("hidden");
-      mySelectedModel = document.getElementById("myModelSelection").value;
+    async function initializeEngine() {
+      document.getElementById("chatStats").classList.remove("hidden");
+      mySelectedModel = document.getElementById("modelSelection").value;
       await myEngine.reload(mySelectedModel, { temperature: 1.0, top_p: 1 });
-      document.getElementById("mySendButton").disabled = false;
+      document.getElementById("sendButton").disabled = false;
     }
 
-    async function myGenerateResponse() {
-      const myInput = document.getElementById("myUserInput").value.trim();
-      if (!myInput) return;
+    async function generateResponse() {
+      const userInput = document.getElementById("userInput").value.trim();
+      if (!userInput) return;
 
-      const myUserMessage = { content: myInput, role: "user" };
-      myMessages.push(myUserMessage);
-      myUpdateMessages();
+      const userMessage = { content: userInput, role: "user" };
+      myMessages.push(userMessage);
+      updateMessages();
 
-      document.getElementById("myUserInput").value = "";
-      document.getElementById("myUserInput").placeholder = "Generating...";
-      document.getElementById("mySendButton").value = "Stop";
+      document.getElementById("userInput").value = "";
+      document.getElementById("userInput").placeholder = "Generating...";
+      document.getElementById("sendButton").value = "Stop";
 
-      const myAiMessage = { content: "Typing...", role: "assistant" };
-      myMessages.push(myAiMessage);
-      myUpdateMessages();
+      const aiMessage = { content: "Typing...", role: "assistant" };
+      myMessages.push(aiMessage);
+      updateMessages();
 
       try {
-        let myGeneratedMessage = "";
+        let generatedMessage = "";
         const completion = await myEngine.chat.completions.create({
           stream: true,
           messages: myMessages
@@ -49,38 +49,42 @@
         for await (const chunk of completion) {
           const delta = chunk.choices[0].delta.content;
           if (delta) {
-            myGeneratedMessage += delta;
-            myMessages[myMessages.length - 1].content = myGeneratedMessage;
-            myUpdateMessages();
+            generatedMessage += delta;
+            myMessages[myMessages.length - 1].content = generatedMessage;
+            updateMessages();
           }
         }
-        document.getElementById("myUserInput").placeholder = "Type a message...";
-        document.getElementById("mySendButton").value = "Send";
+        document.getElementById("userInput").placeholder = "Type a message...";
+        document.getElementById("sendButton").value = "Send";
       } catch (error) {
         console.error(error);
       }
     }
 
-    function myUpdateMessages() {
-      const myUserMessages = document.getElementById("myUserMessages");
-      const myAiMessages = document.getElementById("myAiMessages");
+    function updateMessages() {
+      const userMessages = document.getElementById("userMessages");
+      const aiMessages = document.getElementById("aiMessages");
 
       // Clear old content
-      myUserMessages.textContent = "";
-      myAiMessages.textContent = "";
+      userMessages.textContent = "";
+      aiMessages.textContent = "";
 
       // Refill user and AI messages
       myMessages.forEach(message => {
         if (message.role === "user") {
-          myUserMessages.textContent += message.content + "\n";
+          userMessages.textContent += message.content + "\n";
         } else if (message.role === "assistant") {
-          myAiMessages.textContent += message.content + "\n";
+          aiMessages.textContent += message.content + "\n";
         }
       });
     }
 
+    // Attach functions to the global window object for access in inline event handlers
+    window.initializeEngine = initializeEngine;
+    window.generateResponse = generateResponse;
+
     window.onload = function () {
-      const modelSelection = document.getElementById("myModelSelection");
+      const modelSelection = document.getElementById("modelSelection");
       webllm.prebuiltAppConfig.model_list.forEach(model => {
         const option = document.createElement("option");
         option.value = model.model_id;
@@ -94,23 +98,23 @@
 <body>
   <p>Step 1: Initialize WebLLM and Download Model</p>
   <div>
-    <select id="myModelSelection"></select>
-    <input type="button" value="Download" onclick="myInitializeEngine()" />
+    <select id="modelSelection"></select>
+    <input type="button" value="Download" onclick="initializeEngine()" />
   </div>
-  <p id="myChatStats" class="hidden"></p>
+  <p id="chatStats" class="hidden"></p>
 
   <div>
-    <textarea id="myUserInput" rows="3" cols="70" placeholder="Type a message..."></textarea>
-    <input type="button" id="mySendButton" value="Send" disabled onclick="myGenerateResponse()" />
+    <textarea id="userInput" rows="3" cols="70" placeholder="Type a message..."></textarea>
+    <input type="button" id="sendButton" value="Send" disabled onclick="generateResponse()" />
   </div>
 
   <div>
     <h3>User Messages:</h3>
-    <pre id="myUserMessages" style="border: 1px solid #ccc; padding: 10px;"></pre>
+    <pre id="userMessages" style="border: 1px solid #ccc; padding: 10px;"></pre>
   </div>
   <div>
     <h3>AI Responses:</h3>
-    <pre id="myAiMessages" style="border: 1px solid #ccc; padding: 10px;"></pre>
+    <pre id="aiMessages" style="border: 1px solid #ccc; padding: 10px;"></pre>
   </div>
 </body>
 </html>
