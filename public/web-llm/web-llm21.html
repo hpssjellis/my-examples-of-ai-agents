@@ -1,0 +1,47 @@
+async function generateResponse() {
+  const userInput = document.getElementById("userInput").value.trim();
+  if (!userInput) return;
+
+  // Add the user's message
+  const userMessage = { content: userInput, role: "user" };
+  myMessages.push(userMessage);
+  updateMessages();
+
+  document.getElementById("userInput").value = "";
+  document.getElementById("userInput").placeholder = "Generating...";
+  document.getElementById("sendButton").value = "Stop";
+
+  // Display "Typing..." in the chat UI but do not push to myMessages
+  const aiTypingMessage = { content: "Typing...", role: "assistant" };
+  displayTypingMessage(aiTypingMessage);
+
+  try {
+    let generatedMessage = "";
+    const completion = await myEngine.chat.completions.create({
+      stream: true,
+      messages: myMessages
+    });
+    for await (const chunk of completion) {
+      const delta = chunk.choices[0].delta.content;
+      if (delta) {
+        generatedMessage += delta;
+        aiTypingMessage.content = generatedMessage; // Update the typing message
+        updateMessages();
+      }
+    }
+
+    // Add the final assistant message to myMessages
+    const finalAssistantMessage = { content: generatedMessage, role: "assistant" };
+    myMessages.push(finalAssistantMessage);
+
+    document.getElementById("userInput").placeholder = "Type a message...";
+    document.getElementById("sendButton").value = "Send";
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function displayTypingMessage(typingMessage) {
+  const aiMessages = document.getElementById("aiMessages");
+  aiMessages.textContent += typingMessage.content + "\n";
+}
