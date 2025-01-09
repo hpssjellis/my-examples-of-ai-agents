@@ -3,7 +3,7 @@
 <html>
 
   <head>
-    <title>Simple Chatbot</title>
+    <title>Single Page Chatbot</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
 
@@ -41,20 +41,14 @@ engine.setInitProgressCallback(updateEngineInitProgressCallback);
 async function initializeWebLLMEngine() {
   document.getElementById("chat-stats").classList.remove("hidden");
   selectedModel = document.getElementById("model-selection").value;
-  const config = {
-    temperature: 1.0,
-    top_p: 1,
-  };
+  const config = { temperature: 1.0, top_p: 1, };
   await engine.reload(selectedModel, config);
 }
 
 async function streamingGenerating(messages, onUpdate, onFinish, onError) {
   try {
     let curMessage = "";
-    const completion = await engine.chat.completions.create({
-      stream: true,
-      messages,
-    });
+    const completion = await engine.chat.completions.create({ stream: true, mmessages, });
     for await (const chunk of completion) {
       const curDelta = chunk.choices[0].delta.content;
       if (curDelta) {
@@ -72,10 +66,7 @@ async function streamingGenerating(messages, onUpdate, onFinish, onError) {
 /*************** UI logic ***************/
 function onMessageSend() {
   const input = document.getElementById("user-input").value.trim();
-  const message = {
-    content: input,
-    role: "user",
-  };
+  const message = { content: input, role: "user", };
   if (input.length === 0) {
     return;
   }
@@ -86,56 +77,23 @@ function onMessageSend() {
   appendMessage(message);
 
   document.getElementById("user-input").value = "";
-  document
-    .getElementById("user-input")
-    .setAttribute("placeholder", "Generating...");
+  document.getElementById("user-input").setAttribute("placeholder", "Generating...");
 
-  const aiMessage = {
-    content: "typing...",
-    role: "assistant",
-  };
+  const aiMessage = {content: "typing...", role: "assistant", };
   appendMessage(aiMessage);
 
-
-
-  
   const onFinishGenerating = (finalMessage) => {
     updateLastMessage(finalMessage);
     document.getElementById("send").disabled = false;
     engine.runtimeStatsText().then(statsText => {
       document.getElementById('chat-stats').classList.remove('hidden');
-    //  document.getElementById('chat-stats').textContent = statsText;
+      //  document.getElementById('chat-stats').textContent = statsText;
       document.getElementById('chat-stats').innerHTML = statsText;
-        document.getElementById("user-input").setAttribute("placeholder", "Type a message...");
+      document.getElementById("user-input").setAttribute("placeholder", "Type a message...");
     })
   };
 
-
-
-  /*
-const onFinishGenerating = async (finalMessage) => {
-  updateLastMessage(finalMessage);
-  document.getElementById("send").disabled = false;
-
-  let statsText;
-  if (isStreaming) {
-  statsText = await engine.ChatCompletionChunk.usage();
- } else {
-   statsText = await engine.ChatCompletion.usage();
- }
-
-  document.getElementById('chat-stats').classList.remove('hidden');
-  document.getElementById('chat-stats').textContent = statsText;
-};
-
-  */
-
-  streamingGenerating(
-    messages,
-    updateLastMessage,
-    onFinishGenerating,
-    console.error,
-  );
+  streamingGenerating( messages, updateLastMessage, onFinishGenerating, console.error, );
 }
 
 function appendMessage(message) {
@@ -158,9 +116,7 @@ function appendMessage(message) {
 }
 
 function updateLastMessage(content) {
-  const messageDoms = document
-    .getElementById("chat-box")
-    .querySelectorAll(".message");
+  const messageDoms = document.getElementById("chat-box").querySelectorAll(".message");
   const lastMessageDom = messageDoms[messageDoms.length - 1];
   lastMessageDom.textContent = content;
 }
@@ -181,30 +137,24 @@ document.getElementById("download").addEventListener("click", function () {
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
-
-      
-    </script>
+    
+  </script>
   </head>
 
   <body>
-    <p>
-      Step 1: Initialize WebLLM and Download Model
-    </p>
+    Step 1: Initialize WebLLM and Download Model from https://esm.run/@mlc-ai/web-llm<br>
+
     <div class="download-container">
       <select id="model-selection"></select>
-      <button id="download">
-        Download
-      </button>
+      <button id="download">Download</button>
     </div>
     <p id="download-status" class="hidden"></p>
-
 
     <div class="chat-container">
       <div id="chat-stats" ></div>
       <div class="chat-input-container">
       
-
-        <textarea id="user-input" rows=3 cols=70 WRAP placeholder="Type a message..."></textarea>
+      <textarea id="user-input" rows=3 cols=70 WRAP placeholder="Type a message..."></textarea>
      <!--   <input type="text" id="user-input" placeholder="Type a message..." onkeydown="{   if (event.keyCode === 13) {document.getElementById('send').click();} }" />  
           <input type="text" id="user-input" placeholder="Type a message..." />
         -->
@@ -216,7 +166,6 @@ document.getElementById("send").addEventListener("click", function () {
 
 
   </body>
-
 </html>
 
 
