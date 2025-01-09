@@ -1,1 +1,130 @@
-sdf
+<script type="module">
+  import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+
+  const messages = [
+    { content: "You are a helpful AI agent helping users.", role: "system" },
+  ];
+
+  const availableModels = webllm.prebuiltAppConfig.model_list.map((m) => m.model_id);
+  let selectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
+
+  let myStopGenerating = false; // Flag to control generation
+
+  function updateEngineInitProgressCallback(report) {
+    console.log("initialize", report.progress);
+    document.getElementById("chat-stats").textContent = report.text;
+  }
+
+  const engine = new webllm.MLCEngine();
+  engine.setInitProgressCallback(updateEngineInitProgressCallback);
+
+  async function initializeWebLLMEngine() {
+    document.getElementById("chat-stats").classList.remove("hidden");
+    selectedModel = document.getElementById("model-selection").value;
+    const config = { temperature: 1.0, top_p: 1 };
+    await engine.reload(selectedModel, config);
+  }
+
+  async function streamingGenerating(messages, onUpdate, onFinish, onError) {
+    myStopGenerating = false; // Reset stop flag before starting generation
+    try {
+      let curMessage = "";
+      const completion = await engine.chat.completions.create({ stream: true, messages });
+
+      for await (const chunk of completion) {
+        if (myStopGenerating) {
+          console.log("Generation stopped.");
+          return; // Exit the loop and stop processing
+        }
+        const curDelta = chunk.choices[0].delta.content;
+        if (curDelta) {
+          curMessage += curDelta;
+        }
+        onUpdate(curMessage);
+      }
+      const finalMessage = await engine.getMessage();
+      onFinish(finalMessage);
+    } catch (err) {
+      onError(err);
+    }
+  }
+
+  function onMessageSend() {
+    const input = document.getElementById("user-input").value.trim();
+    const message = { content: input, role: "user" };
+    if (input.length === 0) return;
+
+    const sendButton = document.getElementById("send");
+    if (sendButton.value === "Send") {
+      // Start sending process
+      sendButton.value = "Stop";
+      messages.push(message);
+      appendMessage(message);
+
+      document.getElementById("user-input").value = "";
+      document.getElementById("user-input").setAttribute("placeholder", "Generating...");
+
+      const aiMessage = { content: "typing...", role: "assistant" };
+      appendMessage(aiMessage);
+
+      const onFinishGenerating = (finalMessage) => {
+        updateLastMessage(finalMessage);
+        sendButton.value = "Send";
+        engine.runtimeStatsText().then((statsText) => {
+          document.getElementById("chat-stats").classList.remove("hidden");
+          document.getElementById("chat-stats").innerHTML = statsText;
+          document.getElementById("user-input").setAttribute("placeholder", "Type a message...");
+        });
+      };
+
+      streamingGenerating(messages, updateLastMessage, onFinishGenerating, console.error);
+    } else {
+      // Stop generation process
+      myStopGenerating = true;
+      document.getElementById("user-input").setAttribute("placeholder", "Generation stopped.");
+      sendButton.value = "Send";
+    }
+  }
+
+  function appendMessage(message) {
+    const chatBox = document.getElementById("chat-box");
+    const container = document.createElement("div");
+    container.classList.add("message-container");
+    const newMessage = document.createElement("div");
+    newMessage.classList.add("message");
+    newMessage.textContent = message.content;
+
+    if (message.role === "user") {
+      container.classList.add("user");
+    } else {
+      container.classList.add("assistant");
+    }
+
+    container.appendChild(newMessage);
+    chatBox.appendChild(container);
+    chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
+  }
+
+  function updateLastMessage(content) {
+    const messageDoms = document.getElementById("chat-box").querySelectorAll(".message");
+    const lastMessageDom = messageDoms[messageDoms.length - 1];
+    lastMessageDom.textContent = content;
+  }
+
+  availableModels.forEach((modelId) => {
+    const option = document.createElement("option");
+    option.value = modelId;
+    option.textContent = modelId;
+    document.getElementById("model-selection").appendChild(option);
+  });
+
+  document.getElementById("model-selection").value = selectedModel;
+  document.getElementById("download").addEventListener("click", function () {
+    initializeWebLLMEngine().then(() => {
+      document.getElementById("send").disabled = false;
+    });
+  });
+  document.getElementById("send").addEventListener("click", function () {
+    onMessageSend();
+  });
+</script>
