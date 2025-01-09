@@ -48,7 +48,7 @@ async function initializeWebLLMEngine() {
 async function streamingGenerating(messages, onUpdate, onFinish, onError) {
   try {
     let curMessage = "";
-    const completion = await engine.chat.completions.create({ stream: true, mmessages, });
+    const completion = await engine.chat.completions.create({ stream: true, messages, });
     for await (const chunk of completion) {
       const curDelta = chunk.choices[0].delta.content;
       if (curDelta) {
