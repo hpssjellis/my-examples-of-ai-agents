@@ -93,8 +93,7 @@
     const currentDate = new Date();
     const dateString = `Current date and time is ${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()} ${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
 
-    document.getElementById('date-display').textContent = dateString;
-    document.getElementById("myNewsDisplay").value = `The present date-time is : ${dateString;\n\r\n\r}`;
+    document.getElementById("myNewsDisplay").value = `The present date-time is : ${dateString}  \n\r\n\r`;
     for (let i = 0; i < myFeeds.length; i++) {
       const feedCheckbox = document.getElementById(`myFeed${i + 1}`);
       const apiKeyInput = document.getElementById(`myFeed${i + 1}ApiKey`);
