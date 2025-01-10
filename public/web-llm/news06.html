@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News Feeds SPA</title>
+</head>
+<body>
+  <h1>News Feeds SPA</h1>
+  
+  <label for="myInterval">Update Interval (seconds):</label>
+  <input type="number" id="myInterval" value="200" style="width: 80px;">
+  <input type="button" value="Set Interval" onclick="mySetInterval()">
+  
+  <h3>Select Feeds and Enter API Keys:</h3>
+  <div>
+    <input type="checkbox" id="myFeed1" checked>
+    <label for="myFeed1">Feed 1: The News API</label>
+    <input type="text" id="myFeed1ApiKey" placeholder="Enter API Key" style="width: 200px;">
+  </div>
+  <div>
+    <input type="checkbox" id="myFeed2" checked>
+    <label for="myFeed2">Feed 2: NewsData.io</label>
+    <input type="text" id="myFeed2ApiKey" placeholder="Enter API Key" style="width: 200px;">
+  </div>
+  <div>
+    <input type="checkbox" id="myFeed3" checked>
+    <label for="myFeed3">Feed 3: SauravKanchan/NewsAPI</label>
+    <input type="text" id="myFeed3ApiKey" placeholder="Enter API Key" style="width: 200px;">
+  </div>
+  <input type="button" value="Save API Keys" onclick="mySaveApiKeys()">
+
+  <textarea id="myNewsDisplay" style="width: 100%; height: 200px;" readonly></textarea>
+  
+  <script>
+    let myFeeds = [
+      { url: "https://api.thenewsapi.com/v1/news/top?api_token=", name: "The News API" },
+      { url: "https://newsdata.io/api/1/news?apikey=", name: "NewsData.io" },
+      { url: "https://saurav.tech/NewsAPI/top-headlines/category/health/in.json", name: "SauravKanchan/NewsAPI" }
+    ];
+//https://saurav.tech/NewsAPI/top-headlines/category/health/in.json
+    let myCurrentInterval = 200000; // Default 200 seconds
+    let myIntervalId;
+
+    function mySaveApiKeys() {
+      for (let i = 0; i < myFeeds.length; i++) {
+        const apiKeyInput = document.getElementById(`myFeed${i + 1}ApiKey`);
+        localStorage.setItem(`myFeed${i + 1}ApiKey`, apiKeyInput.value);
+      }
+      alert("API keys saved successfully!");
+    }
+
+    function myLoadApiKeys() {
+      for (let i = 0; i < myFeeds.length; i++) {
+        const apiKeyInput = document.getElementById(`myFeed${i + 1}ApiKey`);
+        const storedKey = localStorage.getItem(`myFeed${i + 1}ApiKey`);
+        if (storedKey) {
+          apiKeyInput.value = storedKey;
+        }
+      }
+    }
+
+    
+
+
+
+async function myFetchFeed(feedUrl, apiKey) {
+  try {
+    let response;
+    if (apiKey !== '') {
+      response = await fetch(feedUrl + apiKey);
+      console.log(feedUrl + apiKey)
+    } else {
+      response = await fetch(feedUrl);
+      console.log(feedUrl)
+    }
+    const data = await response.json();
+    console.log(data)
+    if (data.articles && data.articles.length > 0) {
+      return data.articles[0].title;
+    } else {
+      return "No news available.";
+    }
+  } catch (error) {
+    return "Error fetching news.";
+  }
+}
+
+
+    /*
+    async function myFetchFeed(feedUrl, apiKey) {
+      try {
+        if (apiKey != ''){
+        const response = await fetch(feedUrl + apiKey);
+        } else {
+        const response = await fetch(feedUrl);
+          
+        }
+        const data = await response.json();
+        if (data.articles && data.articles.length > 0) {
+          return data.articles[0].title;
+        } else {
+          return "No news available.";
+        }
+      } catch (error) {
+        return "Error fetching news.";
+      }
+    }
+
+    */
+
+    async function myUpdateNews() {
+      for (let i = 0; i < myFeeds.length; i++) {
+        const feedCheckbox = document.getElementById(`myFeed${i + 1}`);
+        const apiKeyInput = document.getElementById(`myFeed${i + 1}ApiKey`);
+        if (feedCheckbox.checked) {
+          const news = await myFetchFeed(myFeeds[i].url, apiKeyInput.value);
+          document.getElementById("myNewsDisplay").value = `${myFeeds[i].name}: ${news}`;
+          return; // Display one feed at a time and exit loop
+        }
+      }
+      document.getElementById("myNewsDisplay").value = "No feeds selected.";
+    }
+
+    function mySetInterval() {
+      clearInterval(myIntervalId);
+      const intervalInput = document.getElementById("myInterval").value;
+      myCurrentInterval = parseInt(intervalInput) * 1000;
+      if (isNaN(myCurrentInterval) || myCurrentInterval <= 0) {
+        alert("Please enter a valid interval in seconds.");
+        return;
+      }
+      myIntervalId = setInterval(myUpdateNews, myCurrentInterval);
+    }
+
+    // Load stored API keys on page load
+    window.onload = function () {
+      myLoadApiKeys();
+      mySetInterval();
+    };
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
