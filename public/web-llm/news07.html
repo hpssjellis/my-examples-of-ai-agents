@@ -68,10 +68,13 @@
       let response;
       if (apiKey !== '') {
         response = await fetch(feedUrl + apiKey);
+        console.log(feedUrl + apiKey)
       } else {
         response = await fetch(feedUrl);
+        console.log(feedUrl)
       }
       const data = await response.json();
+      console.log(data)
       return data;
     } catch (error) {
       return { error: "Error fetching news." };
