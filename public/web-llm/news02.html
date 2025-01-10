@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News Feeds SPA</title>
+</head>
+<body>
+  <h1>News Feeds SPA</h1>
+  
+  <label for="myInterval">Update Interval (seconds):</label>
+  <input type="number" id="myInterval" value="200" style="width: 80px;">
+  <input type="button" value="Set Interval" onclick="mySetInterval()">
+  
+  <h3>Select Feeds:</h3>
+  <input type="checkbox" id="myFeed1" checked>
+  <label for="myFeed1">Feed 1: BBC News</label><br>
+  <input type="checkbox" id="myFeed2" checked>
+  <label for="myFeed2">Feed 2: CNN</label><br>
+  <input type="checkbox" id="myFeed3" checked>
+  <label for="myFeed3">Feed 3: Reuters</label><br>
+  <input type="checkbox" id="myFeed4" checked>
+  <label for="myFeed4">Feed 4: Al Jazeera</label><br>
+  <input type="checkbox" id="myFeed5" checked>
+  <label for="myFeed5">Feed 5: The Guardian</label><br>
+  
+  <textarea id="myNewsDisplay" style="width: 100%; height: 200px;" readonly></textarea>
+  
+  <script>
+    let myFeeds = [
+      { url: "https://feeds.bbci.co.uk/news/rss.xml", name: "BBC News" },
+      { url: "http://rss.cnn.com/rss/cnn_topstories.rss", name: "CNN" },
+      { url: "http://feeds.reuters.com/reuters/topNews", name: "Reuters" },
+      { url: "https://www.aljazeera.com/xml/rss/all.xml", name: "Al Jazeera" },
+      { url: "https://www.theguardian.com/world/rss", name: "The Guardian" }
+    ];
+
+    let myCurrentInterval = 200000; // Default 200 seconds
+    let myIntervalId;
+
+    async function myFetchFeed(feedUrl) {
+      try {
+        const response = await fetch(feedUrl);
+        const text = await response.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(text, "text/xml");
+        const items = xmlDoc.getElementsByTagName("item");
+        if (items.length > 0) {
+          return items[0].getElementsByTagName("title")[0].textContent;
+        } else {
+          return "No news available.";
+        }
+      } catch (error) {
+        return "Error fetching news.";
+      }
+    }
+
+    async function myUpdateNews() {
+      for (let i = 0; i < myFeeds.length; i++) {
+        const feedCheckbox = document.getElementById(`myFeed${i + 1}`);
+        if (feedCheckbox.checked) {
+          const news = await myFetchFeed(myFeeds[i].url);
+          document.getElementById("myNewsDisplay").value = `${myFeeds[i].name}: ${news}`;
+          return; // Display one feed at a time and exit loop
+        }
+      }
+      document.getElementById("myNewsDisplay").value = "No feeds selected.";
+    }
+
+    function mySetInterval() {
+      clearInterval(myIntervalId);
+      const intervalInput = document.getElementById("myInterval").value;
+      myCurrentInterval = parseInt(intervalInput) * 1000;
+      if (isNaN(myCurrentInterval) || myCurrentInterval <= 0) {
+        alert("Please enter a valid interval in seconds.");
+        return;
+      }
+      myIntervalId = setInterval(myUpdateNews, myCurrentInterval);
+    }
+
+    // Initialize the news update loop
+    mySetInterval();
+  </script>
+</body>
+</html>
