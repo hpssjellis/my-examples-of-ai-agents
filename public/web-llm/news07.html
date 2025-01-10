@@ -1,3 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News Feeds SPA</title>
+</head>
+<body>
+  <h1>News Feeds SPA</h1>
+  
+  <label for="myInterval">Update Interval (seconds):</label>
+  <input type="number" id="myInterval" value="200" style="width: 80px;">
+  <input type="button" value="Set Interval" onclick="mySetInterval()">
+  
+  <h3>Select Feeds and Enter API Keys:</h3>
+  <div>
+    <input type="checkbox" id="myFeed1" checked>
+    <label for="myFeed1">Feed 1: The News API</label>
+    <input type="text" id="myFeed1ApiKey" placeholder="Enter API Key" style="width: 200px;">
+  </div>
+  <div>
+    <input type="checkbox" id="myFeed2" checked>
+    <label for="myFeed2">Feed 2: NewsData.io</label>
+    <input type="text" id="myFeed2ApiKey" placeholder="Enter API Key" style="width: 200px;">
+  </div>
+  <div>
+    <input type="checkbox" id="myFeed3" checked>
+    <label for="myFeed3">Feed 3: SauravKanchan/NewsAPI</label>
+    <input type="text" id="myFeed3ApiKey" placeholder="Enter API Key" style="width: 200px;">
+  </div>
+  <input type="button" value="Save API Keys" onclick="mySaveApiKeys()">
+
+  <textarea id="myNewsDisplay" style="width: 100%; height: 200px;" readonly></textarea>
+
+
+
+
 <script>
   let myFeeds = [
     { url: "https://api.thenewsapi.com/v1/news/top?api_token=", name: "The News API" },
@@ -80,3 +117,12 @@
     mySetInterval();
   };
 </script>
+
+
+
+  
+ 
+</body>
+</html>
+
+
