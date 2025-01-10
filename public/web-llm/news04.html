@@ -36,9 +36,9 @@
     let myFeeds = [
       { url: "https://api.thenewsapi.com/v1/news/top?api_token=", name: "The News API" },
       { url: "https://newsdata.io/api/1/news?apikey=", name: "NewsData.io" },
-      { url: "https://raw.githubusercontent.com/SauravKanchan/NewsAPI/main/data.json", name: "SauravKanchan/NewsAPI" }
+      { url: "https://saurav.tech/NewsAPI/top-headlines/category/health/in.json", name: "SauravKanchan/NewsAPI" }
     ];
-
+//https://saurav.tech/NewsAPI/top-headlines/category/health/in.json
     let myCurrentInterval = 200000; // Default 200 seconds
     let myIntervalId;
 
@@ -62,7 +62,12 @@
 
     async function myFetchFeed(feedUrl, apiKey) {
       try {
+        if (apiKey != ''){
         const response = await fetch(feedUrl + apiKey);
+        } else {
+        const response = await fetch(feedUrl);
+          
+        }
         const data = await response.json();
         if (data.articles && data.articles.length > 0) {
           return data.articles[0].title;
