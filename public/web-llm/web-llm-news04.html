@@ -139,7 +139,7 @@ document.getElementById("send").addEventListener("click", function () {
     <h2 align=center>Single Page Application Web-LLM-News</h2>
 
 
-    <h1>News Feeds SPA (Single page Application</h1>
+    <h1>News Feeds SPA (Single page Application)</h1>
   
     <label for="myInterval">Update Interval (seconds):</label>
     <input type="number" id="myInterval" value="1200" style="width: 80px;"> basically every 20 minutes
@@ -234,13 +234,16 @@ document.getElementById("send").addEventListener("click", function () {
           //  const myTextArea = document.getElementById("myNewsDisplay");
             const myOutput = document.getElementById("myOutDisplay");
             myOutput.innerHTML = ""; // Clear previous output
+         console.log(myJsonData)
 
             try {
               //  const myJsonData = JSON.parse(myTextArea.value); // Parse the JSON input
                 
                 // Check if it's an array or an object
-                const myItems = Array.isArray(myJsonData) ? myJsonData : [myJsonData];
+             //   const myItems = Array.isArray(myJsonData) ? myJsonData : [myJsonData];
 
+              //  myItems.forEach((myItem, index) => {
+              myItems = myJsonData
                 myItems.forEach((myItem, index) => {
                     if (myItem.title || myItem.description || myItem.url) {
                         myOutput.innerHTML += `<p><strong>Item ${index + 1}:</strong></p>`;
