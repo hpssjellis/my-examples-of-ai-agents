@@ -243,7 +243,10 @@ document.getElementById("send").addEventListener("click", function () {
              //   const myItems = Array.isArray(myJsonData) ? myJsonData : [myJsonData];
 
               //  myItems.forEach((myItem, index) => {
-              for (myIndex=0; myIndex <= myJsonData.articles.length; myIndex++){
+              console.log(myJsonData.totalResults)
+              console.log(myJsonData.articles[0].description)
+              for (myIndex=0; myIndex <= myJsonData.totalResults; myIndex++){
+                
                   myOutput.innerHTML += `<p><strong>Item ${myJsonData.articles[myIndex].description}:</strong></p>`;
               }
               /*
