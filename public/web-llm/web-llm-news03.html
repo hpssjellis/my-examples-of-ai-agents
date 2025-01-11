@@ -144,7 +144,10 @@ document.getElementById("send").addEventListener("click", function () {
     <label for="myInterval">Update Interval (seconds):</label>
     <input type="number" id="myInterval" value="1200" style="width: 80px;"> basically every 20 minutes
     <input type="button" value="Set Interval" onclick="{mySetInterval(document.getElementById('myInterval').value)}">
-    <input type="button" value="Stop (basically activate once every 24 hours)" onclick="{mySetInterval(86400)}">
+    <input type="button" value="Stop (basically activate once every 24 hours)" onclick="{
+      mySetInterval(86400)
+      document.getElementById('myInterval').value = 86400
+    }">
     <input type="button" value="News Now" onclick="{myUpdateNews()}">
 
     
@@ -213,7 +216,7 @@ document.getElementById("send").addEventListener("click", function () {
       { url: "https://saurav.tech/NewsAPI/top-headlines/category/health/in.json",     name: "SauravKanchan health category/health/in.json" }
     ];
   
-    let myCurrentInterval = 1200000; // Default 1200 seconds or 20 minutes
+    let myCurrentInterval = 86400; // Default 1200 seconds or 20 minutes
     let myIntervalId;
   
     function mySaveApiKeys() {
