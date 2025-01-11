@@ -312,7 +312,11 @@ document.getElementById("send").addEventListener("click", function () {
         const apiKeyInput = document.getElementById(`myFeed${i + 1}ApiKey`);
         if (feedCheckbox.checked) {
           const jsonData = await myFetchFeed(myFeeds[i].url, apiKeyInput.value);
+          console.log('jsonData')
+          console.log(jsonData)
           const parsedData = myParseJson(jsonData);
+          console.log('parsedData')
+          console.log(parsedData)
           document.getElementById("myOutDisplay").value += `Feed: ${myFeeds[i].name}\n\n \n\r-------------------------------\n\r`;
           document.getElementById("myNewsDisplay").value += parsedData;
         //  return; // Display one feed at a time and exit loop
