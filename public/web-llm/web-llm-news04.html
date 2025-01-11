@@ -243,7 +243,10 @@ document.getElementById("send").addEventListener("click", function () {
              //   const myItems = Array.isArray(myJsonData) ? myJsonData : [myJsonData];
 
               //  myItems.forEach((myItem, index) => {
-              myItems = myJsonData
+              for (myIndex=0; myIndex <= myJsonData.articles.length; ++){
+                  myOutput.innerHTML += `<p><strong>Item ${myJsonData.articles[myIndex].description:</strong></p>`;
+              }
+              /*
                 myItems.forEach((myItem, index) => {
                     if (myItem.title || myItem.description || myItem.url) {
                         myOutput.innerHTML += `<p><strong>Item ${index + 1}:</strong></p>`;
@@ -254,6 +257,9 @@ document.getElementById("send").addEventListener("click", function () {
                         myOutput.innerHTML += `<p>Item ${index + 1} has no valid keys.</p><hr>`;
                     }
                 });
+                          */
+
+              
             } catch (error) {
                 myOutput.innerHTML = `<p style="color: red;">Invalid JSON data. Please check your input.</p>`;
             }
