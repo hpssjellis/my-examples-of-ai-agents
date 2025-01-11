@@ -187,10 +187,11 @@ document.getElementById("send").addEventListener("click", function () {
     
     
     <br><br>
+    
+    <div id="myOutDisplay" >...</div>
   
     <textarea id="myNewsDisplay" style="width: 100%; height: 500px;" readonly></textarea>
     
-    <div id="myOutDisplay" >...</div>
   
   
   <script>
@@ -302,14 +303,15 @@ document.getElementById("send").addEventListener("click", function () {
               ];
       const dateString = `Current date and time is ${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()} ${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
   
-      document.getElementById("myNewsDisplay").value = `The present date-time is : ${days[currentDate.getDay()]} ${months[currentDate.getMonth()]}   ${dateString}  \n\r\n\r`;
+      document.getElementById("myOutDisplay").value = `The present date-time is : ${days[currentDate.getDay()]} ${months[currentDate.getMonth()]}   ${dateString}  \n\r\n\r`;
       for (let i = 0; i < myFeeds.length; i++) {
         const feedCheckbox = document.getElementById(`myFeed${i + 1}`);
         const apiKeyInput = document.getElementById(`myFeed${i + 1}ApiKey`);
         if (feedCheckbox.checked) {
           const jsonData = await myFetchFeed(myFeeds[i].url, apiKeyInput.value);
           const parsedData = myParseJson(jsonData);
-          document.getElementById("myNewsDisplay").value += `Feed: ${myFeeds[i].name}\n\n${parsedData} \n\r-------------------------------\n\r`;
+          document.getElementById("myOutDisplay").value += `Feed: ${myFeeds[i].name}\n\n \n\r-------------------------------\n\r`;
+          document.getElementById("myNewsDisplay").value += parsedData;
         //  return; // Display one feed at a time and exit loop
         }
       }
