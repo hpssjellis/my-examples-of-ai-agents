@@ -173,13 +173,15 @@ document.getElementById("send").addEventListener("click", function () {
     <div>
       <input type="checkbox" id="myFeed5" checked>
       <label for="myFeed5">Feed 5: SauravKanchan Health category/health/in.json</label>
-      <input type="text" id="myFeed4ApiKey" placeholder="If No API-Key Leave Blank" style="width: 200px;">
+      <input type="text" id="myFeed5ApiKey" placeholder="If No API-Key Leave Blank" style="width: 200px;">
     </div>    
     
     <br>
     <input type="button" value="Save API Keys" onclick="mySaveApiKeys()"> <br>
   
-    <textarea id="myNewsDisplay" style="width: 100%; height: 1000px;" readonly></textarea>
+    <textarea id="myNewsDisplay" style="width: 100%; height: 500px;" readonly></textarea>
+    
+    <div id="myOutDisplay" >...</div>
   
   
   <script>
@@ -211,7 +213,36 @@ document.getElementById("send").addEventListener("click", function () {
       }
       alert("API keys saved successfully!");
     }
-  
+
+
+
+     function myParseJson() {
+            const myTextArea = document.getElementById("myNewsDisplay");
+            const myOutput = document.getElementById("myOutDisplay");
+            myOutput.innerHTML = ""; // Clear previous output
+
+            try {
+                const myJsonData = JSON.parse(myTextArea.value); // Parse the JSON input
+                
+                // Check if it's an array or an object
+                const myItems = Array.isArray(myJsonData) ? myJsonData : [myJsonData];
+
+                myItems.forEach((myItem, index) => {
+                    if (myItem.title || myItem.description || myItem.url) {
+                        myOutput.innerHTML += `<p><strong>Item ${index + 1}:</strong></p>`;
+                        myOutput.innerHTML += `<p>Title: ${myItem.title || 'N/A'}</p>`;
+                        myOutput.innerHTML += `<p>Description: ${myItem.description || 'N/A'}</p>`;
+                        myOutput.innerHTML += `<p>URL: <a href="${myItem.url || '#'}" target="_blank">${myItem.url || 'N/A'}</a></p><hr>`;
+                    } else {
+                        myOutput.innerHTML += `<p>Item ${index + 1} has no valid keys.</p><hr>`;
+                    }
+                });
+            } catch (error) {
+                myOutput.innerHTML = `<p style="color: red;">Invalid JSON data. Please check your input.</p>`;
+            }
+        }
+
+    
     function myLoadApiKeys() {
       for (let i = 0; i < myFeeds.length; i++) {
         const apiKeyInput = document.getElementById(`myFeed${i + 1}ApiKey`);
