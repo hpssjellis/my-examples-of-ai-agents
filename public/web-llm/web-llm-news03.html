@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
 
@@ -141,7 +142,7 @@ document.getElementById("send").addEventListener("click", function () {
     <h1>News Feeds SPA (Single page Application</h1>
   
     <label for="myInterval">Update Interval (seconds):</label>
-    <input type="number" id="myInterval" value="600" style="width: 80px;"> basically every 10 minutes
+    <input type="number" id="myInterval" value="1200" style="width: 80px;"> basically every 20 minutes
     <input type="button" value="Set Interval" onclick="mySetInterval()">
     
     <h3>Select Feeds and Enter API Keys: <a href="https://saurav.tech/NewsAPI/sources.json">saurav.tech sources</a> </h3>
@@ -151,12 +152,12 @@ document.getElementById("send").addEventListener("click", function () {
     
     <div>
       <input type="checkbox" id="myFeed1" checked>
-      <label for="myFeed1">"SauravKanchan News everything/cnn.json"</label>
+      <label for="myFeed1">Feed 1: SauravKanchan News everything/cnn.json</label>
       <input type="text" id="myFeed1ApiKey" placeholder="If No API-Key Leave Blank" style="width: 200px;">
     </div>
     <div>
       <input type="checkbox" id="myFeed2" checked>
-      <label for="myFeed2">SauravKanchan Countries category/general/us.json</label>
+      <label for="myFeed2">Feed 2: SauravKanchan Countries category/general/us.json</label>
       <input type="text" id="myFeed2ApiKey" placeholder="If No API-Key Leave Blank" style="width: 200px;">
     </div>
     <div>
@@ -167,12 +168,12 @@ document.getElementById("send").addEventListener("click", function () {
     <div>
       <input type="checkbox" id="myFeed4" checked>
       <label for="myFeed4">Feed 4: SauravKanchan Science category/science/in.json</label>
-      <input type="text" id="myFeed3ApiKey" placeholder="If No API-Key Leave Blank" style="width: 200px;">
+      <input type="text" id="myFeed4ApiKey" placeholder="If No API-Key Leave Blank" style="width: 200px;">
     </div>     
     <div>
       <input type="checkbox" id="myFeed5" checked>
-      <label for="myFeed5">Feed 5: SauravKanchan health category/health/in.json</label>
-      <input type="text" id="myFeed3ApiKey" placeholder="If No API-Key Leave Blank" style="width: 200px;">
+      <label for="myFeed5">Feed 5: SauravKanchan Health category/health/in.json</label>
+      <input type="text" id="myFeed4ApiKey" placeholder="If No API-Key Leave Blank" style="width: 200px;">
     </div>    
     
     <br>
@@ -193,14 +194,14 @@ document.getElementById("send").addEventListener("click", function () {
     */
 
         let myFeeds = [
-      { url: "https://saurav.tech/NewsAPI/everything/cnn.json", name: "SauravKanchan News everything/cnn.json" },
-      { url: "https://saurav.tech/NewsAPI/top-headlines/category/general/us.json", name: "SauravKanchan Countries category/general/us.json" },
+      { url: "https://saurav.tech/NewsAPI/everything/cnn.json",                       name: "SauravKanchan News everything/cnn.json" },
+      { url: "https://saurav.tech/NewsAPI/top-headlines/category/general/us.json",    name: "SauravKanchan Countries category/general/us.json" },
       { url: "https://saurav.tech/NewsAPI/top-headlines/category/technology/in.json", name: "SauravKanchan Tech category/technology/in.json" },
-      { url: "https://saurav.tech/NewsAPI/top-headlines/category/science/in.json", name: "SauravKanchan Science category/science/in.json" },
-      { url: "https://saurav.tech/NewsAPI/top-headlines/category/health/in.json", name: "SauravKanchan health category/health/in.json" }
+      { url: "https://saurav.tech/NewsAPI/top-headlines/category/science/in.json",    name: "SauravKanchan Science category/science/in.json" },
+      { url: "https://saurav.tech/NewsAPI/top-headlines/category/health/in.json",     name: "SauravKanchan health category/health/in.json" }
     ];
   
-    let myCurrentInterval = 200000; // Default 200 seconds
+    let myCurrentInterval = 1200000; // Default 1200 seconds or 20 minutes
     let myIntervalId;
   
     function mySaveApiKeys() {
