@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Single Page Chatbot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+
+
+  <script type="module">
+  //  import { CreateMLCEngine, MLCEngine, prebuiltAppConfig } from "https://esm.run/@mlc-ai/web-llm";
+    import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+
+
+
+/*************** WebLLM logic ***************/
+const messages = [{ content: "You are a helpful AI agent helping users.", role: "system", }, ];
+
+const availableModels = webllm.prebuiltAppConfig.model_list.map( (m) => m.model_id, );
+//let selectedModel = "Llama-3-8B-Instruct-q4f32_1-MLC-1k";
+let selectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
+
+// Callback function for initializing progress
+function updateEngineInitProgressCallback(report) {
+  console.log("initialize", report.progress);
+  document.getElementById("chat-stats").textContent = report.text;
+}
+
+// Create engine instance
+const engine = new webllm.MLCEngine();
+engine.setInitProgressCallback(updateEngineInitProgressCallback);
+
+async function initializeWebLLMEngine() {
+  document.getElementById("chat-stats").classList.remove("hidden");
+  selectedModel = document.getElementById("model-selection").value;
+  const config = { temperature: 1.0, top_p: 1, };
+  await engine.reload(selectedModel, config);
+}
+
+async function streamingGenerating(messages, onUpdate, onFinish, onError) {
+  try {
+    let curMessage = "";
+    const completion = await engine.chat.completions.create({ stream: true, messages, });
+    for await (const chunk of completion) {
+      const curDelta = chunk.choices[0].delta.content;
+      if (curDelta) {
+        curMessage += curDelta;
+      }
+      onUpdate(curMessage);
+    }
+    const finalMessage = await engine.getMessage();
+    onFinish(finalMessage);
+  } catch (err) {
+    onError(err);
+  }
+}
+
+/*************** UI logic ***************/
+function onMessageSend() {
+  const input = document.getElementById("user-input").value.trim();
+  const message = { content: input, role: "user", };
+  if (input.length === 0) {
+    return;
+  }
+//  document.getElementById("send").disabled = true;
+  document.getElementById("send").value = "stop";
+
+  messages.push(message);
+  appendMessage(message);
+
+  document.getElementById("user-input").value = "";
+  document.getElementById("user-input").setAttribute("placeholder", "Generating...");
+
+  const aiMessage = {content: "typing...", role: "assistant", };
+  appendMessage(aiMessage);
+
+  const onFinishGenerating = (finalMessage) => {
+    updateLastMessage(finalMessage);
+    document.getElementById("send").disabled = false;
+    engine.runtimeStatsText().then(statsText => {
+      document.getElementById('chat-stats').classList.remove('hidden');
+      //  document.getElementById('chat-stats').textContent = statsText;
+      document.getElementById('chat-stats').innerHTML = statsText;
+      document.getElementById("user-input").setAttribute("placeholder", "Type a message...");
+    })
+  };
+
+  streamingGenerating( messages, updateLastMessage, onFinishGenerating, console.error, );
+}
+
+function appendMessage(message) {
+  const chatBox = document.getElementById("chat-box");
+  const container = document.createElement("div");
+  container.classList.add("message-container");
+  const newMessage = document.createElement("div");
+  newMessage.classList.add("message");
+  newMessage.textContent = message.content;
+
+  if (message.role === "user") {
+    container.classList.add("user");
+  } else {
+    container.classList.add("assistant");
+  }
+
+  container.appendChild(newMessage);
+  chatBox.appendChild(container);
+  chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
+}
+
+function updateLastMessage(content) {
+  const messageDoms = document.getElementById("chat-box").querySelectorAll(".message");
+  const lastMessageDom = messageDoms[messageDoms.length - 1];
+  lastMessageDom.textContent = content;
+}
+
+/*************** UI binding ***************/
+availableModels.forEach((modelId) => {
+  const option = document.createElement("option");
+  option.value = modelId;
+  option.textContent = modelId;
+  document.getElementById("model-selection").appendChild(option);
+});
+document.getElementById("model-selection").value = selectedModel;
+document.getElementById("download").addEventListener("click", function () {
+  initializeWebLLMEngine().then(() => {
+    document.getElementById("send").disabled = false;
+  });
+});
+document.getElementById("send").addEventListener("click", function () {
+  onMessageSend();
+});
+    
+  </script>
+  </head>
+
+  <body>
+    <h2 align=center>Single Page Application Web-LLM-News</h2>
+
+
+
+
+
+    <h1>News Feeds SPA</h1>
+  
+    <label for="myInterval">Update Interval (seconds):</label>
+    <input type="number" id="myInterval" value="200" style="width: 80px;">
+    <input type="button" value="Set Interval" onclick="mySetInterval()">
+    
+    <h3>Select Feeds and Enter API Keys:</h3>
+    <div>
+      <input type="checkbox" id="myFeed1" checked>
+      <label for="myFeed1">Feed 1: The News API</label>
+      <input type="text" id="myFeed1ApiKey" placeholder="Enter API Key" style="width: 200px;">
+    </div>
+    <div>
+      <input type="checkbox" id="myFeed2" checked>
+      <label for="myFeed2">Feed 2: NewsData.io</label>
+      <input type="text" id="myFeed2ApiKey" placeholder="Enter API Key" style="width: 200px;">
+    </div>
+    <div>
+      <input type="checkbox" id="myFeed3" checked>
+      <label for="myFeed3">Feed 3: SauravKanchan/NewsAPI</label>
+      <input type="text" id="myFeed3ApiKey" placeholder="Enter API Key" style="width: 200px;">
+    </div>
+    <input type="button" value="Save API Keys" onclick="mySaveApiKeys()">
+  
+    <textarea id="myNewsDisplay" style="width: 100%; height: 1000px;" readonly></textarea>
+  
+  
+  
+  
+  <script>
+    let myFeeds = [
+      { url: "https://api.thenewsapi.com/v1/news/top?api_token=", name: "The News API" },
+      { url: "https://newsdata.io/api/1/news?apikey=", name: "NewsData.io" },
+      { url: "https://saurav.tech/NewsAPI/top-headlines/category/health/in.json", name: "SauravKanchan/NewsAPI" }
+    ];
+  
+    let myCurrentInterval = 200000; // Default 200 seconds
+    let myIntervalId;
+  
+    function mySaveApiKeys() {
+      for (let i = 0; i < myFeeds.length; i++) {
+        const apiKeyInput = document.getElementById(`myFeed${i + 1}ApiKey`);
+        localStorage.setItem(`myFeed${i + 1}ApiKey`, apiKeyInput.value);
+      }
+      alert("API keys saved successfully!");
+    }
+  
+    function myLoadApiKeys() {
+      for (let i = 0; i < myFeeds.length; i++) {
+        const apiKeyInput = document.getElementById(`myFeed${i + 1}ApiKey`);
+        const storedKey = localStorage.getItem(`myFeed${i + 1}ApiKey`);
+        if (storedKey) {
+          apiKeyInput.value = storedKey;
+        }
+      }
+    }
+  
+    async function myFetchFeed(feedUrl, apiKey) {
+      try {
+        let response;
+        if (apiKey !== '') {
+          response = await fetch(feedUrl + apiKey);
+          console.log(feedUrl + apiKey)
+        } else {
+          response = await fetch(feedUrl);
+          console.log(feedUrl)
+        }
+        const data = await response.json();
+        console.log(data)
+        return data;
+      } catch (error) {
+        return { error: "Error fetching news." };
+      }
+    }
+  
+    function myParseJson(jsonData) {
+      try {
+        return JSON.stringify(jsonData, null, 2); // Pretty-print the JSON with 2-space indentation
+      } catch (error) {
+        return "Error parsing JSON data.";
+      }
+    }
+  
+    async function myUpdateNews() {
+      const currentDate = new Date();
+      const months = [ 
+                  "January", "February",  
+                  "March", "April", "May",  
+                  "June", "July", "August", 
+                  "September", "October",  
+                  "November", "December" 
+              ];
+      const days = [ 
+                  "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday","Saturday" 
+              ];
+      const dateString = `Current date and time is ${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()} ${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
+  
+      document.getElementById("myNewsDisplay").value = `The present date-time is : ${days[currentDate.getDay()]} ${months[currentDate.getMonth()]}   ${dateString}  \n\r\n\r`;
+      for (let i = 0; i < myFeeds.length; i++) {
+        const feedCheckbox = document.getElementById(`myFeed${i + 1}`);
+        const apiKeyInput = document.getElementById(`myFeed${i + 1}ApiKey`);
+        if (feedCheckbox.checked) {
+          const jsonData = await myFetchFeed(myFeeds[i].url, apiKeyInput.value);
+          const parsedData = myParseJson(jsonData);
+          document.getElementById("myNewsDisplay").value += `Feed: ${myFeeds[i].name}\n\n${parsedData} \n\r-------------------------------\n\r`;
+        //  return; // Display one feed at a time and exit loop
+        }
+      }
+     // document.getElementById("myNewsDisplay").value = "No feeds selected.";
+    }
+  
+    function mySetInterval() {
+      clearInterval(myIntervalId);
+      const intervalInput = document.getElementById("myInterval").value;
+      myCurrentInterval = parseInt(intervalInput) * 1000;
+      if (isNaN(myCurrentInterval) || myCurrentInterval <= 0) {
+        alert("Please enter a valid interval in seconds.");
+        return;
+      }
+      myIntervalId = setInterval(myUpdateNews, myCurrentInterval);
+    }
+
+  
+    // Load stored API keys on page load
+    window.onload = function () {
+      myLoadApiKeys();
+      mySetInterval();
+    };
+  </script>
+  
+  
+  
+    
+  
+
+<hr>
+
+    Step 1: Initialize WebLLM and Download Model from https://esm.run/@mlc-ai/web-llm<br>
+    Unfortunately I can't find out how big some of these files are, so be careful if you are running on data. Many of these will not work with a cell phone.<br><br>
+    <div class="download-container">
+      <select id="model-selection"></select>
+      <button id="download">Download</button>
+    </div>
+    <p id="download-status" class="hidden"></p>
+
+    <div class="chat-container">
+      <div id="chat-stats" ></div>
+      <div class="chat-input-container">
+      
+      <textarea id="user-input" rows=3 cols=70 WRAP placeholder="Type a message..."></textarea>
+     <!--   <input type="text" id="user-input" placeholder="Type a message..." onkeydown="{   if (event.keyCode === 13) {document.getElementById('send').click();} }" />  
+          <input type="text" id="user-input" placeholder="Type a message..." />
+        -->
+        <button id="send" disabled>Send</button>
+      </div>
+      
+      <div id="chat-box" class="chat-box"></div>
+    </div>
+
+
+  </body>
+</html>
+
