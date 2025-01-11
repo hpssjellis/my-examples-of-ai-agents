@@ -234,9 +234,9 @@ document.getElementById("send").addEventListener("click", function () {
           //  const myTextArea = document.getElementById("myNewsDisplay");
             const myOutput = document.getElementById("myOutDisplay");
             myOutput.innerHTML = ""; // Clear previous output
-         console.log(myJsonData)
+         //  console.log(myJsonData)
 
-            try {
+         //   try {
               //  const myJsonData = JSON.parse(myTextArea.value); // Parse the JSON input
                 
                 // Check if it's an array or an object
@@ -245,7 +245,7 @@ document.getElementById("send").addEventListener("click", function () {
               //  myItems.forEach((myItem, index) => {
               console.log(myJsonData.totalResults)
               console.log(myJsonData.articles[0].description)
-              for (myIndex=0; myIndex <= myJsonData.totalResults; myIndex++){
+              for (myIndex=0; myIndex < myJsonData.totalResults; myIndex++){
                 
                   myOutput.innerHTML += `<p><strong>Item ${myJsonData.articles[myIndex].description}:</strong></p>`;
               }
@@ -262,10 +262,13 @@ document.getElementById("send").addEventListener("click", function () {
                 });
                           */
 
-              
+              /*
             } catch (error) {
                 myOutput.innerHTML = `<p style="color: red;">Invalid JSON data. Please check your input.</p>`;
             }
+
+
+    */
         }
 
     
