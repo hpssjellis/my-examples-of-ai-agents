@@ -13,7 +13,7 @@
   //  import { CreateMLCEngine, MLCEngine, prebuiltAppConfig } from "https://esm.run/@mlc-ai/web-llm";
     import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 
-
+let myJsonData;
 
 /*************** WebLLM logic ***************/
 const messages = [{ content: "You are a helpful AI agent helping users.", role: "system", }, ];
@@ -187,6 +187,7 @@ document.getElementById("send").addEventListener("click", function () {
     <br>
     <input type="button" value="Save API Keys" onclick="mySaveApiKeys()">
     <input type="button" value="Parse Data" onclick="myNewsParseJson()">
+    <input type="button" value="show" onclick="console.log(myJsonData)">
     
     
     <br><br>
@@ -311,12 +312,8 @@ document.getElementById("send").addEventListener("click", function () {
         const feedCheckbox = document.getElementById(`myFeed${i + 1}`);
         const apiKeyInput = document.getElementById(`myFeed${i + 1}ApiKey`);
         if (feedCheckbox.checked) {
-          const jsonData = await myFetchFeed(myFeeds[i].url, apiKeyInput.value);
-          console.log('jsonData')
-          console.log(jsonData)
-          const parsedData = myParseJson(jsonData);
-          console.log('parsedData')
-          console.log(parsedData)
+          myJsonData = await myFetchFeed(myFeeds[i].url, apiKeyInput.value);
+          const parsedData = myParseJson(myJsonData);
           document.getElementById("myOutDisplay").value += `Feed: ${myFeeds[i].name}\n\n \n\r-------------------------------\n\r`;
           document.getElementById("myNewsDisplay").value += parsedData;
         //  return; // Display one feed at a time and exit loop
