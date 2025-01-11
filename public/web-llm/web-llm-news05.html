@@ -246,7 +246,7 @@ document.getElementById("send").addEventListener("click", function () {
               console.log(myJsonData.totalResults)
               console.log(myJsonData.articles[0].description)
               for (myIndex=0; myIndex < myJsonData.totalResults; myIndex++){    
-                  myOutput.innerHTML += `${myJsonData.articles[myIndex].description} : <a href='${myJsonData.articles[myIndex].url}'>${myJsonData.articles[myIndex].url}</a><br><br>`;
+                  myOutput.innerHTML += `${myIndex} : ${myJsonData.articles[myIndex].description} : <a href='${myJsonData.articles[myIndex].url}'>${myJsonData.articles[myIndex].url}</a><br><br>`;
               }
               /*
                 myItems.forEach((myItem, index) => {
