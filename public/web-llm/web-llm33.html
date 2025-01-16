@@ -58,7 +58,7 @@ async function onShow(){
 //  console.log(myWeird)
 let myTemp = ''
 for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
-  myTemp += `${myLoop} : <a  target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${availableModels[myLoop]}'  onclick="{document.getElementById('model-selection').value = '${availableModels[myLoop]}'}">${availableModels[myLoop]}</a> `
+  myTemp += `${myLoop} : <a  target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${availableModels[myLoop]}'  onclick="{event.preventDefault();document.getElementById('model-selection').value = '${availableModels[myLoop]}'}">${availableModels[myLoop]}</a> `
   myTemp += await onShowFileCount(availableModels[myLoop])
   myTemp += ' files<br>'
   document.getElementById('chat-box').innerHTML = myTemp;
