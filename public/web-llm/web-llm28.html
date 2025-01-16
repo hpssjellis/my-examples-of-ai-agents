@@ -22,10 +22,19 @@
 
   //https://huggingface.co/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC 
   let myTemp = ''
+  /*
   availableModels.forEach(function (myModelItem, myModelIndex) {
       myTemp += `${myModelIndex} : ${myModelItem}<br>`
     
   });
+*/
+
+  for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
+
+      myTemp += `${myLoop} : ${availableModels[myLoop]}<br>`
+    
+  }
+  
   document.getElementById("chat-box").textContent = myTemp;
   
 //  document.getElementById("chat-stats").textContent = availableModels;
