@@ -55,7 +55,7 @@ async function onShow(){
 let myTemp = ''
 for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
   myTemp += `${myLoop} : <a  target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${availableModels[myLoop]}'>${availableModels[myLoop]}</a> `
-  myTemp += awaitonShowFileCount(availableModels[myLoop])
+  myTemp += await onShowFileCount(availableModels[myLoop])
   myTemp += '<br>'
 }
 document.getElementById('chat-box').innerHTML = myTemp;
