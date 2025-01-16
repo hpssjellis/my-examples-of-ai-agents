@@ -26,7 +26,7 @@ let selectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
       //https://huggingface.co/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC 
 let myTemp = ''
 for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
-  myTemp += `${myLoop} : <a href="https://huggingface.co/mlc-ai/${availableModels[myLoop]}">${availableModels[myLoop]}</a><br>`
+  myTemp += `${myLoop} : <a  target="_blank" rel="noopener"  href="https://huggingface.co/mlc-ai/${availableModels[myLoop]}">${availableModels[myLoop]}</a><br>`
 }
 document.getElementById("chat-box").innerHTML = myTemp;
 
