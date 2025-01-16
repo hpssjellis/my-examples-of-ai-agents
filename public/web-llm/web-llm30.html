@@ -50,7 +50,7 @@ funciton onShow(){
 //  console.log(myWeird)
 let myTemp = ''
 for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
-  myTemp += `${myLoop} : <a  target="myNewPage" rel="noopener"  href="https://huggingface.co/mlc-ai/${availableModels[myLoop]}">${availableModels[myLoop]}</a><br>`
+  myTemp += `${myLoop} : <a  target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${availableModels[myLoop]}'>${availableModels[myLoop]}</a><br>`
 }
 document.getElementById('chat-box').innerHTML = myTemp;
 }
