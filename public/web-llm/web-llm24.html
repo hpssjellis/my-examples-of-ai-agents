@@ -145,7 +145,11 @@ document.getElementById("Load-from-local-folder").addEventListener("click", func
     async function onDownToLocal() {
   try {
     const selectedModel = document.getElementById("model-selection").value;
-    const response = await fetch(`https://esm.run/@mlc-ai/web-llm/models/${selectedModel}`);
+  //  const response = await fetch(`https://esm.run/@mlc-ai/web-llm/models/${selectedModel}`);
+    const response = await fetch(`https://huggingface.co/mlc-ai/${selectedModel}`);
+
+
+    //https://huggingface.co/mlc-ai/
     if (!response.ok) {
       throw new Error("Failed to download the model. Please check the selected model and your connection.");
     }
