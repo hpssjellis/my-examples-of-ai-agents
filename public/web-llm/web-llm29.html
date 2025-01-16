@@ -147,11 +147,7 @@ document.getElementById("download").addEventListener("click", function () {
     document.getElementById("send").disabled = false;
   });
 });
-document.getElementById("reload").addEventListener("click", function () {
-  reloadllm().then(() => {
-    document.getElementById("send").disabled = false;
-  });
-});
+
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
