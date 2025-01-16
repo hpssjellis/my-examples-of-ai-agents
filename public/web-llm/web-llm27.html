@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Web LLM Cache Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <script type="module">
+      import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+
+      const myModelUrl = "https://huggingface.co/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC";
+
+      const myEngine = new webllm.MLCEngine();
+
+      // Cache the model during download
+      async function myCacheModel() {
+        try {
+          const cache = await caches.open("web-llm-cache");
+          const response = await fetch(myModelUrl);
+          if (!response.ok) {
+            throw new Error("Failed to fetch model.");
+          }
+          await cache.put(myModelUrl, response);
+          alert("Model downloaded and cached successfully!");
+        } catch (error) {
+          console.error("Error caching model:", error);
+          alert("Failed to cache the model. Check the console for details.");
+        }
+      }
+
+      // Reload model from cache and initialize the engine
+      async function myReloadFromCache() {
+        try {
+          const cache = await caches.open("web-llm-cache");
+          const cachedResponse = await cache.match(myModelUrl);
+          if (!cachedResponse) {
+            alert("Model not found in cache. Please download it first.");
+            return;
+          }
+
+          // Convert the cached response to a Blob
+          const modelBlob = await cachedResponse.blob();
+          const config = { temperature: 1.0, top_p: 1 };
+          await myEngine.reload(modelBlob, config);
+          alert("Model reloaded from cache and initialized successfully!");
+        } catch (error) {
+          console.error("Error reloading model from cache:", error);
+          alert("Failed to reload the model from cache. Check the console for details.");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h2>Web LLM Cache Example</h2>
+    <p>
+      Use the "Download Model" button to download and cache the model. Then, use the
+      "Reload from Cache" button to reload the model from the cache and initialize it.
+    </p>
+    <input type="button" value="Download Model" onclick="myCacheModel()" />
+    <input type="button" value="Reload from Cache" onclick="myReloadFromCache()" />
+  </body>
+</html>
