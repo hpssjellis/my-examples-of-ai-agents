@@ -23,9 +23,10 @@ const availableModels = webllm.prebuiltAppConfig.model_list.map( (m) => m.model_
 //let selectedModel = "Llama-3-8B-Instruct-q4f32_1-MLC-1k";
 let selectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
 
+      //https://huggingface.co/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC 
 let myTemp = ''
 for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
-  myTemp += `${myLoop} : ${availableModels[myLoop]}<br>`
+  myTemp += `${myLoop} : <a href="https://huggingface.co/mlc-ai/${availableModels[myLoop]}">${availableModels[myLoop]}</a><br>`
 }
 document.getElementById("chat-box").innerHTML = myTemp;
 
@@ -164,8 +165,7 @@ document.getElementById("send").addEventListener("click", function () {
     Unfortunately I can't find out how big some of these files are, so be careful if you are running on data. Many of these will not work with a cell phone.<br><br>
     <div class="download-container">
       <select id="model-selection"></select>
-      <button id="download">Download</button>
-      <button id="reload">reload</button>
+      <button id="download or load from local cache">Download</button>
     </div>
     <p id="download-status" class="hidden"></p>
 
