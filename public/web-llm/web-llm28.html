@@ -16,9 +16,18 @@
 
   const availableModels = webllm.prebuiltAppConfig.model_list.map((m) => m.model_id);
   let selectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
-  console.log('availableModels')
-  console.log(availableModels)
-  document.getElementById("chat-stats").textContent = availableModels;
+ 
+ // console.log(availableModels)
+  //array.forEach(function (item, index) {
+
+  //https://huggingface.co/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC 
+  let myTemp = ''
+  availableModels.forEach(function (myModelItem, myModelIndex) {
+      myTemp += `${myModelIndex} : ${myModelItem}<br>`
+    
+  }
+  
+//  document.getElementById("chat-stats").textContent = availableModels;
   let myStopGenerating = false; // Flag to control generation
 
   function updateEngineInitProgressCallback(report) {
@@ -143,8 +152,9 @@
     });
   });  
   document.getElementById("loadCache").addEventListener("click", function () {
-     myRestartEngine();
-  });
+     myRestartEngine().then(() => {
+      document.getElementById("send").disabled = false;
+    });
   document.getElementById("send").addEventListener("click", function () {
     onMessageSend();
   });
