@@ -27,7 +27,7 @@ let myTemp = ''
 for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
   myTemp += `${myLoop} : ${availableModels[myLoop]}<br>`
 }
-document.getElementById("chat-box").textContent = myTemp;
+document.getElementById("chat-box").innerHTML = myTemp;
 
     
 // Callback function for initializing progress
@@ -47,6 +47,13 @@ async function initializeWebLLMEngine() {
   await engine.reload(selectedModel, config);
 }
 
+
+
+
+
+
+
+    
 async function streamingGenerating(messages, onUpdate, onFinish, onError) {
   try {
     let curMessage = "";
@@ -139,6 +146,11 @@ document.getElementById("download").addEventListener("click", function () {
     document.getElementById("send").disabled = false;
   });
 });
+document.getElementById("reload").addEventListener("click", function () {
+  reloadllm().then(() => {
+    document.getElementById("send").disabled = false;
+  });
+});
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
@@ -153,6 +165,7 @@ document.getElementById("send").addEventListener("click", function () {
     <div class="download-container">
       <select id="model-selection"></select>
       <button id="download">Download</button>
+      <button id="reload">reload</button>
     </div>
     <p id="download-status" class="hidden"></p>
 
