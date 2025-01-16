@@ -58,7 +58,7 @@ async function onShow(){
 //  console.log(myWeird)
 let myTemp = ''
 for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
-  myTemp += `${myLoop} : <a  target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${availableModels[myLoop]}'  onclick="{event.preventDefault();document.getElementById('model-selection').value = '${availableModels[myLoop]}'}">${availableModels[myLoop]}</a> `
+  myTemp += `${myLoop} : <a  target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${availableModels[myLoop]}'  onclick="{document.getElementById('model-selection').value = '${availableModels[myLoop]}'}">${availableModels[myLoop]}</a> `
   myTemp += await onShowFileCount(availableModels[myLoop])
   myTemp += ' files<br>'
   document.getElementById('chat-box').innerHTML = myTemp;
@@ -202,8 +202,8 @@ document.getElementById("send").addEventListener("click", function () {
     Step 1: Initialize WebLLM and Download Model from https://esm.run/@mlc-ai/web-llm<br>
     Unfortunately I can't find out how big some of these files are, so be careful if you are running on data. Many of these will not work with a cell phone.<br><br>
     <div class="download-container">
-      <select id="model-selection"></select>
       <button id="show">Show these models</button>
+      <select id="model-selection"></select>
       <button id="download">Download Model or Auto load from Local Cache</button>
     </div>
     <p id="download-status" class="hidden"></p>
