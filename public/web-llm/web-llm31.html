@@ -30,7 +30,7 @@ let selectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
       try {
           const response = await fetch(myUrl);
           if (!response.ok) {
-              document.getElementById('myDiv').textContent = `Error: ${response.status}`;
+             // document.getElementById('myDiv').textContent = `Error: ${response.status}`;
               return;
           }
           const myData = await response.json();
@@ -40,7 +40,7 @@ let selectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
         return myFileCount
       } catch (error) {
          // document.getElementById('chat-box').textContent = `Error: ${error.message}`;
-        return   '0' // error.message
+        return   '<b style=color:red>0</b>' // error.message
       }
   }
 
@@ -56,7 +56,7 @@ let myTemp = ''
 for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
   myTemp += `${myLoop} : <a  target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${availableModels[myLoop]}'>${availableModels[myLoop]}</a> `
   myTemp += await onShowFileCount(availableModels[myLoop])
-  myTemp += ' files to download <br>'
+  myTemp += ' files<br>'
   document.getElementById('chat-box').innerHTML = myTemp;
 }
 //document.getElementById('chat-box').innerHTML = myTemp;
