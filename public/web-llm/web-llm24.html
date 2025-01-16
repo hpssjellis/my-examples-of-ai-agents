@@ -148,8 +148,12 @@ document.getElementById("Load-from-local-folder").addEventListener("click", func
   //  const response = await fetch(`https://esm.run/@mlc-ai/web-llm/models/${selectedModel}`);
     const response = await fetch(`https://huggingface.co/mlc-ai/${selectedModel}`);
 
+    // location of the huggin=gface models found inside the sorce of 
+    //  https://cdn.jsdelivr.net/npm/@mlc-ai/web-llm/+esm
+    //  https://huggingface.co/mlc-ai/
 
-    //https://huggingface.co/mlc-ai/
+    // so the default model is at
+    // https://huggingface.co/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC
     if (!response.ok) {
       throw new Error("Failed to download the model. Please check the selected model and your connection.");
     }
