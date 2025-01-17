@@ -13,6 +13,15 @@
       let mySelectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
       document.getElementById('myManualModel').value = mySelectedModel;
 
+      /*************** UI binding ***************/
+      myAvailableModels.forEach((modelId) => {
+        const option = document.createElement("option");
+        option.value = modelId;
+        option.textContent = modelId;
+        document.getElementById("model-selection").appendChild(option);
+      });
+      document.getElementById("model-selection").value = mySelectedModel;
+
       async function myOnShowFileCount(myModel) {
         const myUrl = `https://huggingface.co/api/models/mlc-ai/${myModel}`;
         try {
