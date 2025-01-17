@@ -27,7 +27,7 @@ availableModels.forEach((modelId) => {
   document.getElementById("model-selection").appendChild(option);
 });
 document.getElementById("model-selection").value = selectedModel;
-document.getElementById('myManualModel').value =  'https://huggingface.co/api/models/mlc-ai/${selectedModel}';
+document.getElementById('myManualModel').value =  `https://huggingface.co/api/models/mlc-ai/${selectedModel}`;
 
 /*************** Functions ***************/
     
