@@ -45,7 +45,7 @@ document.getElementById("model-selection").value = 'https://huggingface.co/api/m
           const myData = await response.json();
           const myFiles = myData.siblings || []; // 'siblings' contains the list of files in the repository
           const myFileCount = myFiles.length;
-          const description = myData.cardData.base_model || "Description not available.";
+         // const description = myData.cardData.base_model || "Description not available.";
 
        //   document.getElementById('chat-box').textContent = `File count: ${myFileCount}`;
        // console.log(description)
