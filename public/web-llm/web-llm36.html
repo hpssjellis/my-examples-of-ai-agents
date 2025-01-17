@@ -19,6 +19,13 @@ const availableModels = webllm.prebuiltAppConfig.model_list.map( (m) => m.model_
 //let selectedModel = "Llama-3-8B-Instruct-q4f32_1-MLC-1k";
 let selectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
 
+    
+// Create engine instance
+const engine = new webllm.MLCEngine();
+engine.setInitProgressCallback(updateEngineInitProgressCallback);
+
+
+
 /*************** UI binding ***************/
 availableModels.forEach((modelId) => {
   const option = document.createElement("option");
@@ -81,17 +88,8 @@ function updateEngineInitProgressCallback(report) {
   document.getElementById("chat-stats").textContent = report.text;
 }
 
-// Create engine instance
-const engine = new webllm.MLCEngine();
-engine.setInitProgressCallback(updateEngineInitProgressCallback);
-
-
     
 
-async function myDownload() {
-  await initializeWebLLMEngine();
-  document.getElementById('send').disabled = false;
-}
 
 async function initializeWebLLMEngine() {
   document.getElementById("chat-stats").classList.remove("hidden");
