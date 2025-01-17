@@ -6,14 +6,14 @@
     <meta charset="UTF-8">
     <script type="module">
       import * as webllm from "https://esm.run/@mlc-ai/web-llm";
-
+      /*************** Global variables and a few startup things ***************/
       let myClear = true;
       const myMessages = [{ content: "You are a helpful AI agent helping users.", role: "system" }];
       const myAvailableModels = webllm.prebuiltAppConfig.model_list.map((m) => m.model_id);
       let mySelectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
       document.getElementById('myManualModel').value = mySelectedModel;
 
-      /*************** UI binding ***************/
+      /*************** UI binding on startup for the select box ***************/
       myAvailableModels.forEach((modelId) => {
         const option = document.createElement("option");
         option.value = modelId;
