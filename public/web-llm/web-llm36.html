@@ -193,6 +193,12 @@ document.getElementById("download").addEventListener("click", function () {
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
+
+async function myDownload() {
+  await myInitializeWebLLM();
+  document.getElementById("send").disabled = false;
+}
+
     
   </script>
   </head>
@@ -207,14 +213,7 @@ document.getElementById("send").addEventListener("click", function () {
       <select id="model-selection"></select><br>
       <button id="show">Show these models</button><br>
       <input id="myManualModel" type=text value="" placeHolder="https://huggingface.co/api/models/mlc-ai/" size=80><br>
-      <input type=button id="download" style="background-color:lime;" value="Download Model or Auto load from Local Cache" onclick="{
-      //  function () {  initializeWebLLMEngine().then(() => {document.getElementById('send').disabled = false;});
-           async function () {
-             await initializeWebLLMEngine();
-             document.getElementById('send').disabled = false;
-           }
-       }">
-
+      <input type=button id="download" style="background-color:lime;" value="Download Model or Auto load from Local Cache" onclick="{myDownload()}">
    <!--   <div id="download-status">...</div>   -->
       <div id="chat-stats" ></div>
       <textarea id="user-input" rows=3 cols=70 WRAP placeholder="Type a message..."></textarea>    <!--  onkeydown="{   if (event.keyCode === 13) {document.getElementById('send').click();} }" -->
