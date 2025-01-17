@@ -27,7 +27,7 @@ availableModels.forEach((modelId) => {
   option.textContent = modelId;
   document.getElementById("model-selection").appendChild(option);
 });
-document.getElementById("model-selection").value = selectedModel;
+document.getElementById("model-selection").value = 'https://huggingface.co/api/models/mlc-ai/${selectedModel}';
 
 
 /*************** Functions ***************/
@@ -204,7 +204,7 @@ document.getElementById("send").addEventListener("click", function () {
 
       <button id="show">Show these models</button>
       <select id="model-selection"></select>
-      <input id="myManualModel" type=text value=""><br>
+      <input id="myManualModel" type=text value="" placeHolder="https://huggingface.co/api/models/mlc-ai/" size=50><br>
       <button id="download">Download Model or Auto load from Local Cache</button>
 
       <div id="download-status">...</div>
