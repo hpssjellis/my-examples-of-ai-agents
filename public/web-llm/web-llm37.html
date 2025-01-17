@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Single Page Chatbot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+
+
+  <script type="module">
+  //  import { CreateMLCEngine, MLCEngine, prebuiltAppConfig } from "https://esm.run/@mlc-ai/web-llm";
+    import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+
+
+
+/*************** WebLLM logic ***************/
+let myClear = true
+    
+const messages = [{ content: "You are a helpful AI agent helping users.", role: "system", }, ];
+
+const availableModels = webllm.prebuiltAppConfig.model_list.map( (m) => m.model_id, );
+//let selectedModel = "Llama-3-8B-Instruct-q4f32_1-MLC-1k";
+let selectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
+document.getElementById('myManualModel').value = selectedModel
+
+  async function onShowFileCount(myUrlPassed) {
+     // const myUrl = 'https://huggingface.co/api/models/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC';
+    let myUrl = 'https://huggingface.co/api/models/mlc-ai/'+ myUrlPassed
+   // console.log(myUrl)
+      try {
+          const response = await fetch(myUrl);
+          if (!response.ok) {
+            console.log(`HTTP error: ${myResponse.status}`);
+            return null; // Suppress and return null
+          } 
+          const myData = await response.json();
+          const myFiles = myData.siblings || []; // 'siblings' contains the list of files in the repository
+          const myFileCount = myFiles.length;
+          const description = myData.cardData.base_model || "Description not available.";
+
+       //   document.getElementById('chat-box').textContent = `File count: ${myFileCount}`;
+       // console.log(description)
+       // return `${myFileCount} : ${description}`
+        return myFileCount
+      } catch (error) {
+         // document.getElementById('chat-box').textContent = `Error: ${error.message}`;
+        return   '0' // error.message
+      }
+  }
+
+
+    
+
+async function onShow(){    
+     // https://huggingface.co/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC 
+    // https://huggingface.co/api/models/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC
+// let myWeird = fetch('https://huggingface.co/api/models/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC')
+//  console.log(myWeird)
+let myTemp = ''
+for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
+  myTemp += `${myLoop} : <a  target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${availableModels[myLoop]}'  onclick="{document.getElementById('model-selection').value = '${availableModels[myLoop]}'}">${availableModels[myLoop]}</a> `
+  myTemp += await onShowFileCount(availableModels[myLoop])
+  myTemp += ' files<br>'
+  document.getElementById('chat-box').innerHTML = myTemp;
+}
+//document.getElementById('chat-box').innerHTML = myTemp;
+}
+   
+    
+// Callback function for initializing progress
+function updateEngineInitProgressCallback(report) {
+  console.log("initialize", report.progress);
+  document.getElementById("chat-stats").textContent = report.text;
+}
+
+// Create engine instance
+const engine = new webllm.MLCEngine();
+engine.setInitProgressCallback(updateEngineInitProgressCallback);
+
+async function initializeWebLLMEngine() {
+  document.getElementById("chat-stats").classList.remove("hidden");
+  selectedModel = document.getElementById("model-selection").value;
+  const config = { temperature: 1.0, top_p: 1, };
+  await engine.reload(selectedModel, config);
+}
+
+
+
+
+
+
+
+    
+async function streamingGenerating(messages, onUpdate, onFinish, onError) {
+  try {
+    let curMessage = "";
+    const completion = await engine.chat.completions.create({ stream: true, messages, });
+    for await (const chunk of completion) {
+      const curDelta = chunk.choices[0].delta.content;
+      if (curDelta) {
+        curMessage += curDelta;
+      }
+      onUpdate(curMessage);
+    }
+    const finalMessage = await engine.getMessage();
+    onFinish(finalMessage);
+  } catch (err) {
+    onError(err);
+  }
+}
+
+/*************** UI logic ***************/
+function onMessageSend() {
+  if (myClear){
+    document.getElementById("chat-box").textContent = ''
+  }
+  const input = document.getElementById("user-input").value.trim();
+  const message = { content: input, role: "user", };
+  if (input.length === 0) {
+    return;
+  }
+//  document.getElementById("send").disabled = true;
+  document.getElementById("send").value = "stop";
+
+  messages.push(message);
+  appendMessage(message);
+
+  document.getElementById("user-input").value = "";
+  document.getElementById("user-input").setAttribute("placeholder", "Generating...");
+
+  const aiMessage = {content: "typing...", role: "assistant", };
+  appendMessage(aiMessage);
+
+  const onFinishGenerating = (finalMessage) => {
+    updateLastMessage(finalMessage);
+    document.getElementById("send").disabled = false;
+    engine.runtimeStatsText().then(statsText => {
+      document.getElementById('chat-stats').classList.remove('hidden');
+      //  document.getElementById('chat-stats').textContent = statsText;
+      document.getElementById('chat-stats').innerHTML = statsText;
+      document.getElementById("user-input").setAttribute("placeholder", "Type a message...");
+    })
+  };
+
+  streamingGenerating( messages, updateLastMessage, onFinishGenerating, console.error, );
+}
+
+function appendMessage(message) {
+  const chatBox = document.getElementById("chat-box");
+  const container = document.createElement("div");
+  container.classList.add("message-container");
+  const newMessage = document.createElement("div");
+  newMessage.classList.add("message");
+  newMessage.textContent = message.content;
+
+  if (message.role === "user") {
+    container.classList.add("user");
+  } else {
+    container.classList.add("assistant");
+  }
+
+  container.appendChild(newMessage);
+  chatBox.appendChild(container);
+  chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
+}
+
+function updateLastMessage(content) {
+  const messageDoms = document.getElementById("chat-box").querySelectorAll(".message");
+  const lastMessageDom = messageDoms[messageDoms.length - 1];
+  lastMessageDom.textContent = content;
+}
+
+/*************** UI binding ***************/
+availableModels.forEach((modelId) => {
+  const option = document.createElement("option");
+  option.value = modelId;
+  option.textContent = modelId;
+  document.getElementById("model-selection").appendChild(option);
+});
+document.getElementById("model-selection").value = selectedModel;
+
+document.getElementById("show").addEventListener("click", function () {
+  onShow();
+});
+    
+document.getElementById("download").addEventListener("click", function () {
+  initializeWebLLMEngine().then(() => {
+    document.getElementById("send").disabled = false;
+  });
+});
+
+document.getElementById("send").addEventListener("click", function () {
+  onMessageSend();
+});
+    
+  </script>
+  </head>
+
+  <body>
+    <h2 align=center>Single Page Application Web-LLM Fully Client-Side</h2>
+    Step 1: Initialize WebLLM and Download Model from https://esm.run/@mlc-ai/web-llm<br>
+    Generally these LLM's will not run on your cell phone, even a desktop computer will benefit from dual NVIDIA GPU's<br>
+    Github at <a href="https://github.com/hpssjellis/my-examples-of-ai-agents">my-examples-of-ai-agents</a><br><br>
+    <div class="download-container">
+      <button id="show">Show these models</button>
+      <select id="model-selection"></select>
+      <input id="myManualModel" type=text value=""><br>
+      <button id="download">Download Model or Auto load from Local Cache</button>
+    </div>
+    <p id="download-status" class="hidden"></p>
+
+    <div class="chat-container">
+      <div id="chat-stats" ></div>
+      <div class="chat-input-container">
+      
+      <textarea id="user-input" rows=3 cols=70 WRAP placeholder="Type a message..."></textarea>
+     <!--   <input type="text" id="user-input" placeholder="Type a message..." onkeydown="{   if (event.keyCode === 13) {document.getElementById('send').click();} }" />  
+          <input type="text" id="user-input" placeholder="Type a message..." />
+        -->
+        <button id="send" disabled>Send</button>
+      </div>
+      
+      <div id="chat-box" class="chat-box"></div>
+    </div>
+
+
+  </body>
+</html>
