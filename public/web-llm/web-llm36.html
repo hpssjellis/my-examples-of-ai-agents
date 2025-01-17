@@ -203,10 +203,11 @@ document.getElementById("send").addEventListener("click", function () {
     Generally these LLM's will not run on your cell phone, even a desktop computer will benefit from dual NVIDIA GPU's<br>
     Github at <a href="https://github.com/hpssjellis/my-examples-of-ai-agents">my-examples-of-ai-agents</a><br><br>
 
-      <button id="show">Show these models</button>
-      <select id="model-selection"></select>
-      <input id="myManualModel" type=text value="" placeHolder="https://huggingface.co/api/models/mlc-ai/" size=50><br>
-      <input type=button id="download" value="Download Model or Auto load from Local Cache" onclick="{function () {  initializeWebLLMEngine().then(() => {document.getElementById("send").disabled = false;});}">
+
+      <select id="model-selection"></select><br>
+      <button id="show">Show these models</button><br>
+      <input id="myManualModel" type=text value="" placeHolder="https://huggingface.co/api/models/mlc-ai/" size=80><br>
+      <input type=button id="download" style="backgroundColor:lime" value="Download Model or Auto load from Local Cache" onclick="{function () {  initializeWebLLMEngine().then(() => {document.getElementById("send").disabled = false;});}">
 
       <div id="download-status">...</div>
       <div id="chat-stats" ></div>
