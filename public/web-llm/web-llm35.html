@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Single Page Chatbot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <script type="module">
+      import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+
+      let myClear = true;
+      const myMessages = [{ content: "You are a helpful AI agent helping users.", role: "system" }];
+      const myAvailableModels = webllm.prebuiltAppConfig.model_list.map((m) => m.model_id);
+      let mySelectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
+      document.getElementById('myManualModel').value = mySelectedModel;
+
+      async function myOnShowFileCount(myModel) {
+        const myUrl = `https://huggingface.co/api/models/mlc-ai/${myModel}`;
+        try {
+          const myResponse = await fetch(myUrl);
+          if (!myResponse.ok) return 'Error fetching model data';
+          const myData = await myResponse.json();
+          return myData.siblings ? myData.siblings.length : 0;
+        } catch {
+          return 'Error';
+        }
+      }
+
+      async function myOnShowModels() {
+        let myOutput = "";
+        for (let myLoop = 0; myLoop < myAvailableModels.length; myLoop++) {
+          const myFileCount = await myOnShowFileCount(myAvailableModels[myLoop]);
+          myOutput += `${myLoop} : <a target="myNewPage" rel="noopener" href="https://huggingface.co/mlc-ai/${myAvailableModels[myLoop]}" onclick="{document.getElementById('model-selection').value = '${myAvailableModels[myLoop]}'}">${myAvailableModels[myLoop]}</a> (${myFileCount} files)<br>`;
+        }
+        document.getElementById('chat-box').innerHTML = myOutput;
+      }
+
+      async function myInitializeWebLLM() {
+        document.getElementById("chat-stats").classList.remove("hidden");
+        mySelectedModel = document.getElementById("model-selection").value;
+        const config = { temperature: 1.0, top_p: 1 };
+        const myEngine = new webllm.MLCEngine();
+        await myEngine.reload(mySelectedModel, config);
+        document.getElementById("send").disabled = false;
+      }
+
+      async function mySendMessage() {
+        if (myClear) document.getElementById("chat-box").textContent = "";
+        const myInput = document.getElementById("user-input").value.trim();
+        if (myInput.length === 0) return;
+
+        myMessages.push({ content: myInput, role: "user" });
+        myAppendMessage({ content: myInput, role: "user" });
+
+        document.getElementById("user-input").value = "";
+        document.getElementById("send").value = "Stop";
+
+        const myEngine = new webllm.MLCEngine();
+        const myCompletion = await myEngine.chat.completions.create({ stream: true, messages: myMessages });
+
+        let myReply = "";
+        for await (const chunk of myCompletion) {
+          const myDelta = chunk.choices[0].delta.content || "";
+          myReply += myDelta;
+          myUpdateLastMessage(myReply);
+        }
+        document.getElementById("send").value = "Send";
+      }
+
+      function myAppendMessage(message) {
+        const myChatBox = document.getElementById("chat-box");
+        const myContainer = document.createElement("div");
+        myContainer.classList.add(message.role === "user" ? "user" : "assistant");
+        myContainer.textContent = message.content;
+        myChatBox.appendChild(myContainer);
+        myChatBox.scrollTop = myChatBox.scrollHeight;
+      }
+
+      function myUpdateLastMessage(content) {
+        const myChatBox = document.getElementById("chat-box");
+        const myMessages = myChatBox.querySelectorAll("div");
+        if (myMessages.length > 0) {
+          myMessages[myMessages.length - 1].textContent = content;
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h2 align="center">Single Page Application Web-LLM Fully Client-Side</h2>
+    <p>Step 1: Initialize WebLLM and Download Model from https://esm.run/@mlc-ai/web-llm</p>
+    <p>These LLMs generally won't run on your cell phone and require robust hardware.</p>
+
+    <div>
+      <input type="button" value="Show Models" onclick="myOnShowModels()">
+      <select id="model-selection"></select>
+      <input id="myManualModel" type="text" value=""><br>
+      <input type="button" value="Download Model" onclick="myInitializeWebLLM()">
+    </div>
+
+    <div id="chat-stats"></div>
+    <textarea id="user-input" rows="3" cols="70" placeholder="Type a message..."></textarea><br>
+    <input type="button" id="send" value="Send" disabled onclick="mySendMessage()">
+    <div id="chat-box"></div>
+  </body>
+</html
