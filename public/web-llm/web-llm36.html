@@ -178,6 +178,13 @@ function updateLastMessage(content) {
   lastMessageDom.textContent = content;
 }
 
+
+
+async function myDownload() {
+  await myInitializeWebLLM();
+  document.getElementById("send").disabled = false;
+}
+
 document.getElementById("show").addEventListener("click", function () {
   onShow();
 });
@@ -194,10 +201,7 @@ document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
 
-async function myDownload() {
-  await myInitializeWebLLM();
-  document.getElementById("send").disabled = false;
-}
+
 
     
   </script>
@@ -214,7 +218,8 @@ async function myDownload() {
       <button id="show">Show these models</button><br>
       <input id="myManualModel" type=text value="" placeHolder="https://huggingface.co/api/models/mlc-ai/" size=80><br>
       <input type=button id="download" style="background-color:lime;" value="Download Model or Auto load from Local Cache" onclick="{myDownload()}">
-   <!--   <div id="download-status">...</div>   -->
+    
+      <div id="download-status">...</div>  
       <div id="chat-stats" ></div>
       <textarea id="user-input" rows=3 cols=70 WRAP placeholder="Type a message..."></textarea>    <!--  onkeydown="{   if (event.keyCode === 13) {document.getElementById('send').click();} }" -->
       <button id="send" disabled>Send</button>
