@@ -181,12 +181,14 @@ function updateLastMessage(content) {
 document.getElementById("show").addEventListener("click", function () {
   onShow();
 });
-    
+    /*
 document.getElementById("download").addEventListener("click", function () {
   initializeWebLLMEngine().then(() => {
     document.getElementById("send").disabled = false;
   });
 });
+
+    */
 
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
@@ -204,7 +206,7 @@ document.getElementById("send").addEventListener("click", function () {
       <button id="show">Show these models</button>
       <select id="model-selection"></select>
       <input id="myManualModel" type=text value="" placeHolder="https://huggingface.co/api/models/mlc-ai/" size=50><br>
-      <button id="download">Download Model or Auto load from Local Cache</button>
+      <input type=button id="download" value="Download Model or Auto load from Local Cache" onclick="{function () {  initializeWebLLMEngine().then(() => {document.getElementById("send").disabled = false;});}">
 
       <div id="download-status">...</div>
       <div id="chat-stats" ></div>
