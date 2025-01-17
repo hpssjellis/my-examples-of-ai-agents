@@ -21,6 +21,7 @@ const messages = [{ content: "You are a helpful AI agent helping users.", role: 
 const availableModels = webllm.prebuiltAppConfig.model_list.map( (m) => m.model_id, );
 //let selectedModel = "Llama-3-8B-Instruct-q4f32_1-MLC-1k";
 let selectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
+document.getElementById('myManualModel').value = selectedModel
 
   async function onShowFileCount(myUrlPassed) {
      // const myUrl = 'https://huggingface.co/api/models/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC';
@@ -178,7 +179,6 @@ availableModels.forEach((modelId) => {
 });
 document.getElementById("model-selection").value = selectedModel;
 
-    
 document.getElementById("show").addEventListener("click", function () {
   onShow();
 });
@@ -199,10 +199,12 @@ document.getElementById("send").addEventListener("click", function () {
   <body>
     <h2 align=center>Single Page Application Web-LLM Fully Client-Side</h2>
     Step 1: Initialize WebLLM and Download Model from https://esm.run/@mlc-ai/web-llm<br>
-    Generally these LLM's will not run on your cell phone, even a desktop computer will benefit from dual NVIDIA GPU'd<br><br>
+    Generally these LLM's will not run on your cell phone, even a desktop computer will benefit from dual NVIDIA GPU'd<br>
+    Github at <a href="https://github.com/hpssjellis/my-examples-of-ai-agents">my-examples-of-ai-agents</a><br><br>
     <div class="download-container">
       <button id="show">Show these models</button>
       <select id="model-selection"></select>
+      <input id="myManualModel" type=text value="">
       <button id="download">Download Model or Auto load from Local Cache</button>
     </div>
     <p id="download-status" class="hidden"></p>
