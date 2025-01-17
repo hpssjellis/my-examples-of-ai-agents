@@ -180,9 +180,11 @@ availableModels.forEach((modelId) => {
 });
 document.getElementById("model-selection").value = selectedModel;
 
+    <!--
 document.getElementById("show").addEventListener("click", function () {
   onShow();
 });
+    -->
 
 
 document.getElementById("download").addEventListener("click", function () {
@@ -192,11 +194,11 @@ document.getElementById("download").addEventListener("click", function () {
 });
 
 
-
+<!--
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
-    
+    -->
   </script>
   </head>
 
@@ -205,17 +207,16 @@ document.getElementById("send").addEventListener("click", function () {
     Step 1: Initialize WebLLM and Download Model from https://esm.run/@mlc-ai/web-llm<br>
     Generally these LLM's will not run on your cell phone, even a desktop computer will benefit from dual NVIDIA GPU's<br>
     Github at <a href="https://github.com/hpssjellis/my-examples-of-ai-agents">my-examples-of-ai-agents</a><br><br>
-    <div class="download-container">
-      <button id="show">Show these models</button>
+
+      <input type=button id="show" value="Show these models" onclick="onShow()">
       <select id="model-selection"></select>
       <input id="myManualModel" type=text value="" placeHolder="https://huggingface.co/api/models/mlc-ai/" size=80><br>
     <!--  <button id="download">Download Model or Auto load from Local Cache</button>  -->
       <input type=button id="download" style="background-color:lime;" value="Download Model or Auto load from Local Cache">
 
-    </div>
-    <p id="download-status" class="hidden"></p>
 
-    <div class="chat-container">
+    <div id="download-status" class="hidden">...</div>
+
       <div id="chat-stats" ></div>
       <div class="chat-input-container">
       
@@ -223,8 +224,8 @@ document.getElementById("send").addEventListener("click", function () {
      <!--   <input type="text" id="user-input" placeholder="Type a message..." onkeydown="{   if (event.keyCode === 13) {document.getElementById('send').click();} }" />  
           <input type="text" id="user-input" placeholder="Type a message..." />
         -->
-        <button id="send" disabled>Send</button>
-      </div>
+      <input type=button id="send" value=send onclick="onMessageSend()">
+
       
       <div id="chat-box" class="chat-box"></div>
     </div>
