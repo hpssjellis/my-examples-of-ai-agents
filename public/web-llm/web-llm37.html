@@ -82,6 +82,7 @@ async function initializeWebLLMEngine() {
   selectedModel = document.getElementById("model-selection").value;
   const config = { temperature: 1.0, top_p: 1, };
   await engine.reload(selectedModel, config);
+  document.getElementById("send").disabled = false;
 }
 
 
@@ -182,12 +183,15 @@ document.getElementById("model-selection").value = selectedModel;
 document.getElementById("show").addEventListener("click", function () {
   onShow();
 });
-    
+
+    /*
 document.getElementById("download").addEventListener("click", function () {
   initializeWebLLMEngine().then(() => {
     document.getElementById("send").disabled = false;
   });
 });
+
+  */
 
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
@@ -204,8 +208,10 @@ document.getElementById("send").addEventListener("click", function () {
     <div class="download-container">
       <button id="show">Show these models</button>
       <select id="model-selection"></select>
-      <input id="myManualModel" type=text value=""><br>
-      <button id="download">Download Model or Auto load from Local Cache</button>
+      <input id="myManualModel" type=text value="" placeHolder="https://huggingface.co/api/models/mlc-ai/" size=80><br>
+    <!--  <button id="download">Download Model or Auto load from Local Cache</button>  -->
+           <input type=button id="download" style="background-color:lime;" value="Download Model or Auto load from Local Cache" onclick="{initializeWebLLMEngine()}">
+
     </div>
     <p id="download-status" class="hidden"></p>
 
