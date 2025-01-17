@@ -184,14 +184,14 @@ document.getElementById("show").addEventListener("click", function () {
   onShow();
 });
 
-    /*
+
 document.getElementById("download").addEventListener("click", function () {
   initializeWebLLMEngine().then(() => {
     document.getElementById("send").disabled = false;
   });
 });
 
-  */
+
 
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
@@ -210,7 +210,7 @@ document.getElementById("send").addEventListener("click", function () {
       <select id="model-selection"></select>
       <input id="myManualModel" type=text value="" placeHolder="https://huggingface.co/api/models/mlc-ai/" size=80><br>
     <!--  <button id="download">Download Model or Auto load from Local Cache</button>  -->
-           <input type=button id="download" style="background-color:lime;" value="Download Model or Auto load from Local Cache" onclick="{initializeWebLLMEngine()}">
+      <input type=button id="download" style="background-color:lime;" value="Download Model or Auto load from Local Cache">
 
     </div>
     <p id="download-status" class="hidden"></p>
