@@ -51,7 +51,7 @@ document.getElementById('myManualModel').value = selectedModel
 
     
 
-async function window.onShow(){    
+async function onShow(){    
      // https://huggingface.co/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC 
     // https://huggingface.co/api/models/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC
 // let myWeird = fetch('https://huggingface.co/api/models/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC')
@@ -111,7 +111,7 @@ async function streamingGenerating(messages, onUpdate, onFinish, onError) {
 }
 
 /*************** UI logic ***************/
-function window.onMessageSend() {
+function onMessageSend() {
   if (myClear){
     document.getElementById("chat-box").textContent = ''
   }
@@ -199,6 +199,11 @@ document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
    */
+
+
+
+    window.onMessageSend() = onMessageSend()
+    window.onShow() = onShow()
   </script>
   </head>
 
