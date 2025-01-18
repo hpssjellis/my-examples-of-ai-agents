@@ -106,7 +106,7 @@ async function streamingGenerating(messages, onUpdate, onFinish, onError) {
     const finalMessage = await engine.getMessage();
     onFinish(finalMessage);
   } catch (err) {
-    onError(err);
+   // onError(err);
   }
 }
 
