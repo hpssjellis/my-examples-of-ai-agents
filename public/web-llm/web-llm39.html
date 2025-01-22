@@ -90,7 +90,12 @@ engine.setInitProgressCallback(updateEngineInitProgressCallback);
 async function initializeWebLLMEngine() {
   document.getElementById("chat-stats").classList.remove("hidden");
   selectedModel = document.getElementById("model-selection").value;
-  const config = { temperature: 1.0, top_p: 1, };
+
+  // set config for different models
+  let config = { temperature: 1.0, top_p: 1, };
+  if ( selectedModel.endsWith('-b4') || selectedModel.endsWith('-b32') ) {
+     config = { temperature: 1.0, top_p: 1, initProgressCallback: updateEngineInitProgressCallback, logLevel: 'INFO', // specify the log level
+  }
   await engine.reload(selectedModel, config);
 }
 
