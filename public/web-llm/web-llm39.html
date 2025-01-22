@@ -144,7 +144,10 @@ function onMessageSend() {
   const onFinishGenerating = (finalMessage) => {
     updateLastMessage(finalMessage);
     document.getElementById("send").disabled = false;
-    engine.runtimeStatsText().then(statsText => {
+ //   engine.runtimeStatsText().then(statsText => {   // soon to be deprecated
+    engine.ChatCompletionChunk.usage().then(statsText => {
+    
+      //
       document.getElementById('chat-stats').classList.remove('hidden');
       //  document.getElementById('chat-stats').textContent = statsText;
       document.getElementById('chat-stats').innerHTML = statsText;
