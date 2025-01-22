@@ -211,13 +211,15 @@ document.getElementById("send").addEventListener("click", function () {
   </head>
 
   <body>
-    <h2 align=center>Single Page Application Web-LLM</h2>
-    Step 1: Initialize WebLLM and Download Model from https://esm.run/@mlc-ai/web-llm<br>
-    Unfortunately I can't find out how big some of these files are, so be careful if you are running on data. Many of these will not work with a cell phone.<br><br>
+    <h2 align=center>Single Page Application Web-LLM Fully Client-Side</h2>
+    Resources: API from https://esm.run/@mlc-ai/web-llm main Web-LLM github models <a href="https://github.com/mlc-ai">https://github.com/mlc-ai</a><br>
+    Generally these LLM's will not run on your cell phone, even a desktop computer will benefit from dual NVIDIA GPU's<br>
+    Github at <a href="https://github.com/hpssjellis/my-examples-of-ai-agents">my-examples-of-ai-agents</a><br><br>
+    
     <div class="download-container">
-      <select id="model-selection"></select>
       <button id="show">Show these models</button>
-      <button id="download">Download Model or Auto load from Local Cache</button>
+      <select id="model-selection"></select>
+      <button id="download"  style="background-color:lime;">Download Model or Auto load from Local Cache</button>
     </div>
     <p id="download-status" class="hidden"></p>
 
