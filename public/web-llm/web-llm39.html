@@ -145,7 +145,7 @@ function onMessageSend() {
     updateLastMessage(finalMessage);
     document.getElementById("send").disabled = false;
  //   engine.runtimeStatsText().then(statsText => {   // soon to be deprecated
-    engine.ChatCompletionChunk.usage().then(statsText => {
+    engine.ChatCompletionChunk().then(statsText => {
     
       //
       document.getElementById('chat-stats').classList.remove('hidden');
