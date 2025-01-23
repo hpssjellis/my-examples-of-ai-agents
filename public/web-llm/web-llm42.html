@@ -114,10 +114,18 @@ async function initializeWebLLMEngine() {
   document.getElementById("chat-stats").classList.remove("hidden");
   //selectedModel = document.getElementById("model-selection").value;
   selectedModel = document.getElementById("myManualModel").value;
+    
+  // Determine pipeline type based on model name
+  let pipelineType = "LLMChatPipeline"; // Default pipeline
+  if (selectedModel.startsWith("snowflake-arctic")) {
+    pipelineType = "LLMEmbedPipeline"; // Example alternative pipeline
+  }
 
+  // Set the configuration for the model
+  let config = { temperature: 1.0, top_p: 1, pipeline: pipelineType };
 
   // set config for different models
-  let config = { temperature: 1.0, top_p: 1, };   // this is what is needed
+ // let config = { temperature: 1.0, top_p: 1, };   // this is what is needed
 
  // if ( selectedModel.endsWith('-b4') || selectedModel.endsWith('-b32') ) {
 //     config = { temperature: 1.0, top_p: 1, initProgressCallback: updateEngineInitProgressCallback, logLevel: 'INFO', }
