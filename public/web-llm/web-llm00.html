@@ -33,6 +33,7 @@ const messages = [{ content: "You are a helpful AI agent helping users.", role: 
 const availableModels = webllm.prebuiltAppConfig.model_list.map( (m) => m.model_id, );
 //let selectedModel = "Llama-3-8B-Instruct-q4f32_1-MLC-1k";
 let selectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
+document.getElementById('myManualModel').value = selectedModel   
 
   async function onShowFileCount(myUrlPassed2) {
     myUrlPassed = myUrlPassed2;
@@ -221,20 +222,25 @@ availableModels.forEach((modelId) => {
 });
 document.getElementById("model-selection").value = selectedModel;
 
-    
+    /*
 document.getElementById("show").addEventListener("click", function () {
   onShow();
 });
-    
+
+  */
 document.getElementById("download").addEventListener("click", function () {
+  document.getElementById("send").disabled = true;
   initializeWebLLMEngine().then(() => {
     document.getElementById("send").disabled = false;
   });
 });
 
+  /*
 document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
+
+  */
     
 </script>
 
@@ -251,7 +257,7 @@ These Github webpages is at <a href="https://github.com/hpssjellis/my-examples-o
 To convert LLM models to WEB_LLM MLC format by converting the weights
 <a href="https://llm.mlc.ai/docs/compilation/convert_weights.html">https://llm.mlc.ai/docs/compilation/convert_weights.html</a><br><br>
 
-<button id="show">Show these models</button>
+<button id="show" onclick="onShow()">Show these models</button>
 <select id="model-selection" onChange="{ mySingleShow(this.value) }"></select><br>
 <input id="myManualModel" type=text value="" size=80><br>
   <div id="myShowUrlDiv">...</div><br>
@@ -268,7 +274,7 @@ To convert LLM models to WEB_LLM MLC format by converting the weights
 <!--   <input type="text" id="user-input" placeholder="Type a message..." onkeydown="{   if (event.keyCode === 13) {document.getElementById('send').click();} }" />  
   <input type="text" id="user-input" placeholder="Type a message..." />
 -->
-<button id="send" disabled>Send</button>
+<button id="send" disabled onclick="{onMessageSend()}">Send</button>
 
 
 <div id="chat-box" class="chat-box">...</div> <br><br>
