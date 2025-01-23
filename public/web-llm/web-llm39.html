@@ -94,8 +94,8 @@ async function initializeWebLLMEngine() {
   selectedModel = document.getElementById("model-selection").value;
 
   // set config for different models
- // let config = { temperature: 1.0, top_p: 1, };   // this is what is needed
-  let config = {}
+  let config = { temperature: 1.0, top_p: 1, };   // this is what is needed
+
  // if ( selectedModel.endsWith('-b4') || selectedModel.endsWith('-b32') ) {
 //     config = { temperature: 1.0, top_p: 1, initProgressCallback: updateEngineInitProgressCallback, logLevel: 'INFO', }
   await engine.reload(selectedModel, config);
