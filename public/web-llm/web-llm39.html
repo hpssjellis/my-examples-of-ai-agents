@@ -15,6 +15,7 @@
 
 /*************** WebLLM logic ***************/
 let myClear = true
+let myUrl = ''
     
 const messages = [{ content: "You are a helpful AI agent helping users.", role: "system", }, ];
 
@@ -34,7 +35,7 @@ let selectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
     //  console.log(myUrlPassed)
     }
      // const myUrl = 'https://huggingface.co/api/models/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC';
-    let myUrl = 'https://huggingface.co/api/models/mlc-ai/'+ myUrlPassed
+    myUrl = 'https://huggingface.co/api/models/mlc-ai/'+ myUrlPassed
    // console.log(myUrl)
       try {
           const response = await fetch(myUrl);
@@ -68,8 +69,9 @@ async function onShow(){
 //  console.log(myWeird)
 let myTemp = ''
 for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
-  myTemp += `${myLoop} : <a  target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${availableModels[myLoop]}'>${availableModels[myLoop]}</a> `
-  myTemp += await onShowFileCount(availableModels[myLoop])
+  const myCountFiles = await onShowFileCount(availableModels[myLoop])
+  myTemp += `${myLoop} : <a  target='myNewPage' rel='noopener'  href='${myUrl}'>${availableModels[myLoop]}</a> `
+  myTemp += myCountFiles
   myTemp += ' files<br>'
   document.getElementById('chat-box').innerHTML = myTemp;
 }
