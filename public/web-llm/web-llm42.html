@@ -52,6 +52,7 @@ document.getElementById('myManualModel').value = selectedModel
       try {
        //   const response = await fetch(myUrl);   // use this one
          const response  = await fetchModelMetadata(myUrl); // Fetch metadata for the selected model
+          console.log(response)
          // const pipelineType = metadata?.pipeline || "LLMChatPipeline"; /
         //  console.log('metadata')
         //  console.log(metadata)
