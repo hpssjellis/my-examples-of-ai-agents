@@ -229,7 +229,16 @@ To convert LLM models to WEB_LLM MLC format by converting the weights
 <a href="https://llm.mlc.ai/docs/compilation/convert_weights.html">https://llm.mlc.ai/docs/compilation/convert_weights.html</a><br><br>
 
 <button id="show">Show these models</button>
-<select id="model-selection" onChange="{document.getElementById('myManualModel').value = this.value;}"></select><br>
+<select id="model-selection" onChange="{
+    document.getElementById('myManualModel').value = this.value;
+    let myTemp = ''
+      const myCountFiles = await onShowFileCount(this.value)
+      myTemp += ` <a  target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${myUrlPassed}'>${availableModels[myLoop]}</a> `
+      myTemp += myCountFiles
+      myTemp += ' files<br>'
+      document.getElementById('myShowUrlDiv').innerHTML = myTemp;
+    
+    }"></select><br>
 <input id="myManualModel" type=text value="" size=80><br>
   <div id="myShowUrlDiv">...</div><br>
 <button id="download"  style="background-color:lime;">Download Model or Auto load from Local Cache</button>
