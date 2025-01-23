@@ -15,7 +15,7 @@
 
 /*************** WebLLM logic ***************/
 let myClear = true
-let myUrl = ''
+let myUrlPassed = ''
     
 const messages = [{ content: "You are a helpful AI agent helping users.", role: "system", }, ];
 
@@ -24,7 +24,7 @@ const availableModels = webllm.prebuiltAppConfig.model_list.map( (m) => m.model_
 let selectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
 
   async function onShowFileCount(myUrlPassed2) {
-    let  myUrlPassed = myUrlPassed2;
+    myUrlPassed = myUrlPassed2;
   //  console.log(myUrlPassed)
     if ( myUrlPassed2.endsWith('-1k') || myUrlPassed2.endsWith('-b4') ){
     myUrlPassed = myUrlPassed2.substr(0, myUrlPassed2.length - 3)
@@ -35,7 +35,7 @@ let selectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
     //  console.log(myUrlPassed)
     }
      // const myUrl = 'https://huggingface.co/api/models/mlc-ai/Llama-3.2-1B-Instruct-q4f16_1-MLC';
-    myUrl = 'https://huggingface.co/api/models/mlc-ai/'+ myUrlPassed
+   const myUrl = 'https://huggingface.co/api/models/mlc-ai/'+ myUrlPassed
    // console.log(myUrl)
       try {
           const response = await fetch(myUrl);
@@ -70,7 +70,7 @@ async function onShow(){
 let myTemp = ''
 for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
   const myCountFiles = await onShowFileCount(availableModels[myLoop])
-  myTemp += `${myLoop} : <a  target='myNewPage' rel='noopener'  href='${myUrl}'>${availableModels[myLoop]}</a> `
+  myTemp += `${myLoop} : <a  target='myNewPage' rel='noopener'  href='https://huggingface.co/api/models/mlc-ai/${myUrlPassed}'>${availableModels[myLoop]}</a> `
   myTemp += myCountFiles
   myTemp += ' files<br>'
   document.getElementById('chat-box').innerHTML = myTemp;
@@ -221,6 +221,7 @@ document.getElementById("send").addEventListener("click", function () {
     Resources: API from https://esm.run/@mlc-ai/web-llm main Web-LLM github models <a href="https://github.com/mlc-ai">https://github.com/mlc-ai</a><br>
     Generally these LLM's will not run on your cell phone, even a desktop computer will benefit from dual NVIDIA GPU's<br>
     Github at <a href="https://github.com/hpssjellis/my-examples-of-ai-agents">my-examples-of-ai-agents</a><br><br>
+    To convert LLM models to WEB_LLM MLC format by converting the weights  <a href="https://llm.mlc.ai/docs/compilation/convert_weights.html">https://llm.mlc.ai/docs/compilation/convert_weights.html</a>
     
     <div class="download-container">
       <button id="show">Show these models</button>
