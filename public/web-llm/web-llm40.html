@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <title>Single Page Chatbot</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="UTF-8" />
+<head>
+<title>Single Page Chatbot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
 
 
-  <script type="module">
-  //  import { CreateMLCEngine, MLCEngine, prebuiltAppConfig } from "https://esm.run/@mlc-ai/web-llm";
-    import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+<script type="module">
+//  import { CreateMLCEngine, MLCEngine, prebuiltAppConfig } from "https://esm.run/@mlc-ai/web-llm";
+import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 
 
 
@@ -91,7 +91,9 @@ engine.setInitProgressCallback(updateEngineInitProgressCallback);
 
 async function initializeWebLLMEngine() {
   document.getElementById("chat-stats").classList.remove("hidden");
-  selectedModel = document.getElementById("model-selection").value;
+  //selectedModel = document.getElementById("model-selection").value;
+  selectedModel = document.getElementById("myManualModel").value;
+
 
   // set config for different models
   let config = { temperature: 1.0, top_p: 1, };   // this is what is needed
@@ -214,38 +216,39 @@ document.getElementById("send").addEventListener("click", function () {
   onMessageSend();
 });
     
-  </script>
-  </head>
+</script>
+</head>
 
-  <body>
-    <h2 align=center>Single Page Application Web-LLM Fully Client-Side</h2>
-    Resources: API from https://esm.run/@mlc-ai/web-llm main Web-LLM github models <a href="https://github.com/mlc-ai">https://github.com/mlc-ai</a><br>
-    Generally these LLM's will not run on your cell phone, even a desktop computer will benefit from dual NVIDIA GPU's<br>
-    These Github webpages is at <a href="https://github.com/hpssjellis/my-examples-of-ai-agents">my-examples-of-ai-agents</a><br><br>
-    To convert LLM models to WEB_LLM MLC format by converting the weights
-    <a href="https://llm.mlc.ai/docs/compilation/convert_weights.html">https://llm.mlc.ai/docs/compilation/convert_weights.html</a><br><br>
-    
-    <div class="download-container">
-      <button id="show">Show these models</button>
-      <select id="model-selection"></select><br>
-      <input id="myManualModel" type=text value="" size=80><br>
-      <button id="download"  style="background-color:lime;">Download Model or Auto load from Local Cache</button>
-    </div>
-    <p id="download-status" class="hidden"></p>
+<body>
+  
+<h2 align=center>Single Page Application Web-LLM Fully Client-Side</h2>
+Resources: API from https://esm.run/@mlc-ai/web-llm main Web-LLM github models <a href="https://github.com/mlc-ai">https://github.com/mlc-ai</a><br>
+Generally these LLM's will not run on your cell phone, even a desktop computer will benefit from dual NVIDIA GPU's<br>
+These Github webpages is at <a href="https://github.com/hpssjellis/my-examples-of-ai-agents">my-examples-of-ai-agents</a><br><br>
+To convert LLM models to WEB_LLM MLC format by converting the weights
+<a href="https://llm.mlc.ai/docs/compilation/convert_weights.html">https://llm.mlc.ai/docs/compilation/convert_weights.html</a><br><br>
 
-    <div class="chat-container">
-      <div id="chat-stats" ></div>
-      <div class="chat-input-container">
-      
-      <textarea id="user-input" rows=3 cols=70 WRAP placeholder="Type a message..."></textarea>
-     <!--   <input type="text" id="user-input" placeholder="Type a message..." onkeydown="{   if (event.keyCode === 13) {document.getElementById('send').click();} }" />  
-          <input type="text" id="user-input" placeholder="Type a message..." />
-        -->
-        <button id="send" disabled>Send</button>
-      </div>
-      
-      <div id="chat-box" class="chat-box"></div>
-    </div><br><br>
+<button id="show">Show these models</button>
+<select id="model-selection" onChange="{document.getElementById("myManualModel").value = this.value;}"></select><br>
+<input id="myManualModel" type=text value="" size=80><br>
+  <div id="myShowUrlDiv">...</div><br>
+<button id="download"  style="background-color:lime;">Download Model or Auto load from Local Cache</button>
+
+
+<p id="download-status" class="hidden">...</p>
+
+
+<div id="chat-stats" ></div>
+
+
+<textarea id="user-input" rows=3 cols=70 WRAP placeholder="Type a message..."></textarea>
+<!--   <input type="text" id="user-input" placeholder="Type a message..." onkeydown="{   if (event.keyCode === 13) {document.getElementById('send').click();} }" />  
+  <input type="text" id="user-input" placeholder="Type a message..." />
+-->
+<button id="send" disabled>Send</button>
+
+
+<div id="chat-box" class="chat-box">...</div> <br><br>
 
     Use at your own (download data) risk: By Jeremy Ellis, Linkedin: <a href="https://www.linkedin.com/in/jeremy-ellis-4237a9bb/">https://www.linkedin.com/in/jeremy-ellis-4237a9bb/</a>
   </body>
