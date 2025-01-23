@@ -50,8 +50,8 @@ document.getElementById('myManualModel').value = selectedModel
    const myUrl = 'https://huggingface.co/api/models/mlc-ai/'+ myUrlPassed
    // console.log(myUrl)
       try {
-          const response = await fetch(myUrl);
-       //   const metadata = await fetchModelMetadata(myUrl); // Fetch metadata for the selected model
+       //   const response = await fetch(myUrl);   // use this one
+         const response  = await fetchModelMetadata(myUrl); // Fetch metadata for the selected model
          // const pipelineType = metadata?.pipeline || "LLMChatPipeline"; /
         //  console.log('metadata')
         //  console.log(metadata)
