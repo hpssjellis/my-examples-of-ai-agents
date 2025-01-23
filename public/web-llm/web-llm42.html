@@ -50,9 +50,9 @@ document.getElementById('myManualModel').value = selectedModel
    const myUrl = 'https://huggingface.co/api/models/mlc-ai/'+ myUrlPassed
    // console.log(myUrl)
       try {
-       //   const response = await fetch(myUrl);   // use this one
-         const response  = await fetchModelMetadata(myUrl); // Fetch metadata for the selected model
-          console.log(response)
+          const response = await fetch(myUrl);   // use this one
+       //  const response  = await fetchModelMetadata(myUrl); // Fetch metadata for the selected model
+       //   console.log(response)
          // const pipelineType = metadata?.pipeline || "LLMChatPipeline"; /
         //  console.log('metadata')
         //  console.log(metadata)
@@ -62,8 +62,8 @@ document.getElementById('myManualModel').value = selectedModel
               return;
           } */
           const myData = await response.json();
-          console.log('myData')
-          console.log(myData)
+         // console.log('myData')
+        //  console.log(myData)
           const myFiles = myData.siblings || []; // 'siblings' contains the list of files in the repository
           const myFileCount = myFiles.length;
           const description = myData.cardData.base_model || "Description not available.";
@@ -121,13 +121,17 @@ async function initializeWebLLMEngine() {
   document.getElementById("chat-stats").classList.remove("hidden");
   //selectedModel = document.getElementById("model-selection").value;
   selectedModel = document.getElementById("myManualModel").value;
-    
+
+
+    /*
   // Determine pipeline type based on model name
   let pipelineType = "LLMChatPipeline"; // Default pipeline
   if (selectedModel.startsWith("snowflake-arctic")) {
     pipelineType = "LLMEmbedPipeline"; // Example alternative pipeline
   }
 
+
+    */
   // Set the configuration for the model
   let config = { temperature: 1.0, top_p: 1, pipeline: pipelineType };
 
