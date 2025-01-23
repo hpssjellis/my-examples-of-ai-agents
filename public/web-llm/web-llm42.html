@@ -123,9 +123,10 @@ async function initializeWebLLMEngine() {
   selectedModel = document.getElementById("myManualModel").value;
 
 
+  let pipelineType = "LLMChatPipeline"; // Default pipeline
     /*
   // Determine pipeline type based on model name
-  let pipelineType = "LLMChatPipeline"; // Default pipeline
+
   if (selectedModel.startsWith("snowflake-arctic")) {
     pipelineType = "LLMEmbedPipeline"; // Example alternative pipeline
   }
