@@ -51,6 +51,10 @@ document.getElementById('myManualModel').value = selectedModel
    // console.log(myUrl)
       try {
           const response = await fetch(myUrl);
+          const metadata = await fetchModelMetadata(); // Fetch metadata for the selected model
+          const pipelineType = metadata?.pipeline || "LLMChatPipeline"; /
+          console.log'(metadata')
+          console.log(metadata)
         /*
           if (!response.ok) {
               document.getElementById('myDiv').textContent = `Error: ${response.status}`;
