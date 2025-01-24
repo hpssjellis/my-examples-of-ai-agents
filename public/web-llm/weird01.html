@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Model Loading</title>
+</head>
+<body>
+    <h1>WebLLM Model Loader</h1>
+
+    <!-- Model Selection -->
+    <label for="myManualModel">Select Model:</label>
+    <select id="myManualModel">
+        <option value="snowflake-arctic-embed-m-q0f32-MLC-b32">Snowflake Arctic Embed</option>
+        <option value="other-chat-model">Other Chat Model</option>
+    </select>
+    <input type="button" value="Load Model" onclick="initializeWebLLMEngine()">
+
+    <!-- Chat Area -->
+    <div id="chat-stats" class="hidden">
+        <p>Model Loaded Successfully!</p>
+    </div>
+
+    <script type="module">
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+
+        async function initializeWebLLMEngine() {
+            const selectedModel = document.getElementById("myManualModel").value;
+            let pipelineType = "text-generation"; // Default pipeline
+
+            // Determine the appropriate pipeline based on the model
+            if (selectedModel.includes("embed") || selectedModel.startsWith("snowflake-arctic")) {
+                pipelineType = "feature-extraction"; // Use embedding pipeline
+            }
+
+            try {
+                console.log(`Loading model: ${selectedModel} with pipeline: ${pipelineType}`);
+
+                // Load the model with the selected pipeline
+                const model = await pipeline(pipelineType, selectedModel, {
+                    temperature: 1.0,
+                    top_p: 1,
+                });
+
+                // Show success message
+                document.getElementById("chat-stats").classList.remove("hidden");
+                console.log("Model loaded successfully:", model);
+            } catch (error) {
+                console.error("Error loading model:", error);
+                alert("Failed to load the model. Please verify the model and pipeline compatibility.");
+            }
+        }
+    </script>
+</body>
+</html>
