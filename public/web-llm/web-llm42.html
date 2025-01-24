@@ -87,9 +87,9 @@ async function mySingleShow(myThis){
     const myApproxSize = parseInt(myCountFiles) * 33;  // size of max shard binary file ???
     myTemp += ` <a target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${myUrlPassed}'>${myThis}</a> `
     myTemp += myCountFiles
-    myTemp += ' files, should be less than '
+    myTemp += ' files, if each shard.bin file is ~33 MB, this should be less than '
     myTemp += myApproxSize
-    myTemp += 'MB<br>'
+    myTemp += ' MB<br>'
     document.getElementById('myShowUrlDiv').innerHTML = myTemp;
 }
     
@@ -102,9 +102,12 @@ async function onShow(){
 let myTemp = ''
 for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
   const myCountFiles = await onShowFileCount(availableModels[myLoop])
+  const myApproxSize = parseInt(myCountFiles) * 33;  // size of max shard binary file ???
   myTemp += `${myLoop} : <a  onclick="{document.getElementById('myManualModel').value = '${availableModels[myLoop]}'; mySingleShow('${availableModels[myLoop]}'); }" target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${myUrlPassed}'>${availableModels[myLoop]}</a> `
-  myTemp += myCountFiles
-  myTemp += ' files<br>'
+    myTemp += myCountFiles
+    myTemp += ' files, ~'
+    myTemp += myApproxSize
+    myTemp += ' MB<br>'
   document.getElementById('chat-box').innerHTML = myTemp;
 }
 //document.getElementById('chat-box').innerHTML = myTemp;
