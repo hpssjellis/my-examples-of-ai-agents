@@ -6,9 +6,7 @@
   <title>WebGPU MLC LLM Demo</title>
 <!--  <script src="https://cdn.jsdelivr.net/npm/transformer-js@0.0.9/lib/index.min.js"></script>  -->
 
-  <script type="module">
-    import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
-</script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -31,7 +29,9 @@
   <input type="button" value="Generate Text" onclick="myGenerateText()">
   <div id="myOutput"></div>
 
-  <script>
+  <script type="module">
+    import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+
     let myModel;
 
     async function myLoadModel() {
