@@ -84,7 +84,7 @@ async function mySingleShow(myThis){
     
     let myTemp = ''
     const myCountFiles = await onShowFileCount(myThis)
-    const myApproxSize = parseInt(myCountFiles) * 40;  // size of max shard binary file ???
+    const myApproxSize = parseInt(myCountFiles) * 33;  // size of max shard binary file ???
     myTemp += ` <a target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${myUrlPassed}'>${myThis}</a> `
     myTemp += myCountFiles
     myTemp += ' files, should be less than '
