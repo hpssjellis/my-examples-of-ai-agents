@@ -34,6 +34,7 @@ const availableModels = webllm.prebuiltAppConfig.model_list.map( (m) => m.model_
 //let selectedModel = "Llama-3-8B-Instruct-q4f32_1-MLC-1k";
 let selectedModel = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
 document.getElementById('myManualModel').value = selectedModel   
+mySingleShow(selectedModel)    
 
   async function onShowFileCount(myUrlPassed2) {
     myUrlPassed = myUrlPassed2;
@@ -50,13 +51,20 @@ document.getElementById('myManualModel').value = selectedModel
    const myUrl = 'https://huggingface.co/api/models/mlc-ai/'+ myUrlPassed
    // console.log(myUrl)
       try {
-          const response = await fetch(myUrl);
+          const response = await fetch(myUrl);   // use this one
+       //  const response  = await fetchModelMetadata(myUrl); // Fetch metadata for the selected model
+       //   console.log(response)
+         // const pipelineType = metadata?.pipeline || "LLMChatPipeline"; /
+        //  console.log('metadata')
+        //  console.log(metadata)
         /*
           if (!response.ok) {
               document.getElementById('myDiv').textContent = `Error: ${response.status}`;
               return;
           } */
           const myData = await response.json();
+         // console.log('myData')
+        //  console.log(myData)
           const myFiles = myData.siblings || []; // 'siblings' contains the list of files in the repository
           const myFileCount = myFiles.length;
           const description = myData.cardData.base_model || "Description not available.";
@@ -76,9 +84,12 @@ async function mySingleShow(myThis){
     
     let myTemp = ''
     const myCountFiles = await onShowFileCount(myThis)
-    myTemp += ` <a  target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${myUrlPassed}'>${myThis}</a> `
+    const myApproxSize = parseInt(myCountFiles) * 33;  // size of max shard binary file ???
+    myTemp += ` <a target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${myUrlPassed}'>${myThis}</a> `
     myTemp += myCountFiles
-    myTemp += ' files<br>'
+    myTemp += ' files, if each shard.bin file is ~33 MB, this should be less than '
+    myTemp += myApproxSize
+    myTemp += ' MB<br>'
     document.getElementById('myShowUrlDiv').innerHTML = myTemp;
 }
     
@@ -91,9 +102,12 @@ async function onShow(){
 let myTemp = ''
 for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
   const myCountFiles = await onShowFileCount(availableModels[myLoop])
-  myTemp += `${myLoop} : <a  target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${myUrlPassed}'>${availableModels[myLoop]}</a> `
-  myTemp += myCountFiles
-  myTemp += ' files<br>'
+  const myApproxSize = parseInt(myCountFiles) * 33;  // size of max shard binary file ???
+  myTemp += `${myLoop} : <a  onclick="{document.getElementById('myManualModel').value = '${availableModels[myLoop]}'; mySingleShow('${availableModels[myLoop]}'); }" target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${myUrlPassed}'>${availableModels[myLoop]}</a> `
+    myTemp += myCountFiles
+    myTemp += ' files, ~'
+    myTemp += myApproxSize
+    myTemp += ' MB<br>'
   document.getElementById('chat-box').innerHTML = myTemp;
 }
 //document.getElementById('chat-box').innerHTML = myTemp;
@@ -116,8 +130,21 @@ async function initializeWebLLMEngine() {
   selectedModel = document.getElementById("myManualModel").value;
 
 
+  let pipelineType = "LLMChatPipeline"; // Default pipeline
+    /*
+  // Determine pipeline type based on model name
+
+  if (selectedModel.startsWith("snowflake-arctic")) {
+    pipelineType = "LLMEmbedPipeline"; // Example alternative pipeline
+  }
+
+
+    */
+  // Set the configuration for the model
+  let config = { temperature: 1.0, top_p: 1, pipeline: pipelineType };
+
   // set config for different models
-  let config = { temperature: 1.0, top_p: 1, };   // this is what is needed
+ // let config = { temperature: 1.0, top_p: 1, };   // this is what is needed
 
  // if ( selectedModel.endsWith('-b4') || selectedModel.endsWith('-b32') ) {
 //     config = { temperature: 1.0, top_p: 1, initProgressCallback: updateEngineInitProgressCallback, logLevel: 'INFO', }
@@ -251,10 +278,12 @@ document.getElementById("send").addEventListener("click", function () {
 <body>
   
 <h2 align=center>HTML Javascript Single Page Application Web-LLM Chatbot Fully Client-Side</h2>
+Just click the green button and try a question and click send. <br><br>
 Resources: API from https://esm.run/@mlc-ai/web-llm main Web-LLM github models <a href="https://github.com/mlc-ai">https://github.com/mlc-ai</a><br>
+    
 Generally these LLM's will not run on your cell phone, even a desktop computer will benefit from dual NVIDIA GPU's<br>
-These Github webpages is at <a href="https://github.com/hpssjellis/my-examples-of-ai-agents">my-examples-of-ai-agents</a><br><br>
-To convert LLM models to WEB_LLM MLC format by converting the weights
+The Github for this webpage is at <a href="https://github.com/hpssjellis/my-examples-of-ai-agents">my-examples-of-ai-agents</a><br><br>
+Advanced: To convert LLM models to WEB_LLM MLC format use this link to convert the weights
 <a href="https://llm.mlc.ai/docs/compilation/convert_weights.html">https://llm.mlc.ai/docs/compilation/convert_weights.html</a><br><br>
 
 <button id="show" onclick="onShow()">Show these models</button>
