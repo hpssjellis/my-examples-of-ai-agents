@@ -39,8 +39,8 @@
       myOutputDiv.innerHTML = "Loading text generation pipeline...";
       try {
         // Use a small, public model from Hugging Face (e.g., GPT-2 Tiny)
-       myTextGenerator = await pipeline('text-generation', 'SmolLM-360M-Instruct', {
-      // myTextGenerator = await pipeline('text-generation', 'Xenova/distilgpt2', {
+     //  myTextGenerator = await pipeline('text-generation', 'SmolLM-360M-Instruct', {
+       myTextGenerator = await pipeline('text-generation', 'Xenova/distilgpt2', {
          // HuggingFaceTB/SmolLM-360M-Instruct
       //  myTextGenerator = await pipeline('text-generation', 'gpt2', {
           revision: 'main',
