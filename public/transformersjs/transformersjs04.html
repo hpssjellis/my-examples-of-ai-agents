@@ -22,8 +22,8 @@
 </head>
 <body>
   <h1>WebGPU Text Generation Demo</h1>
-  <input type=text parameter="your huggingface model here" value="Xenova/distilgpt2">
-  <input type="button" value="Generate Text" onclick="myLoadPipeline()"> <br>
+  <input id="myHugModel" type=text parameter="your huggingface model here" value="Xenova/distilgpt2">
+  <input type="button" value="Load Model" onclick="myLoadPipeline()"> <br>
   <textarea id="myInputText" placeholder="Enter your prompt here..."></textarea><br>
   <input type="button" value="Generate Text" onclick="myGenerateText()">
 
@@ -43,7 +43,7 @@
       myOutputDiv.innerHTML = "Loading text generation pipeline...";
       try {
         // Use a small, public model from Hugging Face (e.g., GPT-2 Tiny)
-       myTextGenerator = await pipeline('text-generation', document.getElementById('myHugModel'), {
+       myTextGenerator = await pipeline('text-generation', document.getElementById('myHugModel').value, {
       // myTextGenerator = await pipeline('text-generation', 'Xenova/distilgpt2', {
          // HuggingFaceTB/SmolLM-360M-Instruct
       //  myTextGenerator = await pipeline('text-generation', 'gpt2', {
