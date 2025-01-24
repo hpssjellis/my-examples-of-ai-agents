@@ -36,7 +36,7 @@
       myOutputDiv.innerHTML = "Loading text generation pipeline...";
       try {
         // Use a small, public model from Hugging Face (e.g., GPT-2 Tiny)
-        myTextGenerator = await pipeline('text-generation', 'gpt2', {
+        myTextGenerator = await pipeline('text-generation', 'Xenova/distilgpt2', {
           revision: 'main',
           backend: 'webgpu', // Enable WebGPU for better performance
         });
