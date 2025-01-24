@@ -35,7 +35,7 @@
       myOutputDiv.innerHTML = "Loading model...";
       try {
         // Load a small MLC LLM (Hugging Face model)
-        myModel = await transformerjs.load({
+        myModel = await transformer.load({
           model: "Xenova/llm-mini", // Replace with a smaller compatible model
           revision: "main",
           tokenizer: "Xenova/llm-mini",
