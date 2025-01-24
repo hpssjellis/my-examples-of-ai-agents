@@ -85,7 +85,7 @@ async function mySingleShow(myThis){
     let myTemp = ''
     const myCountFiles = await onShowFileCount(myThis)
     const myApproxSize = parseInt(myCountFiles) * 40;  // size of max shard binary file ???
-    myTemp += ` <a onclick="{document.getElementById('myManualModel').value = ${myThis} }" target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${myUrlPassed}'>${myThis}</a> `
+    myTemp += ` <a target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${myUrlPassed}'>${myThis}</a> `
     myTemp += myCountFiles
     myTemp += ' files, should be less than '
     myTemp += myApproxSize
@@ -102,7 +102,7 @@ async function onShow(){
 let myTemp = ''
 for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
   const myCountFiles = await onShowFileCount(availableModels[myLoop])
-  myTemp += `${myLoop} : <a onclick="alert('hi')" target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${myUrlPassed}'>${availableModels[myLoop]}</a> `
+  myTemp += `${myLoop} : <a  onclick="{document.getElementById('myManualModel').value = ${availableModels[myLoop]}; mySingleShow(${availableModels[myLoop]}); }" target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${myUrlPassed}'>${availableModels[myLoop]}</a> `
   myTemp += myCountFiles
   myTemp += ' files<br>'
   document.getElementById('chat-box').innerHTML = myTemp;
