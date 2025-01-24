@@ -98,7 +98,7 @@ async function onShow(){
 let myTemp = ''
 for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
   const myCountFiles = await onShowFileCount(availableModels[myLoop])
-  myTemp += `${myLoop} : <a  target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${myUrlPassed}'>${availableModels[myLoop]}</a> `
+  myTemp += `${myLoop} : <a onclick="alert('hi')" target='myNewPage' rel='noopener'  href='https://huggingface.co/mlc-ai/${myUrlPassed}'>${availableModels[myLoop]}</a> `
   myTemp += myCountFiles
   myTemp += ' files<br>'
   document.getElementById('chat-box').innerHTML = myTemp;
