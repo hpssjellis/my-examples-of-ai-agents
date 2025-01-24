@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebGPU MLC LLM Demo</title>
+  <script src="https://cdn.jsdelivr.net/npm/transformer-js@0.0.9/lib/index.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      text-align: center;
+    }
+    textarea {
+      width: 90%;
+      height: 100px;
+      margin-bottom: 10px;
+    }
+    div {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>MLC LLM WebGPU Demo</h1>
+  <textarea id="myInputText" placeholder="Enter your prompt here..."></textarea><br>
+  <input type="button" value="Generate Text" onclick="myGenerateText()">
+  <div id="myOutput"></div>
+
+  <script>
+    let myModel;
+
+    async function myLoadModel() {
+      const myOutputDiv = document.getElementById("myOutput");
+      myOutputDiv.innerHTML = "Loading model...";
+      try {
+        // Load a small MLC LLM (Hugging Face model)
+        myModel = await transformerjs.load({
+          model: "Xenova/llm-mini", // Replace with a smaller compatible model
+          revision: "main",
+          tokenizer: "Xenova/llm-mini",
+          backend: "webgpu"
+        });
+        myOutputDiv.innerHTML = "Model loaded successfully!";
+      } catch (error) {
+        myOutputDiv.innerHTML = "Error loading model: " + error.message;
+        console.error(error);
+      }
+    }
+
+    async function myGenerateText() {
+      const myInputText = document.getElementById("myInputText").value.trim();
+      const myOutputDiv = document.getElementById("myOutput");
+      if (!myModel) {
+        myOutputDiv.innerHTML = "Model not loaded yet. Please wait...";
+        return;
+      }
+      if (!myInputText) {
+        myOutputDiv.innerHTML = "Please enter a prompt!";
+        return;
+      }
+
+      myOutputDiv.innerHTML = "Generating text...";
+      try {
+        const myResult = await myModel.generate(myInputText, {
+          max_new_tokens: 50,
+          temperature: 0.7
+        });
+        myOutputDiv.innerHTML = `<strong>Generated Text:</strong> ${myResult.generated_text}`;
+      } catch (error) {
+        myOutputDiv.innerHTML = "Error generating text: " + error.message;
+        console.error(error);
+      }
+    }
+
+    // Load the model when the page loads
+    window.onload = myLoadModel;
+  </script>
+</body>
+</html>
