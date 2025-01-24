@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WebGPU MLC LLM Demo</title>
-  <script src="https://cdn.jsdelivr.net/npm/transformer-js@0.0.9/lib/index.min.js"></script>
+<!--  <script src="https://cdn.jsdelivr.net/npm/transformer-js@0.0.9/lib/index.min.js"></script>  -->
+
+  <script type="module">
+    import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+</script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -44,7 +48,7 @@
         myOutputDiv.innerHTML = "Model loaded successfully!";
       } catch (error) {
         myOutputDiv.innerHTML = "Error loading model: " + error.message;
-        console.error(error);
+        console.log(error);
       }
     }
 
@@ -76,5 +80,9 @@
     // Load the model when the page loads
     window.onload = myLoadModel;
   </script>
+
+  By Jeremy Ellis, Use at your own risk. Careful if it has big files to download.<br>
+  A good resource at <a href="https://www.npmjs.com/package/@xenova/transformers?activeTab=readme">https://www.npmjs.com/package/@xenova/transformers?activeTab=readme</a><br>
+  My github demo pages at <a href="https://hpssjellis.github.io/my-examples-of-ai-agents/public/index.html">https://hpssjellis.github.io/my-examples-of-ai-agents/public/index.html</a>
 </body>
 </html>
