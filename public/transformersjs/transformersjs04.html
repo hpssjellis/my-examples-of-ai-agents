@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebGPU Text Generation Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      text-align: center;
+    }
+    textarea {
+      width: 90%;
+      height: 100px;
+      margin-bottom: 10px;
+    }
+    div {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>WebGPU Text Generation Demo</h1>
+  <input type=text parameter="your huggingface model here" value="Xenova/distilgpt2">
+  <input type="button" value="Generate Text" onclick="myLoadPipeline()"> <br>
+  <textarea id="myInputText" placeholder="Enter your prompt here..."></textarea><br>
+  <input type="button" value="Generate Text" onclick="myGenerateText()">
+
+  <div id="myOutput"></div>
+
+  <script type="module">
+    // weird solution so that module functions work outside of the module
+    window.myGenerateText = myGenerateText
+    window.myLoadPipeline = myLoadPipeline
+    
+    import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+
+    let myTextGenerator;
+
+    async function myLoadPipeline() {
+      const myOutputDiv = document.getElementById("myOutput");
+      myOutputDiv.innerHTML = "Loading text generation pipeline...";
+      try {
+        // Use a small, public model from Hugging Face (e.g., GPT-2 Tiny)
+       myTextGenerator = await pipeline('text-generation', document.getElementById('myHugModel'), {
+      // myTextGenerator = await pipeline('text-generation', 'Xenova/distilgpt2', {
+         // HuggingFaceTB/SmolLM-360M-Instruct
+      //  myTextGenerator = await pipeline('text-generation', 'gpt2', {
+          revision: 'main',
+          backend: 'webgpu', // Enable WebGPU for better performance
+        });
+        myOutputDiv.innerHTML = "Pipeline loaded successfully!";
+      } catch (error) {
+        myOutputDiv.innerHTML = "Error loading pipeline: " + error.message;
+        console.error(error);
+      }
+    }
+
+    async function myGenerateText() {
+      const myInputText = document.getElementById("myInputText").value.trim();
+      const myOutputDiv = document.getElementById("myOutput");
+      if (!myTextGenerator) {
+        myOutputDiv.innerHTML = "Pipeline not loaded yet. Please wait...";
+        return;
+      }
+      if (!myInputText) {
+        myOutputDiv.innerHTML = "Please enter a prompt!";
+        return;
+      }
+
+      myOutputDiv.innerHTML = "Generating text...";
+      try {
+        const myResult = await myTextGenerator(myInputText, {
+          max_new_tokens: 50,
+          temperature: 0.7,
+        });
+        myOutputDiv.innerHTML = `<strong>Generated Text:</strong> ${myResult[0].generated_text}`;
+      } catch (error) {
+        myOutputDiv.innerHTML = "Error generating text: " + error.message;
+        console.error(error);
+      }
+    }
+
+    // Load the pipeline when the page loads
+  //  window.onload = myLoadPipeline;
+  </script>
+
+    By Jeremy Ellis, Use at your own risk. Careful if it has big files to download.<br>
+  A good resource at <a href="https://www.npmjs.com/package/@xenova/transformers?activeTab=readme">https://www.npmjs.com/package/@xenova/transformers?activeTab=readme</a><br>
+  My github demo pages at <a href="https://hpssjellis.github.io/my-examples-of-ai-agents/public/index.html">https://hpssjellis.github.io/my-examples-of-ai-agents/public/index.html</a>
+  exxample smol <a href="https://huggingface.co/spaces/HuggingFaceTB/SmolLM-360M-Instruct-WebGPU">https://huggingface.co/spaces/HuggingFaceTB/SmolLM-360M-Instruct-WebGPU</a>
+  Github for it at <a href="https://github.com/huggingface/transformers.js-examples/tree/main/smollm-webgpu">https://github.com/huggingface/transformers.js-examples/tree/main/smollm-webgpu</a>
+
+</body>
+</html>
