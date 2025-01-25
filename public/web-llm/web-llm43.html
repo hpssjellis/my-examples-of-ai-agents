@@ -82,6 +82,12 @@ mySingleShow(selectedModel)
 async function mySingleShow(myThis){
     document.getElementById('myManualModel').value = myThis;
     
+   if (selectedModel.startsWith("snowflake-arctic")) {
+   // pipelineType = "LLMEmbedPipeline"; // Example alternative pipeline
+      alert('Not a chatBot. it will load but will not work')
+   }
+    
+    
     let myTemp = ''
     const myCountFiles = await onShowFileCount(myThis)
     const myApproxSize = parseInt(myCountFiles) * 33;  // size of max shard binary file ???
@@ -126,12 +132,6 @@ engine.setInitProgressCallback(updateEngineInitProgressCallback);
 
 async function initializeWebLLMEngine() {
 
-  if (selectedModel.startsWith("snowflake-arctic")) {
-   // pipelineType = "LLMEmbedPipeline"; // Example alternative pipeline
-      alert('Not a chatBot')
-      return;  // does this stop the code?
-  }
-    
   document.getElementById("chat-stats").classList.remove("hidden");
   //selectedModel = document.getElementById("model-selection").value;
   selectedModel = document.getElementById("myManualModel").value;
