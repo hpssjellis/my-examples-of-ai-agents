@@ -125,21 +125,26 @@ const engine = new webllm.MLCEngine();
 engine.setInitProgressCallback(updateEngineInitProgressCallback);
 
 async function initializeWebLLMEngine() {
+
+  if (selectedModel.startsWith("snowflake-arctic")) {
+   // pipelineType = "LLMEmbedPipeline"; // Example alternative pipeline
+      alert('Not a chatBot')
+      return;  // does this stop the code?
+  }
+    
   document.getElementById("chat-stats").classList.remove("hidden");
   //selectedModel = document.getElementById("model-selection").value;
   selectedModel = document.getElementById("myManualModel").value;
 
 
   let pipelineType = "LLMChatPipeline"; // Default pipeline
-    /*
+    
   // Determine pipeline type based on model name
 
-  if (selectedModel.startsWith("snowflake-arctic")) {
-    pipelineType = "LLMEmbedPipeline"; // Example alternative pipeline
-  }
 
 
-    */
+
+    
   // Set the configuration for the model
   let config = { temperature: 1.0, top_p: 1, pipeline: pipelineType };
 
