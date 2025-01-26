@@ -114,7 +114,13 @@ for (let myLoop = 0;  myLoop < availableModels.length; myLoop++){
     myTemp += myCountFiles
     myTemp += ' files, ~'
     myTemp += myApproxSize
-    myTemp += ' MB<br>'
+    myTemp += ' MB '
+    if ( availableModels[myLoop].startsWith("snowflake-arctic") ) {
+   // pipelineType = "LLMEmbedPipeline"; // Example alternative pipeline
+      myTemp +=  ' Snowflake models are for embeddings not chat.'
+   }
+        
+    myTemp +=  '<br>'
   document.getElementById('chat-box').innerHTML = myTemp;
 }
 //document.getElementById('chat-box').innerHTML = myTemp;
