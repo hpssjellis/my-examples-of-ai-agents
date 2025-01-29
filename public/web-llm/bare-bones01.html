@@ -4,6 +4,9 @@
 <head>
   <title>Simple Web-LLM Chatbot</title>
   <script type="module">
+    // So the butotn can use a module function
+    let window.myLoadModel  = myLoadModel
+    
     import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 
     let myEngine = new webllm.MLCEngine();
