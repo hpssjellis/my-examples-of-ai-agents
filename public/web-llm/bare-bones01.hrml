@@ -9,7 +9,7 @@
     let myEngine = new webllm.MLCEngine();
 
     async function myLoadModel() {
-      const myModel = "myDeepseek";
+      const myModel = "DeepSeek-R1-Distill-Qwen-7B-q4f16_1-MLC";
       console.log("Loading model:", myModel);
 
       await myEngine.reload(myModel, { temperature: 1.0, top_p: 1 });
