@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bare Bones Web-LLM DeepSeek R1 Chatbot</title>
+  <script type="module">
+    
+     // So the button can use a module function  
+     window.myLoadModel  = myLoadModel
+     window.myReply      = myReply
+    
+    import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+
+    let myEngine = new webllm.MLCEngine();
+
+    async function myLoadModel() {
+      const myModel = document.getElementById('myModelInput').value   //  "DeepSeek-R1-Distill-Qwen-7B-q4f16_1-MLC";
+      console.log("Loading model:", myModel);
+      document.getElementById('myDiv01').textContent =  `Loading model:, ${myModel}`
+      console.log("This might take a while. Especially the first time");
+      console.log("Check: Application --> cache storage --> webllm/model ");
+
+      await myEngine.reload(myModel, { temperature: 1.0, top_p: 1 });
+      await console.log("Model loaded successfully!");
+      document.getElementById('myDiv01').textContent =  'Model loaded successfully!'
+    }
+
+    async function myReply() {
+
+      const myQuestion = document.getElementById('myArea01').value
+      const myMessages = [{ content: myQuestion, role: "user" }];
+
+      await console.log("Asking:", myQuestion);
+      document.getElementById('myDiv01').textContent =  `Asking:, ${myQuestion}`
+      await console.log("The answer may come up all at once after a while processing ~8 min on my machine");
+      const myResponse = await myEngine.chat.completions.create({ stream: false, messages: myMessages });
+
+      const myAnswer =  myResponse.choices[0].message.content      
+      console.log("Response:", myAnswer);
+      document.getElementById('myDiv01').textContent +=  myAnswer
+    }
+
+    
+  </script>
+</head>
+<body>
+  <h2>Simple Web-LLM DeepSeek R1 Chatbot</h2>
+  Open console using Ctrl-Shift-i<br>
+  Watch Console and Application-->cache storage --> webllm/model to see the files loading<br>
+  Actually uses the Web LLM MLC model: <input id="myModelInput" type=text size=60 value="DeepSeek-R1-Distill-Qwen-7B-q4f16_1-MLC"> <br>
+  <input type="button" value="Load Model" onclick="myLoadModel()"><br><br> 
+  
+  <textarea id="myArea01" rows="5" cols="70" ></textarea><br>
+  <input type="button" value="Reply" onclick="myReply()"><br>
+  <div id="myDiv01" >...</div>
+  Use at your own risk, Github index at <a href="https://hpssjellis.github.io/my-examples-of-ai-agents/public/index.html">hpssjellis.github.io/my-examples-of-ai-agents/public/index.html</a>
+</body>
+</html>
