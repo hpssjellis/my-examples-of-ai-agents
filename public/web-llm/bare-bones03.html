@@ -29,7 +29,7 @@
       
       console.log(myResponse);
       console.log("Response:", myResponse.choices[0].message.content);
-      document.getElementById('myDiv01').innerHTML =  myResponse.choices[0].message.content
+      document.getElementById('myDiv01').innerHTML =  JSON.stringify(myResponse.choices[0].message.content, null, 4)
 
     }
   </script>
