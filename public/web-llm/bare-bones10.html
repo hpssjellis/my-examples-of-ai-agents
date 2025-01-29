@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bare Bones Web-LLM DeepSeek R1 Chatbot</title>
+  <script type="module">
+    
+     // So the button can use a module function  
+     window.myLoadModel   = myLoadModel
+     window.myAskQuestion = myAskQuestion
+    
+    import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+
+    let myEngine = new webllm.MLCEngine();
+
+    async function myLoadModel() {
+      myDots()
+      const myModel = document.getElementById('myModelInput').value   //  "DeepSeek-R1-Distill-Qwen-7B-q4f16_1-MLC";
+      console.log("Loading model:", myModel);
+      document.getElementById('myDiv01').textContent =  `Loading model: ${myModel}`
+      console.log("This might take a while. Especially the first time");
+      console.log("Check: Application --> cache storage --> webllm/model ");
+      try {
+         await myEngine.reload(myModel, { temperature: 1.0, top_p: 1 });
+      } catch (error) {
+         console.error(error);
+         clearInterval(myTimer01)
+         document.getElementById('myDiv01').textContent += `Load Error ${error}` 
+      }
+      await console.log("Model loaded successfully!");
+      document.getElementById('myDiv01').textContent =  `Processed for about ${myMin} min. \r\nModel loaded successfully!`
+      clearInterval(myTimer01)
+    }
+
+    async function myAskQuestion() {
+      myDots()
+      const myQuestion = document.getElementById('myArea01').value
+      const myMessages = [{ content: myQuestion, role: "user" }];
+
+      await console.log("Asking:", myQuestion);
+      document.getElementById('myDiv01').textContent =  `Asking: ${myQuestion}`
+      await console.log("The answer may come up all at once after a while processing ~8 min on my machine");
+   //   try {
+         const myResponse = await myEngine.chat.completions.create({ stream: false, messages: myMessages });
+/*
+      } catch (error) {
+         console.error(error);
+         clearInterval(myTimer01)
+         document.getElementById('myDiv01').textContent += `Ask Error ${error}` 
+      }
+*/
+      console.log(myResponse);
+      const myAnswer =  myResponse.choices[0].message.content      
+      console.log("Response:", myAnswer);
+      document.getElementById('myDiv01').textContent = `Asking: ${myQuestion}\r\n Processed for about ${myMin} min. \r\nAnswer: ${myAnswer}` 
+      clearInterval(myTimer01)
+    }
+
+</script>
+
+    
+<script>
+// This is just  a normal script not a module
+// global variables
+let myTimer01
+let myCount01=0;
+let myMin=0;
+
+function myPutDots(){
+  myCount += 5;
+  myMin = parseInt(myCount/60)
+  document.getElementById('myDiv01').textContent = `Processing for ${myCount} total seconds, which is about ${myMin} min. `   
+}
+
+function myDots(){
+  myCount = 0
+  myTimer01 = setInterval(myPutDots, 5000)  
+}
+</script>
+
+</head>
+<body>
+  <h2>Simple Web-LLM DeepSeek R1 Chatbot</h2>
+  Open console using Ctrl-Shift-i<br>
+  Watch Console and Application-->cache storage --> webllm/model to see the files loading<br>
+  Actually uses the Web LLM MLC model: <input id="myModelInput" type=text size=60 value="DeepSeek-R1-Distill-Qwen-7B-q4f16_1-MLC"> <br>
+  <input type="button" value="Load Model" onclick="myLoadModel()"><br><br> 
+  
+  <textarea id="myArea01" rows="5" cols="70" ></textarea><br>
+  <input type="button" value="Ask Question" onclick="myAskQuestion()"><br><br>
+
+  <div id="myDiv01" >...</div><br><br>
+  Use at your own risk, Github index at <a href="https://hpssjellis.github.io/my-examples-of-ai-agents/public/index.html">hpssjellis.github.io/my-examples-of-ai-agents/public/index.html</a>
+</body>
+</html>
