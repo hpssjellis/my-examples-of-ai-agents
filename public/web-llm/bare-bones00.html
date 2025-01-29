@@ -7,38 +7,50 @@
     
      // So the button can use a module function  
      window.myLoadModel  = myLoadModel
+     window.myReply      = myReply
     
     import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 
     let myEngine = new webllm.MLCEngine();
 
     async function myLoadModel() {
-      const myModel = "DeepSeek-R1-Distill-Qwen-7B-q4f16_1-MLC";
+      const myModel = document.getElementById('myModelInput').value   //  "DeepSeek-R1-Distill-Qwen-7B-q4f16_1-MLC";
       console.log("Loading model:", myModel);
-      console.log("This might take a while check Application-->cache storage --> webllm/model ");
+      document.getElementById('myDiv01').textContent =  `Loading model:, ${myModel}`
+      console.log("This might take a while. Especially the first time");
+      console.log("Check: Application --> cache storage --> webllm/model ");
 
       await myEngine.reload(myModel, { temperature: 1.0, top_p: 1 });
-      console.log("Model loaded successfully!");
+      await console.log("Model loaded successfully!");
+      document.getElementById('myDiv01').textContent =  'Model loaded successfully!'
+    }
 
-      const myQuestion = "What are the roots of the quadratic equation x^2 – 45x + 324 = 0";
+    async function myReply() {
+
+      const myQuestion = document.getElementById('myArea01').value
       const myMessages = [{ content: myQuestion, role: "user" }];
 
-      console.log("Asking:", myQuestion);
-      console.log("The answer may come all at once after a while processing");
+      await console.log("Asking:", myQuestion);
+      await console.log("The answer may come up all at once after a while processing ~8 min on my machine");
       const myResponse = await myEngine.chat.completions.create({ stream: false, messages: myMessages });
-      console.log("Response:", myResponse.choices[0].message.content);
-      document.getElementById('myDiv01').innerHTML =  myResponse.choices[0].message.content
 
+      const myAnswer =  myResponse.choices[0].message.content      
+      console.log("Response:", myAnswer);
+      document.getElementById('myDiv01').textContent =  myAnswer
     }
+
+    
   </script>
 </head>
 <body>
   <h2>Simple Web-LLM DeepSeek R1 Chatbot</h2>
   Open console using Ctrl-Shift-i<br>
   Watch Console and Application-->cache storage --> webllm/model to see the files loading<br>
-  Actually uses the Web LLM MLC model "DeepSeek-R1-Distill-Qwen-7B-q4f16_1-MLC" <br><br>
- Here is the fixed question: What are the roots of the quadratic equation x^2 – 45x + 324 = 0<br><br>
-  <input type="button" value="Load Model and Ask Question" onclick="myLoadModel()"><br>
+  Actually uses the Web LLM MLC model <input id="myModelInput" type=text value="DeepSeek-R1-Distill-Qwen-7B-q4f16_1-MLC"> <br>
+  <input type="button" value="Load Model" onclick="myLoadModel()"><br><br> 
+  
+  <textarea id="myArea01" rows="5" cols="70" >What are the roots of the quadratic equation x^2 – 45x + 324 = 0. </textarea><br>
+  <input type="button" value="Reply" onclick="myReply()"><br>
   <div id="myDiv01" >...</div>
 </body>
 </html>
