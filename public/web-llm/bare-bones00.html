@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,12 +30,13 @@
       const myMessages = [{ content: myQuestion, role: "user" }];
 
       await console.log("Asking:", myQuestion);
+      document.getElementById('myDiv01').textContent =  `Asking:, ${myQuestion}`
       await console.log("The answer may come up all at once after a while processing ~8 min on my machine");
       const myResponse = await myEngine.chat.completions.create({ stream: false, messages: myMessages });
 
       const myAnswer =  myResponse.choices[0].message.content      
       console.log("Response:", myAnswer);
-      document.getElementById('myDiv01').textContent =  myAnswer
+      document.getElementById('myDiv01').textContent +=  myAnswer
     }
 
     
@@ -46,11 +46,12 @@
   <h2>Simple Web-LLM DeepSeek R1 Chatbot</h2>
   Open console using Ctrl-Shift-i<br>
   Watch Console and Application-->cache storage --> webllm/model to see the files loading<br>
-  Actually uses the Web LLM MLC model <input id="myModelInput" type=text value="DeepSeek-R1-Distill-Qwen-7B-q4f16_1-MLC"> <br>
+  Actually uses the Web LLM MLC model: <input id="myModelInput" type=text size=60 value="DeepSeek-R1-Distill-Qwen-7B-q4f16_1-MLC"> <br>
   <input type="button" value="Load Model" onclick="myLoadModel()"><br><br> 
   
-  <textarea id="myArea01" rows="5" cols="70" >What are the roots of the quadratic equation x^2 – 45x + 324 = 0. </textarea><br>
+  <textarea id="myArea01" rows="5" cols="70" ></textarea><br>
   <input type="button" value="Reply" onclick="myReply()"><br>
   <div id="myDiv01" >...</div>
+  Use at your own risk, Github index at <a href="https://hpssjellis.github.io/my-examples-of-ai-agents/public/index.html">hpssjellis.github.io/my-examples-of-ai-agents/public/index.html</a>
 </body>
 </html>
