@@ -4,8 +4,9 @@
 <head>
   <title>Simple Web-LLM Chatbot</title>
   <script type="module">
-    // So the butotn can use a module function
-    let window.myLoadModel  = myLoadModel
+    
+     // So the button can use a module function  
+     window.myLoadModel  = myLoadModel
     
     import * as webllm from "https://esm.run/@mlc-ai/web-llm";
 
@@ -24,6 +25,7 @@
       console.log("Asking:", myQuestion);
       const myResponse = await myEngine.chat.completions.create({ stream: false, messages: myMessages });
       console.log("Response:", myResponse.choices[0].message.content);
+
     }
   </script>
 </head>
