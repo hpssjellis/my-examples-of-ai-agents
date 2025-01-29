@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Web-LLM Chatbot</title>
+  <script type="module">
+    import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+
+    let myEngine = new webllm.MLCEngine();
+
+    async function myLoadModel() {
+      const myModel = "myDeepseek";
+      console.log("Loading model:", myModel);
+
+      await myEngine.reload(myModel, { temperature: 1.0, top_p: 1 });
+      console.log("Model loaded successfully!");
+
+      const myQuestion = "What is 4+6?";
+      const myMessages = [{ content: myQuestion, role: "user" }];
+
+      console.log("Asking:", myQuestion);
+      const myResponse = await myEngine.chat.completions.create({ stream: false, messages: myMessages });
+      console.log("Response:", myResponse.choices[0].message.content);
+    }
+  </script>
+</head>
+<body>
+  <h2>Simple Web-LLM Chatbot</h2>
+  <input type="button" value="Load Model and Ask Question" onclick="myLoadModel()">
+</body>
+</html>
+
