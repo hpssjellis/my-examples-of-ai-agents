@@ -26,10 +26,13 @@
       await console.log("Asking:", myQuestion);
       await console.log("The answer may come up all at once after a while processing ~8 min on my machine");
       const myResponse = await myEngine.chat.completions.create({ stream: false, messages: myMessages });
-      
-      await console.log(myResponse);
-      await console.log("Response:", myResponse.choices[0].message.content);
-      document.getElementById('myDiv01').innerHTML =  await Response.choices[0].message.content.replace(/\n/g, '<br>');
+      console.log(myResponse);
+
+      const myAnswer =  myResponse.choices[0].message.content      
+      console.log("Response:", myAnswer);
+      document.getElementById('myDiv01').innerHTML =  myAnswer.replace(/\n/g, '<br>');
+
+
 
 
 
