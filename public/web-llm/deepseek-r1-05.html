@@ -31,7 +31,7 @@
     await console.log("Model loaded successfully!");
     document.getElementById('myLoadButton').disabled = true
     document.getElementById('myAskButton').disabled = false
-    document.getElementById('myDiv01').innerHTML =  `Processed for ${myCount} total seconds, which is about ${myMin} min. <br> Model: ${myModel} loaded successfully!`
+    document.getElementById('myDiv01').innerHTML =  `Processed for ${myCount} total seconds, which is about ${myMin} min. &#10;Model: ${myModel} loaded successfully!`
     clearInterval(myTimer01)
   }
 
@@ -54,8 +54,8 @@ let reply = "";
 for await (const chunk of chunks) {
   reply += chunk.choices[0]?.delta.content || "";
   console.log('.');
-  const myReply =  reply.replace(/<think>/g, "Thinking: ").replace(/<\/think>/g, "<br><br>Response: ").replace(/\s+/g, " ").replace(/```/g, "<pre>")
-  const myChunkReply = `Asking: ${myQuestion}` 
+  const myReply =  reply.replace(/<think>/g, "Thinking: ").replace(/<\/think>/g, "&#10;&#10;Response: ").replace(/\s+/g, " ").replace(/```/g, "<pre>")
+  const myChunkReply = `Asking: ${myQuestion}&#10;&#10;${myReply}` 
   document.getElementById('myDiv01').innerHTML = myChunkReply
   if (chunk.usage) {
     console.log(chunk.usage); // only last chunk has usage
@@ -64,7 +64,7 @@ for await (const chunk of chunks) {
 
 const fullReply = await myEngine.getMessage();
 console.log(fullReply);
-let myReply = fullReply.replace(/<think>/g, "Thinking: ").replace(/<\/think>/g, "<br><br>Response: ").replace(/```/g, "<pre>")
+let myReply = fullReply.replace(/<think>/g, "Thinking: ").replace(/<\/think>/g, "&#10;&#10;Response: ").replace(/```/g, "")
 document.getElementById('myDiv01').innerHTML = `Asking: ${myQuestion}\r\n Processed for about ${myMin} min. \r\nAnswer: ${fullReply}` 
 
 }
@@ -99,10 +99,10 @@ function myDots(){
   Uses the Web LLM MLC model or other models: <input id="myModelInput" type=text size=60 value="DeepSeek-R1-Distill-Qwen-7B-q4f16_1-MLC"> <br><br>
 
   <input id="myLoadButton" type="button" value="Load Model" onclick="myLoadModel()"> Data warning ~1.4 GB saved to cache<br><br>  
-  <textarea id="myArea01" rows="5" cols="70" placeholder="Ask your question here">Write a single page web application using very simple Javascript and HTML that shows a working digital clock that has digits only no clock hands. Only use important inline CSS and make the coding as user friendly as possible.</textarea><br>
+  <textarea id="myArea01" rows="5" cols="70" placeholder="Ask your question here">Write a single page web application using very simple Javascript and HTML that shows an input text box and a button and an output div. The button moves the value from the text box to the div. Only use important inline CSS and make the coding as user friendly as possible. Put a carriage return at the end of each line like this&#10; Make the webpage very simple.</textarea><br>
   <input id="myAskButton" type="button" value="Ask Question" onclick="myAskQuestion()"  disabled><br><br>
 
-  <div id="myDiv01" >...</div><br><br>
+  <textarea id="myDiv01"  rows="20" cols="95%" placeholder="Reply Goes here" READONLY></textarea><br><br>
   Use at your own risk, by <a href="https://www.linkedin.com/in/jeremy-ellis-4237a9bb/">Jeremy Ellis LinkedIn</a><br> 
   Github index at <a href="https://hpssjellis.github.io/my-examples-of-ai-agents/public/index.html">hpssjellis.github.io/my-examples-of-ai-agents/public/index.html</a><br>
   My Github <a href="https://github.com/hpssjellis">Profile</a><br>
