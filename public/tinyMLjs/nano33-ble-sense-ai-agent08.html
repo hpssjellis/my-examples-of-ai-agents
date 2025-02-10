@@ -114,9 +114,24 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
  // if (myTimer) {clearIntervale(myTimer)}
   myTimer01 = setInterval(() => {
 // be nicce for the LLM textarea to autoscroll
-    let myIt = document.getElementById('myAskArea01')
+   // let myIt = document.getElementById('myAskArea01')
+
+     // auto scroll the LLM textarea
+    let myTextarea = document.getElementById('myAskArea01');
+    let myFocusedElement = document.activeElement; // Store the currently focused element
+
+    myTextarea.focus()
+    myTextarea.scrollTop = myTextarea.scrollHeight; // Auto-scroll to the bottom
+
+    // Restore focus if needed
+    if (myFocusedElement) {
+        myFocusedElement.focus();
+    }
+
+
+     
    // myIt.selectionStart = myIt.selectionEnd = myIt.value.length;
-    myIt.scrollTop = myIt.scrollHeight;
+   // myIt.scrollTop = myIt.scrollHeight;
    // myIt.blur()
   //  myIt.focus()       
    // myIt.blur()
