@@ -6,6 +6,7 @@
 <script>  
    // Global CVariables
    let myTimer01;
+   let myNewFirstLine;
    let exports = {};  // really important for WebSerial and Polyfill
    let model
    
@@ -85,7 +86,7 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
        // setTimeout(function() { mySendIt('start'); }, 2000);   //
    // need time for the above to happen
    // grab the first line (had to choosee one line, did not want to break the orginal program)
-   setTimeout(function() { let myNewFirstLine = document.getElementById('myArea01').value.match(/^[^\r\n]+/)[0]; }, 2000);  
+   setTimeout(function() { myNewFirstLine = document.getElementById('myArea01').value.match(/^[^\r\n]+/)[0]; }, 2000);  
    setTimeout(function() {    console.log(myNewFirstLine) }, 2005);  
 
    
