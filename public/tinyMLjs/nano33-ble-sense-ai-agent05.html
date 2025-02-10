@@ -124,9 +124,9 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
     console.log('tick');
      const myLLM = document.getElementById('myTextarea01').value.toLowerCase().replaceAll('*', '')
      //console.log(myLLM)
-     if (myLLM.endsWith(`red`))   { mySendIt('red');   console.log('red, and starting again'); clearInterval(myTimer01);  document.getElementById('myStartAgent').click(); }
-     if (myLLM.endsWith(`blue`))  { mySendIt('blue');  console.log('blue, and starting again'); clearInterval(myTimer01);  document.getElementById('myStartAgent').click();}
-     if (myLLM.endsWith(`green`)) { mySendIt('green'); console.log('green, and starting again'); clearInterval(myTimer01);  document.getElementById('myStartAgent').click();}
+     if (myLLM.endsWith(`red`))   { myAiAgent('red');  }
+     if (myLLM.endsWith(`blue`))  { myAiAgent('blue');  }
+     if (myLLM.endsWith(`green`)) { myAiAgent('green');  }
   }, 5000);   
 }"> <input type=button value="Stop LLM Timer" onclick="{ clearInterval(myTimer01) }"> <br><br>
 
@@ -468,10 +468,26 @@ trainModel() // run the above async code
 </span>   <!-- End fancy span that allows instant updates  -->
 
 
+
+<!-- ************************************* script starts ********************************************************* -->
+
+
+   
+
 <script>   // This is the funciton needed for the fancy stuff above
 
 myOnce123 = true    // so textareas are only clicked once
 
+
+function myAiAgent(myOutput){
+  console.log(`AI Agent chose: ${myOutput}, and starting up again`); 
+  clearInterval(myTimer01);  
+  document.getElementById('myStartAgent').click();
+  let myNow = new Date();
+  let myFormattedTime = myNow.toLocaleString(); 
+  document.getElementById('myKeeparea01').value= `At ${myFormattedTime} the action was ${myOutput} \r\n\`
+}
+   
   
  
 function myTextGrow(myT, myB){
