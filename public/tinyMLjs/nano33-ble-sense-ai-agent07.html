@@ -125,8 +125,8 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
      const myLLM = document.getElementById('myTextarea01').value.toLowerCase().replaceAll('*', '').replaceAll('.', '')
      //console.log(myLLM)
      if (myLLM.endsWith(`red`))   {  myAiAgent('red')  } //  mySendIt('red');   console.log('red, and starting again'); clearInterval(myTimer01);  document.getElementById('myStartAgent').click(); }
-     if (myLLM.endsWith(`red`))   {  myAiAgent('green')  } // 
-     if (myLLM.endsWith(`red`))   {  myAiAgent('blue')  } //   
+     if (myLLM.endsWith(`green`))   {  myAiAgent('green')  } // 
+     if (myLLM.endsWith(`blue`))   {  myAiAgent('blue')  } //   
      //   if (myLLM.endsWith(`green`)) { mySendIt('green'); console.log('green, and starting again'); clearInterval(myTimer01);  document.getElementById('myStartAgent').click();}
   }, 5000);   
 }"> <input type=button value="Stop LLM Timer" onclick="{ clearInterval(myTimer01) }"> <br><br>
