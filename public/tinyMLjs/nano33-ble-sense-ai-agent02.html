@@ -85,9 +85,9 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
     // Outputs 'tick' every second:
     console.log('tick');
     const myLLM = document.getElementById('myAskArea01').value 
-     if (myLLM.endsWith(`Response:\r\n\r\nRed`))   {mySendIt('red');   console.log('red'); }
-     if (myLLM.endsWith(`Response:\r\n\r\nBlue`))  {mySendIt('blue');  console.log('blue'); }
-     if (myLLM.endsWith(`Response:\r\n\r\nGreen`)) {mySendIt('green'); console.log('green'); }
+     if (myLLM.endsWith(`Response: \r\n\r\nRed`))   {mySendIt('red');   console.log('red'); }
+     if (myLLM.endsWith(`Response: \r\n\r\nBlue`))  {mySendIt('blue');  console.log('blue'); }
+     if (myLLM.endsWith(`Response: \r\n\r\nGreen`)) {mySendIt('green'); console.log('green'); }
   }, 1000);   
 }"> <input type=button value="Stop LLM Timer" onclick="{ clearInterval(myTimer01) }"> <br><br>
 
