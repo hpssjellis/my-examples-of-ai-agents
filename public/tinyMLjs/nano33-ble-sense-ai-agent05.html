@@ -494,7 +494,7 @@ function myAiAgent(myOutput){
   document.getElementById('myStartAgent').click();
   let myNow = new Date();
   let myFormattedTime = myNow.toLocaleString(); 
-  document.getElementById('myKeeparea01').value= `At ${myFormattedTime} the action was ${myOutput} \r\n\`
+  document.getElementById('myKeeparea01').value+= `At ${myFormattedTime} the action was ${myOutput} \r\n\`
 }
    
   
