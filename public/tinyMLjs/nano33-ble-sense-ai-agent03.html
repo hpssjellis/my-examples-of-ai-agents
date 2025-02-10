@@ -85,6 +85,8 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
    document.getElementById('myLlmTimer').click();
    
    console.log('sensing, grabing one line of data and sending to the LLM')
+   
+   document.getElementById('myClearAndSend').click()
     mySendIt('start');     // test the accelerometer
        // setTimeout(function() { mySendIt('start'); }, 2000);   //
    // need time for the above to happen
@@ -122,7 +124,7 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
 <input type=button value="send 'a' LED On or Off" onclick="{mySendIt('a')}">
 <input type=button value="send 'b' LED Off or On" onclick="{mySendIt('b')}"><br>
 
-<input type=button value="Clear and send 'start' "  style="Background-color:lime; width:200px;"  onclick="{
+<input id="myClearAndSend" type=button value="Clear and send 'start' "  style="Background-color:lime; width:200px;"  onclick="{
     document.getElementById('myArea01').value = '' 
     if (mySendFirstLine) { mySendIt('firstline'); }
     setTimeout(function() { mySendIt('start'); }, 300);  // short delay to send the first line
