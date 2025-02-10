@@ -89,16 +89,16 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
    console.log('sensing, grabing one line of data and sending to the LLM')
    
    document.getElementById('myClearAndSend').click()
-    mySendIt('start');     // test the accelerometer
+  //  mySendIt('start');     // test the accelerometer
        // setTimeout(function() { mySendIt('start'); }, 2000);   //
    // need time for the above to happen
    // grab the first line (had to choosee one line, did not want to break the orginal program)
-   setTimeout(function() { myNewFirstLine = document.getElementById('myArea01').value.match(/^[^\r\n]+/)[0]; }, 2000);  
-   setTimeout(function() {    console.log(myNewFirstLine) }, 2005);  
+   setTimeout(function() { myNewFirstLine = document.getElementById('myArea01').value.match(/^[^\r\n]+/)[0]; }, 3000);  
+   setTimeout(function() {    console.log(myNewFirstLine) }, 3100);  
 
    
    // replace the sensor line in the first line of the LLM prompt
-   setTimeout(function() { document.getElementById('myAskArea01').value  = document.getElementById('myAskArea01').value .replace(/^.*?(\r\n|\r|\n)/, myNewFirstLine + '$1'); }, 2100);   
+   setTimeout(function() { document.getElementById('myAskArea01').value  = document.getElementById('myAskArea01').value .replace(/^.*?(\r\n|\r|\n)/, myNewFirstLine + '$1'); }, 3200);   
 
    // activate the LLM
    setTimeout(function() { myAskQuestion() }, 2200);   
@@ -120,13 +120,13 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
      if (myLLM.endsWith(`red`))   { mySendIt('red');   console.log('red, and starting again'); clearInterval(myTimer01);  document.getElementById('myStartAgent').click(); }
      if (myLLM.endsWith(`blue`))  { mySendIt('blue');  console.log('blue, and starting again'); clearInterval(myTimer01);  document.getElementById('myStartAgent').click();}
      if (myLLM.endsWith(`green`)) { mySendIt('green'); console.log('green, and starting again'); clearInterval(myTimer01);  document.getElementById('myStartAgent').click();}
-  }, 1000);   
+  }, 5000);   
 }"> <input type=button value="Stop LLM Timer" onclick="{ clearInterval(myTimer01) }"> <br><br>
 
 <input type=button value="send 'a' LED On or Off" onclick="{mySendIt('a')}">
 <input type=button value="send 'b' LED Off or On" onclick="{mySendIt('b')}"><br>
 
-<input id="myClearAndSend" type=button value="Clear and send 'start' "  style="Background-color:lime; width:200px;"  onclick="{
+<input id="myClearAndSend" type=button value="Clear and send 'start' "  style="Background-color:yellow; width:200px;"  onclick="{
     document.getElementById('myArea01').value = '' 
     if (mySendFirstLine) { mySendIt('firstline'); }
     setTimeout(function() { mySendIt('start'); }, 300);  // short delay to send the first line
