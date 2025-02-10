@@ -2211,7 +2211,19 @@ It will load from cache if downloaded once. Uses the Web-GPU TransformersJS Deep
 
 <input id="myLoadButton" type="button" style="background-color:lime" value="Load Model" onclick="myLoadModel()"> Data warning ~1.4 GB saved to cache<br><br>
 <div id="progress">Loading progress: 0%</div>  
-<textarea id="myAskArea01" rows="5" cols="70" placeholder="Ask your question here">What is the answer to the ultimate question of life?</textarea><br>
+<textarea id="myAskArea01" rows="5" cols="70" placeholder="Ask your question here">
+8.37,24.44,23.72
+Above is the new sensor data. 
+
+The following is the Nano33-Ble-Sense normal sensor data for x, y, z acceleration.
+1.73,-1.84,9.66
+1.73,-1.80,9.63
+1.74,-1.68,9.73
+
+If the new sensor readings are normal, then respond with green, if slightly different, respond with blue and if really different respond with red.
+
+Make sure you respond with just the word: red, green or blue.   
+</textarea><br>
 
 
 <input id="myMaxTokens" type=number style="width:60px" value="512"  placeholder="512" title="The maximum number of words or characters the AI can generate in one response. Setting a low value makes shorter answers, while a high value allows for longer responses.">
