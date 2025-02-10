@@ -2110,6 +2110,7 @@ async function myAskQuestion() {
   document.getElementById('myAskButton').disabled = true;
   document.getElementById('myStopButton').disabled = false;
   myContent = document.getElementById('myArea01').value; 
+   console.log(myContent)
   const messages = [{ role: "user", content: myContent }];
 
  // myStopFlag = false; // Reset stop flag before starting
@@ -2117,7 +2118,7 @@ async function myAskQuestion() {
 
   // Clear any existing streamer instance before starting a new one
   streamer = new TextStreamer(generator.tokenizer, {
-    skip_prompt: true,
+    skip_prompt: false,
     callback_function: (text) => {
     //  if (myStopFlag) return; // Stop updating if stop flag is set
 
