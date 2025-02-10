@@ -5,7 +5,7 @@
 
 <script>  
    // Global CVariables
-   let myTimer01 = 0;
+   let myTimer01;
    let myNewFirstLine;
    let exports = {};  // really important for WebSerial and Polyfill
    let model
@@ -113,9 +113,9 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
     console.log('tick');
      const myLLM = document.getElementById('myTextarea01').value.toLowerCase()
      //console.log(myLLM)
-     if (myLLM.endsWith(`red`))   { mySendIt('red');   console.log('red, and starting again'); document.getElementById('myStartAgent').click(); }
-     if (myLLM.endsWith(`blue`))  { mySendIt('blue');  console.log('blue, and starting again');  document.getElementById('myStartAgent').click();}
-     if (myLLM.endsWith(`green`)) { mySendIt('green'); console.log('green, and starting again');  document.getElementById('myStartAgent').click();}
+     if (myLLM.endsWith(`red`))   { mySendIt('red');   console.log('red, and starting again'); clearInterval(myTimer01)  document.getElementById('myStartAgent').click(); }
+     if (myLLM.endsWith(`blue`))  { mySendIt('blue');  console.log('blue, and starting again'); clearInterval(myTimer01)  document.getElementById('myStartAgent').click();}
+     if (myLLM.endsWith(`green`)) { mySendIt('green'); console.log('green, and starting again'); clearInterval(myTimer01)  document.getElementById('myStartAgent').click();}
   }, 1000);   
 }"> <input type=button value="Stop LLM Timer" onclick="{ clearInterval(myTimer01) }"> <br><br>
 
