@@ -84,8 +84,8 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
   myTimer01 = setInterval(() => {
     // Outputs 'tick' every second:
     console.log('tick');
-     const myLLM = document.getElementById('myAskArea01').value.toLowerCase()
-     console.log(myLLM)
+     const myLLM = document.getElementById('myTextarea01').value.toLowerCase()
+     //console.log(myLLM)
      if (myLLM.endsWith(`red`))   { mySendIt('red');   console.log('red'); }
      if (myLLM.endsWith(`blue`))  { mySendIt('blue');  console.log('blue'); }
      if (myLLM.endsWith(`green`)) { mySendIt('green'); console.log('green'); }
