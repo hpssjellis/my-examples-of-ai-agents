@@ -83,12 +83,13 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
  //  let myFirstLine = s1.match(/^[^\r\n]+/)[0];
    
  //  let myNewFirstLine = document.getElementById('myArea01').value.replace(/^.*?(\r\n|\r|\n)/);
-   let myNewFirstLine = document.getElementById('myArea01').value.match(/^[^\r\n]+/)[0];
+  let myNewFirstLine = document.getElementById('myArea01').value.match(/^[^\r\n]+/)[0];
   document.getElementById('myAskArea01').value  = document.getElementById('myAskArea01').value .replace(/^.*?(\r\n|\r|\n)/, myNewFirstLine + '$1');
    
 }">
    
 <input id="myLlmTimer" type=button value="Check-LLM-Interval" onclick="{
+   if (myTimer) {clearIntervale(myTimer)}
   myTimer01 = setInterval(() => {
     // Outputs 'tick' every second:
     console.log('tick');
