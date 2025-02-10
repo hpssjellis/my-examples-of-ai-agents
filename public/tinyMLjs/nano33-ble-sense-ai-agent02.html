@@ -84,16 +84,11 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
   myTimer01 = setInterval(() => {
     // Outputs 'tick' every second:
     console.log('tick');
-    const myLLM = document.getElementById('myAskArea01').value.trim() 
-     if (myLLM.endsWith(`Response: 
-
-red`))   {mySendIt('red');   console.log('red'); }
-     if (myLLM.endsWith(`Response: 
-
-blue`))  {mySendIt('blue');  console.log('blue'); }
-     if (myLLM.endsWith(`Response: 
-
-Green`)) {mySendIt('green'); console.log('green'); }
+     const myLLM = document.getElementById('myAskArea01').value.toLowerCase()
+     console.log(myLLM)
+     if (myLLM.endsWith(`red`))   { mySendIt('red');   console.log('red'); }
+     if (myLLM.endsWith(`blue`))  { mySendIt('blue');  console.log('blue'); }
+     if (myLLM.endsWith(`green`)) { mySendIt('green'); console.log('green'); }
   }, 1000);   
 }"> <input type=button value="Stop LLM Timer" onclick="{ clearInterval(myTimer01) }"> <br><br>
 
