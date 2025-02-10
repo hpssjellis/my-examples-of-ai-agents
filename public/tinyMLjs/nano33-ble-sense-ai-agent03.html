@@ -82,7 +82,8 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
 <input id="myStartAgent" type=button value="Upload Prompt" onclick="{
  //  let myFirstLine = s1.match(/^[^\r\n]+/)[0];
    
-   let myNewFirstLine = document.getElementById('myArea01').value.replace(/^.*?(\r\n|\r|\n)/);
+ //  let myNewFirstLine = document.getElementById('myArea01').value.replace(/^.*?(\r\n|\r|\n)/);
+   let myNewFirstLine = document.getElementById('myArea01').value.match(/^[^\r\n]+/)[0];
   document.getElementById('myAskArea01').value  = document.getElementById('myAskArea01').value .replace(/^.*?(\r\n|\r|\n)/, myNewFirstLine + '$1');
    
 }">
