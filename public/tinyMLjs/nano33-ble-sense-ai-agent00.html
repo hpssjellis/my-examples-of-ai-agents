@@ -6,6 +6,7 @@
 <script>  
    // Global CVariables
    let myTimer01;
+   let myNewFirstLine;
    let exports = {};  // really important for WebSerial and Polyfill
    let model
    
@@ -43,7 +44,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Acceleration Data to Tensor</title>
+<title>AI-Agents with webSerial connected microcontrollers in the browser</title>
     <!--
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script> 
    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> 
@@ -57,7 +58,7 @@
 
 </head>
 <body>
-<h1 align=center>TinyMLjs </h1>
+<h1 align=center>AI-Agents with webSerial connected microcontrollers in the browser</h1>
 <h3>Making TinyML truly client-side. Giving Makers full control of the process, user friendly, private and protected</h3>   
 <h6> Version 0.56.3-215 Note: WebSerial microcontroller connection works on Chrome or Edge for Mac, Android (Pixel Phones early verson) or Windows, only works on Edge for Linux</h6>
 
@@ -75,28 +76,64 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
 
    
    
-<button id="connectButton"  style="background-color:lime; width:200px; ">Connect via Serial Port</button><br>
+<button id="connectButton"  style="background-color:lime; width:200px; ">Connect via Serial Port</button>
 <input type=text id="mySendText" value="start">
+<input type=button  id="LoadModeLink"  style="background-color:lime; width:200px; " value="Load DeepseekR1 Model" onclick="{ document.getElementById('myLoadButton').click(); }" <br>
+   
 <input type=button value="send" onclick="{ mySendIt(document.getElementById('mySendText').value) }">
    
-<input type=button value="Upload Prompt" onclick="{ alert('need to code this') }">
+<input id="myStartAgent"  style="background-color:lime;" type=button value="Auto AI-Agent" onclick="{
+   
+   document.getElementById('myLlmTimer').click();
+   
+   console.log('sensing, grabing one line of data and sending to the LLM')
+   
+   document.getElementById('myClearAndSend').click()
+  //  mySendIt('start');     // test the accelerometer
+       // setTimeout(function() { mySendIt('start'); }, 2000);   //
+   // need time for the above to happen
+   // grab the first line (had to choosee one line, did not want to break the orginal program)
+   setTimeout(function() { myNewFirstLine = document.getElementById('myArea01').value.match(/^[^\r\n]+/)[0]; }, 3000);  
+   setTimeout(function() {    console.log(myNewFirstLine) }, 3100);  
+
+   
+   // replace the sensor line in the first line of the LLM prompt
+   setTimeout(function() { document.getElementById('myAskArea01').value  = document.getElementById('myAskArea01').value .replace(/^.*?(\r\n|\r|\n)/, myNewFirstLine + '$1'); }, 3200);   
+
+   // activate the LLM
+   setTimeout(function() { myAskQuestion() }, 3300);   
+
+   
+    // let myNewFirstLine = document.getElementById('myArea01').value.match(/^[^\r\n]+/)[0];
+    // document.getElementById('myAskArea01').value  = document.getElementById('myAskArea01').value .replace(/^.*?(\r\n|\r|\n)/, myNewFirstLine + '$1');
+    // myAskQuestion()
+   
+}">
    
 <input id="myLlmTimer" type=button value="Check-LLM-Interval" onclick="{
+ // if (myTimer) {clearIntervale(myTimer)}
   myTimer01 = setInterval(() => {
+// be nicce for the LLM textarea to autoscroll
+    let myIt = document.getElementById('myAskArea01')
+   // myIt.selectionStart = myIt.selectionEnd = myIt.value.length;
+    myIt.scrollTop = myIt.scrollHeight;
+   // myIt.blur()
+  //  myIt.focus()       
+   // myIt.blur()
     // Outputs 'tick' every second:
     console.log('tick');
-     const myLLM = document.getElementById('myTextarea01').value.toLowerCase()
+     const myLLM = document.getElementById('myTextarea01').value.toLowerCase().replaceAll('*', '')
      //console.log(myLLM)
-     if (myLLM.endsWith(`red`))   { mySendIt('red');   console.log('red'); clearInterval(myTimer01); }
-     if (myLLM.endsWith(`blue`))  { mySendIt('blue');  console.log('blue'); clearInterval(myTimer01); }
-     if (myLLM.endsWith(`green`)) { mySendIt('green'); console.log('green'); clearInterval(myTimer01); }
-  }, 1000);   
+     if (myLLM.endsWith(`red`))   { mySendIt('red');   console.log('red, and starting again'); clearInterval(myTimer01);  document.getElementById('myStartAgent').click(); }
+     if (myLLM.endsWith(`blue`))  { mySendIt('blue');  console.log('blue, and starting again'); clearInterval(myTimer01);  document.getElementById('myStartAgent').click();}
+     if (myLLM.endsWith(`green`)) { mySendIt('green'); console.log('green, and starting again'); clearInterval(myTimer01);  document.getElementById('myStartAgent').click();}
+  }, 5000);   
 }"> <input type=button value="Stop LLM Timer" onclick="{ clearInterval(myTimer01) }"> <br><br>
 
 <input type=button value="send 'a' LED On or Off" onclick="{mySendIt('a')}">
 <input type=button value="send 'b' LED Off or On" onclick="{mySendIt('b')}"><br>
 
-<input type=button value="Clear and send 'start' "  style="Background-color:lime; width:200px;"  onclick="{
+<input id="myClearAndSend" type=button value="Clear and send 'start' "  style="Background-color:yellow; width:200px;"  onclick="{
     document.getElementById('myArea01').value = '' 
     if (mySendFirstLine) { mySendIt('firstline'); }
     setTimeout(function() { mySendIt('start'); }, 300);  // short delay to send the first line
@@ -197,15 +234,15 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
 <!--<input type="button" value="Stop Cell Data" style=" height:50px; " onclick="{ window.removeEventListener('devicemotion', handleMotionEvent); }">-->
 <br>    
 
-<input type=button   style="Background-color:lime;"  value="Clean, Trim or Fill" onclick="{
+<input type=button   style="Background-color:yellow;"  value="Clean, Trim or Fill" onclick="{
   cleanFillTrim()
 }">
       
-Label: <input type=text id="mySingleLabel" placeholder="1lable"  style="Background-color:lime;"  value="1label" onChange="{
+Label: <input type=text id="mySingleLabel" placeholder="1lable"  style="Background-color:yellow;"  value="1label" onChange="{
   document.getElementById('myOutFilename').value =  myBaseCsvFileName + this.value +'.csv'
    
 }">  
-<input type=button style="Background-color:lime;"  value="Keep" onclick="{previewSensorData()}">  
+<input type=button style="Background-color:yellow;"  value="Keep" onclick="{previewSensorData()}">  
    
 
 <input type=button   value="Auto Next" title="Does it all. After the first entry is made." onclick="{
@@ -284,7 +321,7 @@ CSV FileName: <input id="myOutFilename" type=text value="myCSV-myLabel.csv" onCh
 }">   
 <input type="button" value="Show Graph" onclick="myShowGraph()">
 <input type=button value="Clean, Trim or Fill" onclick="{cleanFillTrim();}">
-<input type="button" value="Classify Data"  style="background-color:lime; width:200px;"  onclick="{classifyData();}">
+<input type="button" value="Classify Data"  style="background-color:yellow; width:200px;"  onclick="{classifyData();}">
 <input type=button value="Show All Data" onclick="{
    document.getElementById('myArea01').value =''                                        
  
@@ -361,7 +398,7 @@ Click here to see the working HTML code.
 
 
 
-<input type="button" value="Convert Data to Tensor"  style="background-color:lime; width:200px;" onclick="loadDataToTensor()"><br>
+<input type="button" value="Convert Data to Tensor"  style="background-color:yellow; width:200px;" onclick="loadDataToTensor()"><br>
    
 Enter number of epochs: <input type="number" id="myEpochs" value=100 style="width:50px">,
 Learning rate: <input type="number" id="myLearningRate" value="0.0005" style="width:70px"> <br>
@@ -378,7 +415,7 @@ Learning rate: <input type="number" id="myLearningRate" value="0.0005" style="wi
 
 
    
-<input type="button" id="myTrainButton" value="Train Model"  style="background-color:lime; width:200px;" onclick="{
+<input type="button" id="myTrainButton" value="Train Model"  style="background-color:yellow; width:200px;" onclick="{
 
 async function trainModel() {
 // Define the model architecture
@@ -550,7 +587,7 @@ function myTextGrow(myT, myB){
       document.getElementById('myUploadCsvSpan').style.display = 'block' 
       document.getElementById('mySpanModelUpload').style.display = 'block' 
       this.value = 'Hide File Uploading'
-      this.style.backgroundColor = 'lime'
+      this.style.backgroundColor = 'yellow'
    }
 }"><br>
 <span id="myUploadCsvSpan" style="display:none; ">
@@ -1358,7 +1395,7 @@ async function connectSerial() {
    //   if (value && !/^\s*$/g.test(value)) { // Check if value is not just whitespace or carriage return
                // Check if value is not just a line feed or carriage return
     //  if (!/^[\r\n]*$/g.test(value)) { 
-       console.log(value)
+     //  console.log(value)
       if (!/^[\r]*$/g.test(value)) { 
         if (myMultiCSV) {
             document.getElementById('myArea01').value += value;
@@ -1601,8 +1638,8 @@ if (myCellPhoneOnce){
    else if (elapsedTime > 1000 ){} // estentially do nothing if the event handler does not get erased         
    else {
       // put the data in the main textarea
-      if (mySendFirstLine) { document.getElementById('myAskArea01').value = 'accelX,accelY,accelZ\r\n';  }   // prints first line for CSV saving
-        document.getElementById('myAskArea01').value += accelerometerData.join('\r\n')  // puts linefeed at end of data
+      if (mySendFirstLine) { document.getElementById('myArea01').value = 'accelX,accelY,accelZ\r\n';  }   // prints first line for CSV saving
+        document.getElementById('myArea01').value += accelerometerData.join('\r\n')  // puts linefeed at end of data
         myShowGraph() 
         myCellPhoneOnce = false  
         window.removeEventListener('devicemotion', handleMotionEvent); 
