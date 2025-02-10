@@ -124,14 +124,14 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
     console.log('tick');
      
      //const myLLM = document.getElementById('myTextarea01').value.toLowerCase().replaceAll('*', '')
-     let myLlmLines = document.getElementById('myTextarea01').value.toLowerCase().split("\n"); // Split into lines
+     let myLlmLines = document.getElementById('myTextarea01').value.toLowerCase().split('\n'); // Split into lines
      let myLllmLastLine = myLlmLines[myLlmLines.length - 1].trim(); // Get last line and trim spaces
 
      
      //console.log(myLLM)
-     if ( /red/i.test(myLllmLastLine)  )   { myAiAgent('red');  }
-     if ( /green/i.test(myLllmLastLine)  )   { myAiAgent('green');  }
-     if ( /blue/i.test(myLllmLastLine)  )   { myAiAgent('blue');  }
+     if ( /red/i.test(myLllmLastLine)  )   { myAiAgent('red');    }
+     if ( /green/i.test(myLllmLastLine))   { myAiAgent('green');  }
+     if ( /blue/i.test(myLllmLastLine) )   { myAiAgent('blue');   }
      
    
    //  if (myLLM.endsWith(`blue`))  { myAiAgent('blue');  }
