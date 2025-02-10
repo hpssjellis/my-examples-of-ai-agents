@@ -80,7 +80,7 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
 <input type=button value="send" onclick="{ mySendIt(document.getElementById('mySendText').value) }">
    
 <input id="myStartAgent" type=button value="Upload Prompt" onclick="{
-   let myNewFirstLine = 'wwwwwwwwwwwwwoooooooooooooowwwwwwwwwwwwww'
+   let myNewFirstLine = document.getElementById('myArea01').value .replace(/^.*?(\r\n|\r|\n)/);
   document.getElementById('myAskArea01').value  = document.getElementById('myAskArea01').value .replace(/^.*?(\r\n|\r|\n)/, myNewFirstLine + '$1');
    
 }">
