@@ -5,7 +5,7 @@
 
 <script>  
    // Global CVariables
-   let myTimer01;
+   let myTimer01 = 0;
    let myNewFirstLine;
    let exports = {};  // really important for WebSerial and Polyfill
    let model
@@ -107,7 +107,7 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
 }">
    
 <input id="myLlmTimer" type=button value="Check-LLM-Interval" onclick="{
-   if (myTimer) {clearIntervale(myTimer)}
+  if (myTimer) {clearIntervale(myTimer)}
   myTimer01 = setInterval(() => {
     // Outputs 'tick' every second:
     console.log('tick');
