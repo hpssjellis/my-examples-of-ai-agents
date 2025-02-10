@@ -81,6 +81,9 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
 <input type=button value="send" onclick="{ mySendIt(document.getElementById('mySendText').value) }">
    
 <input id="myStartAgent" type=button value="Upload Prompt" onclick="{
+   
+   document.getElementById('myLlmTimer').click();
+   
    console.log('sensing, grabing one line of data and sending to the LLM')
     mySendIt('start');     // test the accelerometer
        // setTimeout(function() { mySendIt('start'); }, 2000);   //
