@@ -126,15 +126,15 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
      
     // const myLLM = document.getElementById('myTextarea01').value.toLowerCase().replaceAll('*', '')
      const myLastLine = document.getElementById('myTextarea01').value.split('\n').pop().trim(); 
-//let myLastLine = myText.split("\n").pop().trim(); // Get last line
+//let myLastLine = myText.split('\n').pop().trim(); // Get last line
 
 //if (myLastLine.toLowerCase().includes("red")) {
 
      
      //console.log(myLLM)
-     if (myLastLine.toLowerCase().includes("red"))     { mySendIt('red');   console.log('red, and starting again');  clearInterval(myTimer01);  document.getElementById('myStartAgent').click(); }
-     if (myLastLine.toLowerCase().includes("green")) { mySendIt('green');   console.log('green, and starting again');clearInterval(myTimer01);  document.getElementById('myStartAgent').click(); }
-     if (myLastLine.toLowerCase().includes("blue"))   { mySendIt('blue');   console.log('blue, and starting again'); clearInterval(myTimer01);  document.getElementById('myStartAgent').click(); }
+     if (myLastLine.toLowerCase().includes('red'))     { mySendIt('red');   console.log('red, and starting again');  clearInterval(myTimer01);  document.getElementById('myStartAgent').click(); }
+     if (myLastLine.toLowerCase().includes('green')) { mySendIt('green');   console.log('green, and starting again');clearInterval(myTimer01);  document.getElementById('myStartAgent').click(); }
+     if (myLastLine.toLowerCase().includes('blue'))   { mySendIt('blue');   console.log('blue, and starting again'); clearInterval(myTimer01);  document.getElementById('myStartAgent').click(); }
 
    //  if (myLLM.endsWith(`blue`))  { mySendIt('blue');  console.log('blue, and starting again'); clearInterval(myTimer01);  document.getElementById('myStartAgent').click();}
   //   if (myLLM.endsWith(`green`)) { mySendIt('green'); console.log('green, and starting again'); clearInterval(myTimer01);  document.getElementById('myStartAgent').click();}
