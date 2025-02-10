@@ -227,15 +227,15 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
 <!--<input type="button" value="Stop Cell Data" style=" height:50px; " onclick="{ window.removeEventListener('devicemotion', handleMotionEvent); }">-->
 <br>    
 
-<input type=button   style="Background-color:lime;"  value="Clean, Trim or Fill" onclick="{
+<input type=button   style="Background-color:yellow;"  value="Clean, Trim or Fill" onclick="{
   cleanFillTrim()
 }">
       
-Label: <input type=text id="mySingleLabel" placeholder="1lable"  style="Background-color:lime;"  value="1label" onChange="{
+Label: <input type=text id="mySingleLabel" placeholder="1lable"  style="Background-color:yellow;"  value="1label" onChange="{
   document.getElementById('myOutFilename').value =  myBaseCsvFileName + this.value +'.csv'
    
 }">  
-<input type=button style="Background-color:lime;"  value="Keep" onclick="{previewSensorData()}">  
+<input type=button style="Background-color:yellow;"  value="Keep" onclick="{previewSensorData()}">  
    
 
 <input type=button   value="Auto Next" title="Does it all. After the first entry is made." onclick="{
@@ -314,7 +314,7 @@ CSV FileName: <input id="myOutFilename" type=text value="myCSV-myLabel.csv" onCh
 }">   
 <input type="button" value="Show Graph" onclick="myShowGraph()">
 <input type=button value="Clean, Trim or Fill" onclick="{cleanFillTrim();}">
-<input type="button" value="Classify Data"  style="background-color:lime; width:200px;"  onclick="{classifyData();}">
+<input type="button" value="Classify Data"  style="background-color:yellow; width:200px;"  onclick="{classifyData();}">
 <input type=button value="Show All Data" onclick="{
    document.getElementById('myArea01').value =''                                        
  
@@ -391,7 +391,7 @@ Click here to see the working HTML code.
 
 
 
-<input type="button" value="Convert Data to Tensor"  style="background-color:lime; width:200px;" onclick="loadDataToTensor()"><br>
+<input type="button" value="Convert Data to Tensor"  style="background-color:yellow; width:200px;" onclick="loadDataToTensor()"><br>
    
 Enter number of epochs: <input type="number" id="myEpochs" value=100 style="width:50px">,
 Learning rate: <input type="number" id="myLearningRate" value="0.0005" style="width:70px"> <br>
@@ -408,7 +408,7 @@ Learning rate: <input type="number" id="myLearningRate" value="0.0005" style="wi
 
 
    
-<input type="button" id="myTrainButton" value="Train Model"  style="background-color:lime; width:200px;" onclick="{
+<input type="button" id="myTrainButton" value="Train Model"  style="background-color:yellow; width:200px;" onclick="{
 
 async function trainModel() {
 // Define the model architecture
@@ -580,7 +580,7 @@ function myTextGrow(myT, myB){
       document.getElementById('myUploadCsvSpan').style.display = 'block' 
       document.getElementById('mySpanModelUpload').style.display = 'block' 
       this.value = 'Hide File Uploading'
-      this.style.backgroundColor = 'lime'
+      this.style.backgroundColor = 'yellow'
    }
 }"><br>
 <span id="myUploadCsvSpan" style="display:none; ">
