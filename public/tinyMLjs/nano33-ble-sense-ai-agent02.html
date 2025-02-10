@@ -5,6 +5,7 @@
 
 <script>  
    // Global CVariables
+   let myTimer01;
    let exports = {};  // really important for WebSerial and Polyfill
    let model
    
@@ -76,7 +77,19 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
    
 <button id="connectButton"  style="background-color:lime; width:200px; ">Connect via Serial Port</button><br>
 <input type=text id="mySendText" value="start">
-<input type=button value="send" onclick="{ mySendIt(document.getElementById('mySendText').value) }"><br><br>
+<input type=button value="send" onclick="{ mySendIt(document.getElementById('mySendText').value) }">
+   
+   
+<input type=button value="Check-LLM-Interval" onclick="{
+  myTimer01 = setInterval(() => {
+    // Outputs 'tick' every second:
+    console.log('tick');
+    const myLLM = document.getElementById('myAskArea01').value 
+     if (myLLM.endsWith(`Response:\r\n\r\nRed`))   {mySendIt('red');   console.log('red'); }
+     if (myLLM.endsWith(`Response:\r\n\r\nBlue`))  {mySendIt('blue');  console.log('blue'); }
+     if (myLLM.endsWith(`Response:\r\n\r\nGreen`)) {mySendIt('green'); console.log('green'); }
+  }, 1000);   
+}"> <input type=button value="Stop LLM Timer" onclick="{ clearInterval(myTimer01) }"> <br><br>
 
 <input type=button value="send 'a' LED On or Off" onclick="{mySendIt('a')}">
 <input type=button value="send 'b' LED Off or On" onclick="{mySendIt('b')}"><br>
