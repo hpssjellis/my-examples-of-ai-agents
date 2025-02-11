@@ -117,6 +117,10 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
 // be nicce for the LLM textarea to autoscroll
    // let myIt = document.getElementById('myAskArea01')
 
+
+
+     
+/*
      // auto scroll the LLM textarea
     let myTextareaLLM = document.getElementById('myAskArea01');
 
@@ -129,6 +133,9 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
     if (myHoveredElement) {
         myHoveredElement.focus(); // Restore interaction to the hovered element
     }
+
+*/
+
 
 
      
@@ -513,10 +520,17 @@ trainModel() // run the above async code
 
 myOnce123 = true    // so textareas are only clicked once
 
+
+/*
+   
 function myTrackMouse(event) {
     myMouseX = event.clientX;
     myMouseY = event.clientY;
 }
+
+
+*/
+   
 
 function myAiAgent(myOutput){
    mySendIt(myOutput);   // send back to the microcontroller the action
@@ -2239,7 +2253,11 @@ async function myAskQuestion() {
       const currentTime = performance.now();
       const elapsedTime = (currentTime - window.startTime) / 1000; 
 
+
       document.getElementById('myTextarea01').value += text;
+      document.getElementById('myTextarea01').scrollTop = document.getElementById('myTextarea01').scrollHeight; // Auto-scroll to bottom
+
+      
       const generatedTokens = document.getElementById('myTextarea01').value.length;
       const tokensPerSecond = generatedTokens / elapsedTime;
       const progress = parseInt((generatedTokens * 10) / (myMaxT));
