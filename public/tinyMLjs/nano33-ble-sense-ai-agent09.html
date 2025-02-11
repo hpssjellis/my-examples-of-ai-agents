@@ -4,7 +4,8 @@
 <meta charset="UTF-8" />
 
 <script>  
-   // Global CVariables
+   // Global Variables
+   let myMouseX = 0, myMouseY = 0; // Store mouse position
    let myTimer01;
    let myNewFirstLine;
    let exports = {};  // really important for WebSerial and Polyfill
@@ -118,15 +119,28 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
 
      // auto scroll the LLM textarea
     let myTextareaLLM = document.getElementById('myAskArea01');
-    let myFocusedElement = document.activeElement; // Store the currently focused element
 
-    myTextareaLLM.focus()
-    myTextareaLLM.scrollTop = myTextareaLLM.scrollHeight; // Auto-scroll to the bottom
+
+   let myHoveredElement = document.elementFromPoint(myMouseX, myMouseY); // Get element under mouse
+
+    myTextareaLLM.focus(); // Ensure scrolling works
+    myTextareaLLM.scrollTop = myTextareaLLM.scrollHeight; // Auto-scroll to bottom
+
+    if (myHoveredElement) {
+        myHoveredElement.focus(); // Restore interaction to the hovered element
+    }
+
+
+     
+   // let myFocusedElement = document.activeElement; // Store the currently focused element
+
+  //  myTextareaLLM.focus()
+ //   myTextareaLLM.scrollTop = myTextareaLLM.scrollHeight; // Auto-scroll to the bottom
  ///   myTextarea.blur()
     // Restore focus if needed
-    if (myFocusedElement) {
-      myFocusedElement.focus();
-    }
+ //   if (myFocusedElement) {
+ //     myFocusedElement.focus();
+ //   }
 
 
      
@@ -499,7 +513,10 @@ trainModel() // run the above async code
 
 myOnce123 = true    // so textareas are only clicked once
 
-
+function myTrackMouse(event) {
+    myMouseX = event.clientX;
+    myMouseY = event.clientY;
+}
 
 function myAiAgent(myOutput){
    mySendIt(myOutput);   // send back to the microcontroller the action
