@@ -80,7 +80,7 @@ Presently, for complex vision or sound data it is easier to use <a href="https:/
 <button id="connectButton"  style="background-color:lime; width:200px; ">Connect via Serial Port</button>
 <input type=text id="mySendText" value="start">
 <input type=button value="send" onclick="{ mySendIt(document.getElementById('mySendText').value) }"><br><br>
-   
+<div id="progress2">Loading progress: 0%</div>     
 <input type=button  id="LoadModeLink"  style="background-color:lime; width:200px; " value="Load DeepseekR1 Model" onclick="{ document.getElementById('myLoadButton').click(); }" <br>
    
 <input id="myStartAgent"  style="background-color:lime;" type=button value="Auto AI-Agent" onclick="{
@@ -2214,6 +2214,7 @@ async function myLoadModel() {
    // console.log(progress);
     const myProg = parseInt(progress.progress);
     document.getElementById('progress').textContent = `Loading: ${progress.file} at ${myProg}%`;   //(progress * 100).toFixed(2)
+    document.getElementById('progress2').textContent = `Loading: ${progress.file} at ${myProg}%`;   //(progress * 100).toFixed(2)
   };
   
   generator = await pipeline("text-generation", myModel, { dtype: "q4f16", device: "webgpu", progress_callback: progressCallback });
@@ -2225,6 +2226,7 @@ async function myLoadModel() {
   document.getElementById('LoadModeLink').disabled = true
    
   document.getElementById('progress').textContent = `Loading: Done!`; 
+  document.getElementById('progress2').textContent = `Loading: Done!`; 
 }
 
 
@@ -2262,6 +2264,7 @@ async function myAskQuestion() {
       const tokensPerSecond = generatedTokens / elapsedTime;
       const progress = parseInt((generatedTokens * 10) / (myMaxT));
       document.getElementById('progress').textContent = `Answer progress: ~${progress}%, Tokens per second: ${tokensPerSecond.toFixed(0)}, elapsed time: ${elapsedTime.toFixed(0)} seconds`;
+      document.getElementById('progress2').textContent = `Answer progress: ~${progress}%, Tokens per second: ${tokensPerSecond.toFixed(0)}, elapsed time: ${elapsedTime.toFixed(0)} seconds`;
 
       if (progress >= 100) {
         window.startTime = null;
