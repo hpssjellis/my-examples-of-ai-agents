@@ -2245,7 +2245,8 @@ async function myAskQuestion() {
 
 let myTemp = ""; // Temporary storage for text
 let myCount = 0; // Counter to track updates
-
+let myTextarea = document.getElementById('myTextarea01');
+   
 streamer = new TextStreamer(generator.tokenizer, {
     skip_prompt: false,
     callback_function: (text) => {
@@ -2256,8 +2257,8 @@ streamer = new TextStreamer(generator.tokenizer, {
         myTemp += text; // Store incoming text
         myCount++; // Count updates
 
-        if (myCount >= 100) { // Update textarea every 100 tokens
-            let myTextarea = document.getElementById('myTextarea01');
+        if (myCount >= 10) { // Update textarea every 100 tokens
+
             myTextarea.value += myTemp;
             myTemp = ""; // Clear temporary storage
             myCount = 0; // Reset counter
