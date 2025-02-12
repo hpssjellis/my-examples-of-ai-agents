@@ -383,3 +383,11 @@ AI agents are designed to learn from interactions, which means they will become 
 
 
 . This continuous learning process will be crucial in maintaining competitiveness in rapidly evolving markets.
+
+
+
+AI-Agent example
+
+![deepseekr1-arduino-sensor-actuator](https://github.com/user-attachments/assets/c4c66a76-287a-468f-823c-a5f6e1930e9d)
+
+
