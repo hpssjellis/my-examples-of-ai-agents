@@ -391,3 +391,4 @@ AI-Agent example
 ![deepseekr1-arduino-sensor-actuator](https://github.com/user-attachments/assets/c4c66a76-287a-468f-823c-a5f6e1930e9d)
 
 
+![image](https://github.com/user-attachments/assets/ab7882b7-a8d7-447a-89e4-9f97c631a1c1)
