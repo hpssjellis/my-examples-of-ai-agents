@@ -2243,6 +2243,47 @@ async function myAskQuestion() {
  // myStopFlag = false; // Reset stop flag before starting
 //  document.getElementById('myStopButton').disabled = false; // Enable stop button
 
+let myTemp = ""; // Temporary storage for text
+let myCount = 0; // Counter to track updates
+
+streamer = new TextStreamer(generator.tokenizer, {
+    skip_prompt: false,
+    callback_function: (text) => {
+        if (!window.startTime) {
+            window.startTime = performance.now();
+        }
+
+        myTemp += text; // Store incoming text
+        myCount++; // Count updates
+
+        if (myCount >= 100) { // Update textarea every 100 tokens
+            let myTextarea = document.getElementById('myTextarea01');
+            myTextarea.value += myTemp;
+            myTemp = ""; // Clear temporary storage
+            myCount = 0; // Reset counter
+
+            if (document.activeElement !== myTextarea) {   
+                myTextarea.scrollTop = myTextarea.scrollHeight; // Auto-scroll to bottom
+            }
+        }
+
+        const elapsedTime = (performance.now() - window.startTime) / 1000;
+        const generatedTokens = document.getElementById('myTextarea01').value.length + myTemp.length;
+        const tokensPerSecond = generatedTokens / elapsedTime;
+        const progress = parseInt((generatedTokens * 10) / myMaxT);
+
+        document.getElementById('progress').textContent = `Answer progress: ~${progress}%, Tokens per second: ${tokensPerSecond.toFixed(0)}, elapsed time: ${elapsedTime.toFixed(0)} seconds`;
+        document.getElementById('progress2').textContent = `Answer progress: ~${progress}%, Tokens per second: ${tokensPerSecond.toFixed(0)}, elapsed time: ${elapsedTime.toFixed(0)} seconds`;
+
+        if (progress >= 100) {
+            window.startTime = null;
+        }
+    },
+});
+
+
+/*
+   
   // Clear any existing streamer instance before starting a new one
   streamer = new TextStreamer(generator.tokenizer, {
     skip_prompt: false,
@@ -2272,6 +2313,9 @@ async function myAskQuestion() {
       }
     },
   });
+
+
+   */
 
   const myMaxT = document.getElementById('myMaxTokens').value;
   const myDo_sample = document.getElementById('myDo_sample').value;
