@@ -2257,7 +2257,7 @@ streamer = new TextStreamer(generator.tokenizer, {
         myTemp += text; // Store incoming text
         myCount++; // Count updates
 
-        if (myCount >= 10) { // Update textarea every 100 tokens
+        if (myCount >= 30) { // Update textarea every x tokens to speed it up
 
             myTextarea.value += myTemp;
             myTemp = ""; // Clear temporary storage
